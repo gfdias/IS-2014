@@ -19,15 +19,15 @@ public class ReadWeb {
 			Document doc = Jsoup.connect(webSite).get();
 			Elements newsHeadlines = doc.select("#intl-menu a");
 
+			
 			for (int i = 0; i < newsHeadlines.size(); i++) {
-				System.out.println("/t header"+newsHeadlines.toString());
+				//System.out.println("\t header-----> "+newsHeadlines.get(i).toString()+"\n");
 				Element header=  newsHeadlines.get(i);
-		        System.out.println(header.tagName("href"));        
+		        System.out.println("finded-> "+header.attr(("href").toString()));        
 			}
 	       
 		} catch (Exception e) {
 			System.out.println("CANNOT GET HEADERS");
 		}
 	}
-	
 }
