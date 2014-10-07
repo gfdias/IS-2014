@@ -10,33 +10,38 @@ import org.jsoup.select.Elements;
 public class TopicNews {
 
 	private String topicUrl;
+	private String topicString;
+
 	private ArrayList<String> newsUrls;
 
 
-	public TopicNews(String url) {
+	public TopicNews(String url,String topicString) {
 		this.topicUrl = url;
+		this.topicString=topicString;
 		this.newsUrls = new ArrayList<String>();
 	}
 
-	public static void main(String args[]){
-		
-		TopicNews topic = new TopicNews("http://edition.cnn.com/US/");
-		
-		topic.fetchLatestNews(topic.topicUrl);
-
-	}
-	public void fetchLatestNews(String url){
+	
+	public void fetchLatestNews(){
 
 		try {
-			Document doc = Jsoup.connect(url).get();
+			Document doc = Jsoup.connect(this.topicUrl).get();
 			Elements newsHeadlines = doc.select("#cnn_mtt1rgtarea");
 			Document parsed = Jsoup.parse(newsHeadlines.toString());
 			Element link = parsed.select("a").first();
 			String linkText = link.attr("href");
 
 		} catch (Exception e) {
-			System.out.println("CANNOT GET HEADERS");
+			System.out.println("CANNOT FETCH NEWS");
 		}
+
+	}
+	
+	public static void main(String args[]){
+		
+		TopicNews topic = new TopicNews("http://edition.cnn.com/US/","us");
+		
+		topic.fetchLatestNews();
 
 	}
 

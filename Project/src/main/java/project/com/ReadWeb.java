@@ -10,7 +10,7 @@ public class ReadWeb {
 		System.out.println("Start Read Web");
 		ReadWeb a=new ReadWeb();
 		
-		a.getFromWeb("http://cnn.com/");
+		a.getFromWeb("http://cnn.com");
 		System.out.println("End Read Web");
 	}
 	
@@ -20,10 +20,17 @@ public class ReadWeb {
 			Elements newsHeadlines = doc.select("#intl-menu a");
 
 			
-			for (int i = 0; i < newsHeadlines.size(); i++) {
-				//System.out.println("\t header-----> "+newsHeadlines.get(i).toString()+"\n");
+			for (int i = 1; i < newsHeadlines.size(); i++) {
 				Element header=  newsHeadlines.get(i);
-		        System.out.println("finded-> "+header.attr(("href").toString()));        
+				
+		        String getInfo=header.attr(("href").toString());   
+		        if	(getInfo.equals("/video/")) continue;
+		        String headerName=header.text();
+		        System.out.println("Getting news of "+headerName);
+		        String url=webSite+getInfo;
+		        TopicNews aux=new  TopicNews(url,headerName);
+		        aux.fetchLatestNews();
+		        
 			}
 	       
 		} catch (Exception e) {
