@@ -3,4 +3,11 @@
   <groupId>IS</groupId>
   <artifactId>project.com</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+  	<dependency>
+		<groupId>org.jsoup</groupId>
+		<artifactId>jsoup</artifactId>
+		<version>1.7.2</version>
+		</dependency>
+  </dependencies>
 </project>
