@@ -39,8 +39,9 @@ public class ReadWeb {
 		        System.out.println("Getting news of "+headerName);
 		        String url=webSite+getInfo;
 		        System.out.println("url "+url);
-
 		        TopicNews aux=new  TopicNews(url,headerName);
+		        System.out.println("Done....................................................");
+
 		        aux.fetchLatestNews();
 		        
 			}
