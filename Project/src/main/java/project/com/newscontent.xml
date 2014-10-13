@@ -10,8 +10,8 @@
         <xs:element name="date" type="xs:dateTime"  maxOccurs="1"/>
         <xs:element name="author" type="xs:string"  maxOccurs="1"/>
         <xs:element name="content" type="xs:string"  maxOccurs="1"/>
-        <xs:element name="photos" type="xs:anyURI" minOccurs="0"/>
-        <xs:element name="video" type="xs:anyURI" minOccurs="0"/>
+        <xs:element name="photos" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="video" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>

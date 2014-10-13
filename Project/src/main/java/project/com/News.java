@@ -6,7 +6,7 @@
 //
 
 
-package generated;
+package project.com;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +35,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="date" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="author" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="content" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="photos" type="{http://www.w3.org/2001/XMLSchema}anyURI" minOccurs="0"/>
- *         &lt;element name="video" type="{http://www.w3.org/2001/XMLSchema}anyURI" minOccurs="0"/>
+ *         &lt;element name="photos" type="{http://www.w3.org/2001/XMLSchema}anyURI" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="video" type="{http://www.w3.org/2001/XMLSchema}anyURI" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -74,9 +74,9 @@ public class News {
     @XmlElement(required = true)
     protected String content;
     @XmlSchemaType(name = "anyURI")
-    protected String photos;
+    protected List<String> photos;
     @XmlSchemaType(name = "anyURI")
-    protected String video;
+    protected List<String> video;
 
     /**
      * Gets the value of the title property.
@@ -230,49 +230,59 @@ public class News {
     /**
      * Gets the value of the photos property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getPhotos() {
-        return photos;
-    }
-
-    /**
-     * Sets the value of the photos property.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the photos property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getPhotos().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link String }
+     * 
+     * 
      */
-    public void setPhotos(String value) {
-        this.photos = value;
+    public List<String> getPhotos() {
+        if (photos == null) {
+            photos = new ArrayList<String>();
+        }
+        return this.photos;
     }
 
     /**
      * Gets the value of the video property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getVideo() {
-        return video;
-    }
-
-    /**
-     * Sets the value of the video property.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the video property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getVideo().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link String }
+     * 
+     * 
      */
-    public void setVideo(String value) {
-        this.video = value;
+    public List<String> getVideo() {
+        if (video == null) {
+            video = new ArrayList<String>();
+        }
+        return this.video;
     }
 
 }

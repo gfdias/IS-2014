@@ -32,6 +32,7 @@ public class TopicNews {
 				Element article =  newsUrls.get(i);			
 		        String info = article.attr(("href").toString());   	
 		        this.newsUrls.add(info);
+		        
 			}
 			
 		} catch (Exception e) {
