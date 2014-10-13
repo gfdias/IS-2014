@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:attribute name="newsid" type="xs:string"/>
   <xs:element name="news">
     <xs:complexType>
       <xs:sequence>
-      	<xs:element name="title" type="xs:string" use="required" maxOccurs="1"/>
-      	<xs:element name="url" type="xs:anyURI" use="required" maxOccurs="1"/>
-      	<xs:element name="highlights" type="xs:string" use="required" maxOccurs="unbounded"/>
-      	<xs:element name="date" type="xs:dateTime" use="required" maxOccurs="1"/>
-      	<xs:element name="author" type="xs:string" use="required" maxOccurs="1"/>
-      	<xs:element name="content" type="xs:string" use="required" maxOccurs="1"/>
-      	<xs:element name="photos" type="xs:anyURI" minOccurs="0"/>
-      	<xs:element name="video" type="xs:anyURI" minOccurs="0"/>
+        <xs:element name="title" type="xs:string"  maxOccurs="1"/>
+        <xs:element name="url" type="xs:anyURI"  maxOccurs="1"/>
+        <xs:element name="highlights" type="xs:string"  maxOccurs="unbounded"/>
+        <xs:element name="date" type="xs:dateTime"  maxOccurs="1"/>
+        <xs:element name="author" type="xs:string"  maxOccurs="1"/>
+        <xs:element name="content" type="xs:string"  maxOccurs="1"/>
+        <xs:element name="photos" type="xs:anyURI" minOccurs="0"/>
+        <xs:element name="video" type="xs:anyURI" minOccurs="0"/>
       </xs:sequence>
-      <xs:atribute name="newsid" type="xs:string" use="required"/>
     </xs:complexType>
   </xs:element>
 </xs:schema>
