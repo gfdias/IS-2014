@@ -23,26 +23,19 @@ public class TopicNews {
 
 	
 	public void fetchLatestNews(){
-
+		
 		try {
 			Document doc = Jsoup.connect(this.topicUrl).get();
-			Elements newsHeadlines = doc.select("#cnn_mtt1rgtarea");
-			Document parsed = Jsoup.parse(newsHeadlines.toString());
-			Element link = parsed.select("a").first();
-			String linkText = link.attr("href");
-
+			Elements newsUrls = doc.select("#cnn_mtt1rgtarea a");
+			
+			for (int i = 0; i < newsUrls.size(); i++) {
+				Element article =  newsUrls.get(i);			
+		        String info = article.attr(("href").toString());   	
+		        this.newsUrls.add(info);
+			}
+			
 		} catch (Exception e) {
 			System.out.println("CANNOT FETCH NEWS");
 		}
-
-	}
-	
-	public static void main(String args[]){
-		
-		TopicNews topic = new TopicNews("http://edition.cnn.com/US/","us");
-		
-		topic.fetchLatestNews();
-
-	}
-
+	}	
 }
