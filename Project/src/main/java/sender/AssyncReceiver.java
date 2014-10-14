@@ -11,8 +11,11 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import javax.jms.Topic;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import project.com.TopicNews;
 
 public class AssyncReceiver implements MessageListener {
 	private ConnectionFactory cf;
@@ -23,13 +26,24 @@ public class AssyncReceiver implements MessageListener {
 
 	public AssyncReceiver() throws NamingException, JMSException {
 		InitialContext init = new InitialContext();
-		this.cf = (ConnectionFactory) init
-				.lookup("jms/RemoteConnectionFactory");
-		this.d = (Destination) init.lookup("jms/queue/PlayQueue");
+		this.cf = (ConnectionFactory) init.lookup("jms/RemoteConnectionFactory");
+		this.d = (Destination) init.lookup("jms/queue/News");
 		this.c = (Connection) this.cf.createConnection("joao", "passwd");
+		this.c.setClientID("HTML_SUMMARY_7"
+				+ "");
 		this.c.start();
 		this.s = this.c.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		mc = s.createConsumer(d);
+		
+		
+		
+		/*
+        TopicConnectionFactory tcf = (TopicConnectionFactory) tmp;
+        conn = tcf.createTopicConnection();
+        topic = (Topic) iniCtx.lookup("topic/testTopic");
+        session = conn.createTopicSession(false,
+                                          TopicSession.AUTO_ACKNOWLEDGE);*/
+
+		mc =s.createDurableSubscriber(this.d,"asda");
 		mc.setMessageListener(this);
 	}
 
@@ -44,7 +58,10 @@ public class AssyncReceiver implements MessageListener {
 	}
 
 	private void close() throws JMSException {
+		this.c.stop();
+		this.s.close();
 		this.c.close();
+
 	}
 
 	/**
@@ -54,7 +71,7 @@ public class AssyncReceiver implements MessageListener {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws NamingException,
-			JMSException, IOException {
+		JMSException, IOException {
 		AssyncReceiver r = new AssyncReceiver();
 		System.in.read();
 		r.close();

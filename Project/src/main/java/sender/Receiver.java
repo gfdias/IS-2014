@@ -7,6 +7,7 @@ import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import javax.jms.Topic;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -24,6 +25,8 @@ public class Receiver {
   this.d = (Destination) init.lookup("jms/queue/PlayQueue");
   this.c = (Connection) this.cf.createConnection("joao", "passwd");
   this.c.start();
+  Topic a=s.createTopic("news");
+  
   this.s = this.c.createSession(false, Session.AUTO_ACKNOWLEDGE);
   mc = s.createConsumer(d);
  }

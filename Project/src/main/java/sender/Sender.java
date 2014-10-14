@@ -20,9 +20,8 @@ public class Sender {
 
 	public Sender() throws NamingException, JMSException {
 		InitialContext init = new InitialContext();
-		this.cf = (ConnectionFactory) init
-				.lookup("jms/RemoteConnectionFactory");
-		this.d = (Destination) init.lookup("jms/queue/PlayQueue");
+		this.cf = (ConnectionFactory) init.lookup("jms/RemoteConnectionFactory");
+		this.d = (Destination) init.lookup("jms/queue/News");
 		this.c = (Connection) this.cf.createConnection("joao", "passwd");
 		this.c.start();
 		this.s = this.c.createSession(false, Session.AUTO_ACKNOWLEDGE);
