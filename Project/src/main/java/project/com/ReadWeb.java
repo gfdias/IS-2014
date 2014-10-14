@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 public class ReadWeb {
 	
+	@SuppressWarnings("serial")
 	ArrayList<String> ignore = new ArrayList<String>() {{
 	    add("video");
 	    add("tech");
@@ -42,7 +43,6 @@ public class ReadWeb {
 		        System.out.println("url " + url);
 		        TopicNews aux = new TopicNews(url,headerName);
 		        System.out.println("Done....................................................");
-
 		        aux.fetchLatestNews();
 			}
 	       

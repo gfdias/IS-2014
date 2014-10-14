@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://schema/"
+    xmlns:tns="http://schema/">
+
+<xs:simpleType name="stringtype">
+  <xs:restriction base="xs:string"/>
+</xs:simpleType>
+
+<xs:simpleType name="datetype">
+  <xs:restriction base="xs:dateTime"/>
+</xs:simpleType>
+
+<xs:simpleType name="uritype">
+  <xs:restriction base="xs:anyURI"/>
+</xs:simpleType>
+
+<xs:simpleType name="newsidtype">
+  <xs:restriction base="xs:string">
+    <xs:pattern value="[0-9]"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="topicidtype">
+  <xs:restriction base="xs:string">
+    <xs:pattern value="[0-9]"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="topicnametype">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="World" />
+  <xs:enumeration value="U.S." />
+  <xs:enumeration value="Africa" />
+  <xs:enumeration value="Asia" />
+  <xs:enumeration value="Europe" />
+  <xs:enumeration value="Latin America" />
+  <xs:enumeration value="Middle East" />
+  <xs:enumeration value="Business" />
+  <xs:enumeration value="World Sport" />
+  </xs:restriction>
+</xs:simpleType>
+
+
+<xs:complexType name="newstype">
+  <xs:sequence>
+    <xs:element name="title" type="tns:stringtype"/>
+        <xs:element name="url" type="tns:uritype"/>
+        <xs:element name="highlights" type="tns:stringtype"  maxOccurs="unbounded"/>
+        <xs:element name="date" type="tns:datetype"/>
+        <xs:element name="author" type="tns:stringtype"/>
+        <xs:element name="content" type="tns:stringtype"/>
+        <xs:element name="photos" type="tns:uritype" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="video" type="tns:uritype" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+   <xs:attribute name="newsid" type="tns:newsidtype" use="required"/>
+</xs:complexType>
+
+
+<xs:complexType name="topictype">
+  <xs:sequence>
+    <xs:element name="topicname" type="tns:topicnametype"/>
+    <xs:element name="news" type="tns:newstype" maxOccurs="unbounded"/>
+  </xs:sequence>
+  <xs:attribute name="topicid" type="tns:topicidtype" use="required"/>
+</xs:complexType>
+
+<xs:element name="topic" type="tns:topictype"/>
+
+</xs:schema>
