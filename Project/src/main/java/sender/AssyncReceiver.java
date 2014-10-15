@@ -29,7 +29,7 @@ public class AssyncReceiver implements MessageListener {
 		this.cf = (ConnectionFactory) init.lookup("jms/RemoteConnectionFactory");
 		this.d = (Destination) init.lookup("jms/queue/News");
 		this.c = (Connection) this.cf.createConnection("joao", "passwd");
-		this.c.setClientID("HTML_SUMMARY_7"
+		this.c.setClientID("HTML_SUMMARY_5"
 				+ "");
 		this.c.start();
 		this.s = this.c.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -43,7 +43,7 @@ public class AssyncReceiver implements MessageListener {
         session = conn.createTopicSession(false,
                                           TopicSession.AUTO_ACKNOWLEDGE);*/
 
-		mc =s.createDurableSubscriber(this.d,"asda");
+		mc = s.createConsumer(d);
 		mc.setMessageListener(this);
 	}
 
@@ -58,7 +58,8 @@ public class AssyncReceiver implements MessageListener {
 	}
 
 	private void close() throws JMSException {
-		this.c.stop();
+		this.c.close();
+
 		this.s.close();
 		this.c.close();
 
