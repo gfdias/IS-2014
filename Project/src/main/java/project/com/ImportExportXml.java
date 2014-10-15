@@ -13,20 +13,20 @@ import project.com.schema.Topictype;
 
 public class ImportExportXml {
 	
-	public JAXBElement<Topictype> importReport (String xmlName){
-		JAXBElement<Topictype> report=null;
+	public JAXBElement<Topictype> importTopic (String xmlName){
+		JAXBElement<Topictype> topic=null;
 		try {
 			JAXBContext jc = JAXBContext.newInstance(JAXBElement.class);
 			Unmarshaller u = jc.createUnmarshaller();
 
 			File f = new File(xmlName);
-			report = (JAXBElement<Topictype>) u.unmarshal(f);
+			topic = (JAXBElement<Topictype>) u.unmarshal(f);
 			System.out.println("all imported");
 
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}	
-		return report;
+		return topic;
 	}
 	
 
@@ -50,14 +50,14 @@ public class ImportExportXml {
 		return sw.toString();
 	}
     
-	public boolean exportReport(JAXBElement<Topictype> report,File name){
+	public boolean exportReport(JAXBElement<Topictype> report,String name){
 		boolean exported=false;
 		JAXBContext context;
 		try {
 			context = JAXBContext.newInstance(Topictype.class);
 			 Marshaller m = context.createMarshaller();
 			 m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			 File f = new File("asdasd");
+			 File f = new File("Save/"+name+".xml");
 			 m.marshal(report, f);
 			 System.out.println("EXPORT DONE");
 			 exported=true;
