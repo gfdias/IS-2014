@@ -48,7 +48,7 @@ public class Topictype {
     @XmlElement(required = true)
     protected Topicnametype topicname;
     @XmlElement(required = true)
-    protected List<Newstype> news;
+    protected List<Newstype> news = new ArrayList<Newstype>();
     @XmlAttribute(name = "topicid", required = true)
     protected String topicid;
 
@@ -103,6 +103,12 @@ public class Topictype {
             news = new ArrayList<Newstype>();
         }
         return this.news;
+    }
+    
+    
+    public void setNewsList(List<Newstype> value) {
+        this.news = value;
+        
     }
 
     /**

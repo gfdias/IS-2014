@@ -63,15 +63,15 @@ public class Newstype {
     @XmlElement(required = true)
     protected String url;
     @XmlElement(required = true)
-    protected List<String> highlights;
+    protected List<String> highlights = new ArrayList<String>();
     @XmlElement(required = true)
     protected XMLGregorianCalendar date;
     @XmlElement(required = true)
     protected String author;
     @XmlElement(required = true)
     protected String content;
-    protected List<String> photos;
-    protected List<String> video;
+    protected List<String> photos = new ArrayList<String>();
+    protected List<String> video = new ArrayList<String>();
     @XmlAttribute(name = "newsid", required = true)
     protected String newsid;
 
@@ -97,6 +97,11 @@ public class Newstype {
      */
     public void setTitle(String value) {
         this.title = value;
+    }
+    
+    public void setHighLights(List<String> value) {
+    	
+        this.highlights = value;
     }
 
     /**

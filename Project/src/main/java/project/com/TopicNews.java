@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -79,6 +80,8 @@ public class TopicNews {
 		
 		String topicId = new Timestamp(new java.util.Date().getTime()).toString();	
 		topic.setTopicid(topicId);
+		
+		List<Newstype> newsList = new ArrayList<Newstype>();
 			
 		for (int i = 0; i < newTopic.newsUrls.size(); i++) {
 			
@@ -91,22 +94,40 @@ public class TopicNews {
 				String url = newTopic.newsUrls.get(i);
 				
 				Elements highContainer = doc.select(".cnn_strylctcntr li");
-				System.out.println("SIZE: " + highContainer.size());
 				List<String> highLights = new ArrayList<String>();
 				
 				for (int j = 0; j < highContainer.size(); j++) {
 					Element highLight = highContainer.get(j);
-					highLights.add(highLight.attr("li").toString());
+					highLights.add(highLight.text());
 				}
 				
-						
+				
+				String content = newsContainer.select("p").text();
+				
+				Newstype news = topicObject.createNewstype();
+				news.setNewsid(new Timestamp(new java.util.Date().getTime()).toString());
+				news.setAuthor(author);
+				news.setContent(content);
+				news.setHighLights(highLights);
+				news.setDate(date);
+				news.setTitle(title);
+				news.setUrl(url);
+				
+				newsList.add(news);
 				
 			} catch (IOException e) {
 				System.out.println("Deu bode: "  + newTopic.newsUrls.get(i));
 			}
-
-			Newstype news = topicObject.createNewstype();			
 		}
+		
+		topic.setNewsList(newsList);
+		
+		JAXBElement<Topictype> topicExport =  topicObject.createTopic(topic);
+		
+		ImportExportXml newExport = new ImportExportXml();
+		newExport.exportReport(topicExport);
+		
+		
 	}
 	
 	public XMLGregorianCalendar parseDate(String date) throws ParseException{
