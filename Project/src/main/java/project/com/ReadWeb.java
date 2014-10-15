@@ -2,10 +2,16 @@ package project.com;
 
 import java.util.ArrayList;
 
+import javax.xml.bind.JAXBElement;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import project.com.schema.Topictype;
+
+
 public class ReadWeb {
 	
 	@SuppressWarnings("serial")
@@ -16,16 +22,11 @@ public class ReadWeb {
 	    add("travel");
 	}};	
 	
-	public static void main(String[] args) {
 
+	public ArrayList<Header> getFromWeb(String webSite) {
 		System.out.println("Start Read Web");
-		ReadWeb a=new ReadWeb();
-		
-		a.getFromWeb("http://edition.cnn.com");
-		System.out.println("End Read Web");
-	}
-	
-	public void getFromWeb(String webSite) {
+
+		ArrayList<Header> headers=new ArrayList<Header>();
 		try {
 			
 			Document doc = Jsoup.connect(webSite).get();
@@ -41,13 +42,18 @@ public class ReadWeb {
 		        System.out.println("Getting news of " + headerName);
 		        String url = webSite + getInfo;
 		        System.out.println("url " + url);
-		        TopicNews aux = new TopicNews(url,headerName);
+		        
+		        Header aux = new Header(url, headerName);
+		        headers.add(aux);
+		        
+		   
+
 		        System.out.println("Done....................................................");
-		        aux.fetchLatestNews();
 			}
 	       
 		} catch (Exception e) {
 			System.out.println("CANNOT GET HEADERS");
 		}
+		return headers;
 	}
 }
