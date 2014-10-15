@@ -46,9 +46,9 @@ public class TopicNews {
 		this.newsUrls = newsList;
 	}
 
-
-	public void fetchLatestNews(){
-
+	
+	public JAXBElement<Topictype> fetchLatestNews(){
+				
 		try {
 			Document doc = Jsoup.connect(this.topicUrl).get();
 			Elements latest = doc.select("#cnn_mtt1rgtarea a");
@@ -65,15 +65,18 @@ public class TopicNews {
 
 			TopicNews newTopic = new TopicNews(this.topicString, this.newsUrls);
 
-			buildNews(newTopic);
-
+			
+			return buildNews(newTopic);
+			
 		} catch (Exception e) {
 			System.out.println("CANNOT FETCH NEWS");
 		}
+		return null;
 	}
 
-	public void buildNews (TopicNews newTopic) throws ParseException{
-
+	
+	public JAXBElement<Topictype> buildNews (TopicNews newTopic) throws ParseException{
+		
 		ObjectFactory topicObject = new ObjectFactory();
 
 		Topictype topic = topicObject.createTopictype();
@@ -146,10 +149,11 @@ public class TopicNews {
 
 		topic.setNewsList(newsList);
 
-		JAXBElement<Topictype> topicExport =  topicObject.createTopic(topic);
+		
+		return  topicObject.createTopic(topic);
 
-		ImportExportXml newExport = new ImportExportXml();
-		newExport.exportReport(topicExport);		
+		
+		
 	}
 
 	public XMLGregorianCalendar parseDate(String date) throws ParseException{
