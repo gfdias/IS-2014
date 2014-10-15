@@ -1,56 +1,66 @@
 package sender;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
 import javax.jms.TextMessage;
-import javax.naming.CommunicationException;
+import javax.jms.Topic;
+import javax.jms.TopicConnection;
+import javax.jms.TopicConnectionFactory;
+import javax.jms.TopicPublisher;
+import javax.jms.TopicSession;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class Sender {
-	private ConnectionFactory cf;
-	private Connection c;
-	private Session s;
-	private Destination d;
-	private MessageProducer mp;
-
-	public Sender() throws NamingException, JMSException {
-		InitialContext init = new InitialContext();
-		this.cf = (ConnectionFactory) init
-				.lookup("jms/RemoteConnectionFactory");
-		this.d = (Destination) init.lookup("jms/queue/PlayQueue");
-		this.c = (Connection) this.cf.createConnection("joao", "passwd");
-		this.c.start();
-		this.s = this.c.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		this.mp = this.s.createProducer(this.d);
-	}
-
-	private void send(String string) throws JMSException {
-		TextMessage tm = this.s.createTextMessage(string);
-		this.mp.send(tm);
-	}
-
-	private void close() throws JMSException {
-		this.c.close();
-	}
-
-	/**
-	 * @param args
-	 * @throws JMSException
-	 * @throws NamingException
-	 */
-	public static void main(String[] args) throws NamingException, JMSException{
-		Sender s;
-		try {
-			s = new Sender();
-			s.send("Ola ca estou eu!");
-			s.close();
-		}catch (CommunicationException a){
-			System.out.println("JMS IS DOWN");
-		}
-	}
+    TopicConnection conn = null;
+    TopicSession session = null;
+    Topic topic = null;
+    
+    public void setupPubSub()
+        throws JMSException, NamingException
+    {
+        InitialContext iniCtx = new InitialContext();
+        Object tmp = iniCtx.lookup("jms/RemoteConnectionFactory");
+        TopicConnectionFactory tcf = (TopicConnectionFactory) tmp;
+        conn = tcf.createTopicConnection("joao","passwd");
+        
+        topic = (Topic) iniCtx.lookup("jms/topic/news");
+        session = conn.createTopicSession(false, TopicSession.AUTO_ACKNOWLEDGE);
+        conn.start();
+    }
+    
+    public void sendAsync(String text)
+        throws JMSException, NamingException
+    {
+        System.out.println("Begin sendAsync");
+        // Setup the pub/sub connection, session
+        setupPubSub();
+        // Send a text msg
+        TopicPublisher send = session.createPublisher(topic);
+        TextMessage tm = session.createTextMessage(text);
+        send.publish(tm);
+        System.out.println("sendAsync, sent text=" +  tm.getText());
+        send.close();
+        System.out.println("End sendAsync");
+    }
+    
+    public void stop() 
+        throws JMSException
+    {
+        conn.stop();
+        session.close();
+        conn.close();
+    }
+    
+    public static void main(String args[]) 
+        throws Exception
+    {
+        System.out.println("Begin TopicSendClient, now=" + 
+		                   System.currentTimeMillis());
+        Sender client = new Sender();
+	    client.sendAsync("A text msg, now=i thing is working");
+        client.stop();
+        System.out.println("End TopicSendClient");
+        System.exit(0);
+    }
+    
 }

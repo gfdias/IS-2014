@@ -1,53 +1,81 @@
 package sender;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.jms.Session;
+import javax.jms.Message;
+import javax.jms.MessageListener;
 import javax.jms.TextMessage;
+import javax.jms.Topic;
+import javax.jms.TopicConnection;
+import javax.jms.TopicConnectionFactory;
+import javax.jms.TopicSession;
+import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 
-public class Receiver {
- private ConnectionFactory cf;
- private Connection c;
- private Session s;
- private Destination d;
- private MessageConsumer mc;
+public class Receiver implements MessageListener
+{
+    TopicConnection conn = null;
+    TopicSession session = null;
+    Topic topic = null;
+    String clientID;
 
- public Receiver() throws NamingException, JMSException {
-  InitialContext init = new InitialContext();
-  this.cf = (ConnectionFactory) init.lookup("jms/RemoteConnectionFactory");
-  this.d = (Destination) init.lookup("jms/queue/PlayQueue");
-  this.c = (Connection) this.cf.createConnection("joao", "passwd");
-  this.c.start();
-  this.s = this.c.createSession(false, Session.AUTO_ACKNOWLEDGE);
-  mc = s.createConsumer(d);
- }
+    public Receiver(String clientID) {
+		this.clientID=clientID;
+	}
+    
+    public void setupPubSub()
+        throws JMSException, NamingException
+    {
+        InitialContext iniCtx = new InitialContext();
+        Object tmp = iniCtx.lookup("jms/RemoteConnectionFactory");
 
- private String receive() throws JMSException {
-  TextMessage msg = (TextMessage) mc.receive();
-  return msg.getText();
- }
+        TopicConnectionFactory tcf = (TopicConnectionFactory) tmp;
+        conn = tcf.createTopicConnection("joao", "passwd");
+        conn.setClientID(clientID);
+        topic = (Topic) iniCtx.lookup("jms/topic/news");
 
- private void close() throws JMSException {
-  this.c.close();
- }
+        session = conn.createTopicSession(false,
+                                          TopicSession.AUTO_ACKNOWLEDGE);
+        
+            
+		TopicSubscriber recv = session.createDurableSubscriber(topic, "joao");
+		recv.setMessageListener(this);
+        conn.start();
+    }
+    
+    public void onMessage(Message msg) {
+		TextMessage tmsg = (TextMessage) msg;
+		try {
+			System.out.println(tmsg.getText());
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
- /**
-  * @param args
-  * @throws JMSException 
-  * @throws NamingException 
-  */
- public static void main(String[] args) throws NamingException, JMSException {
-  Receiver r = new Receiver();
-
-  String msg = r.receive();
-  System.out.println("Mensagem: " + msg);
-  r.close();
- }
-
+    
+    
+    public void stop() 
+        throws JMSException
+    {
+        conn.stop();
+        session.close();
+        conn.close();
+    }
+    
+    public static void main(String args[]) 
+        throws Exception
+    {
+    	
+        System.out.println("Begin DurableTopicRecvClient, now=" + 
+                           System.currentTimeMillis());
+        Receiver client = new Receiver("joao_1");
+        client.setupPubSub();
+    	System.in.read();		
+        client.stop();
+        System.out.println("End DurableTopicRecvClient");
+        System.exit(0);
+    }
+    
 }
