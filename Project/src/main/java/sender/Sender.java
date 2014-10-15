@@ -28,8 +28,7 @@ public class Sender {
         conn.start();
     }
     
-    public void sendAsync(String text)
-        throws JMSException, NamingException
+    public void sendAsync(String text) throws JMSException, NamingException
     {
         System.out.println("Begin sendAsync");
         // Setup the pub/sub connection, session
@@ -50,6 +49,8 @@ public class Sender {
         session.close();
         conn.close();
     }
+    
+    
     
     public static void main(String args[]) 
         throws Exception

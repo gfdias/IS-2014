@@ -2,9 +2,12 @@ package project.com;
 
 import java.util.ArrayList;
 
+import javax.jms.JMSException;
+import javax.naming.NamingException;
 import javax.xml.bind.JAXBElement;
 
 import project.com.schema.Topictype;
+import sender.Sender;
 
 public class WebCrawler {
 
@@ -23,7 +26,23 @@ public class WebCrawler {
 		     ImportExportXml newExport = new ImportExportXml();
 		     String xmlString= newExport.getXMLString(topic);
 		     
-		     System.out.println(xmlString);
+		     
+		     //send to jms
+		     Sender client = new Sender();
+			try {
+				client.sendAsync(xmlString);
+			} catch (JMSException e) {
+				e.printStackTrace();
+			} catch (NamingException e) {
+				e.printStackTrace();
+			}
+			
+		    try {
+				client.stop();
+			} catch (JMSException e) {
+				e.printStackTrace();
+			}
+
 		}
 		
 		System.out.println("End Read Web");	

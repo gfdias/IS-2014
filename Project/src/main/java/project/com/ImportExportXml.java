@@ -41,7 +41,6 @@ public class ImportExportXml {
 			 m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			 m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 			 m.marshal(report, sw);
-			 System.out.println(sw.toString());
 			 System.out.println("EXPORT DONE");
 			 
 		} catch (JAXBException e) {

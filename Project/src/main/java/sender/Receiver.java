@@ -38,7 +38,6 @@ public class Receiver implements MessageListener
         session = conn.createTopicSession(false,
                                           TopicSession.AUTO_ACKNOWLEDGE);
         
-            
 		TopicSubscriber recv = session.createDurableSubscriber(topic, "joao");
 		recv.setMessageListener(this);
         conn.start();
