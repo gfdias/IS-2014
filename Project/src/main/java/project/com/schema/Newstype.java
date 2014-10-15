@@ -103,6 +103,11 @@ public class Newstype {
     	
         this.highlights = value;
     }
+    
+public void setImages(List<String> value) {
+    	
+        this.photos = value;
+    }
 
     /**
      * Gets the value of the url property.
