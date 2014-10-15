@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -82,8 +83,17 @@ public class TopicNews {
 		Topictype topic = topicObject.createTopictype();
 
 		topic.setTopicname(Topicnametype.fromValue(newTopic.topicString));
+		
+		
+		Calendar rightNow = Calendar.getInstance();
 
-		String topicId = new Timestamp(new java.util.Date().getTime()).toString();	
+		// offset to add since we're not UTC
+		long offset = rightNow.get(Calendar.ZONE_OFFSET) +
+		    rightNow.get(Calendar.DST_OFFSET);
+		long sinceMidnight = (rightNow.getTimeInMillis() + offset) %
+		    (24 * 60 * 60 * 1000);
+
+		String topicId = String.valueOf(sinceMidnight);	
 		topic.setTopicid(topicId);
 
 		List<Newstype> newsList = new ArrayList<Newstype>();
@@ -126,12 +136,18 @@ public class TopicNews {
 				
 				for (int j = 0; j < content.size(); j++) {
 					String p = content.get(j).text();
-					System.out.println("FOR TEXT_ " + text);
-					System.out.println("P:  " + p);			
 				}
 				
+				Calendar rightNow2 = Calendar.getInstance();
+
+				// offset to add since we're not UTC
+				long offset2 = rightNow.get(Calendar.ZONE_OFFSET) +
+				    rightNow.get(Calendar.DST_OFFSET);
+				long sinceMidnight2 = (rightNow.getTimeInMillis() + offset) %
+				    (24 * 60 * 60 * 1000);
+				
 				Newstype news = topicObject.createNewstype();
-				news.setNewsid(new Timestamp(new java.util.Date().getTime()).toString());
+				news.setNewsid(String.valueOf(sinceMidnight2));
 				news.setAuthor(author);
 				news.setContent(text);
 				news.setHighLights(highLights);
