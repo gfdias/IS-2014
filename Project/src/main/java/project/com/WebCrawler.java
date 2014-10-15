@@ -16,9 +16,9 @@ public class WebCrawler {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 	
-		ReadWeb a=new ReadWeb();
+		/*ReadWeb a=new ReadWeb();
 		ArrayList<Header> headers=a.getFromWeb("http://edition.cnn.com");
-	     ImportExportXml newExport = new ImportExportXml();
+	    ImportExportXml newExport = new ImportExportXml();
 
 		for (Header header : headers) {
 			
@@ -48,11 +48,11 @@ public class WebCrawler {
 			}
 			
 		}
-		
+		*/
 		System.out.println("End Read Web");	
 		
 		System.out.println("See if have something to send to jms server");
-		//somethingToSend();
+		somethingToSend();
 	}
 	
 	public static void somethingToSend(){
@@ -63,7 +63,10 @@ public class WebCrawler {
 
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile()) {
-				JAXBElement<Topictype> a = newExport.importTopic("Save/"+listOfFiles[i].getName());
+				System.out.println("Save/"+listOfFiles[i].getName());
+
+				Topictype a = newExport.importTopic("Save/"+listOfFiles[i].getName());
+				System.out.println("asds");
 				String xmlString = newExport.getXMLString(a);
 				System.out.println("Try to send " + listOfFiles[i].getName());
 
