@@ -27,10 +27,10 @@ public class ReadWeb {
 	
 	public void getFromWeb(String webSite) {
 		try {
+			
 			Document doc = Jsoup.connect(webSite).get();
 			Elements newsHeadlines = doc.select("#intl-menu a");
 
-			
 			for (int i = 1; i < newsHeadlines.size(); i++) {
 				Element header = newsHeadlines.get(i);
 				
