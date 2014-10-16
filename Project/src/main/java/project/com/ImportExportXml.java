@@ -21,7 +21,6 @@ public class ImportExportXml {
 
 			File f = new File(xmlName);
 			topic = (Topictype) u.unmarshal(f);
-			System.out.println("all imported");
 
 		} catch (JAXBException e) {
 			e.printStackTrace();
@@ -41,7 +40,6 @@ public class ImportExportXml {
 			 m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			 m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 			 m.marshal(report, sw);
-			 System.out.println("EXPORT DONE");
 			 
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
@@ -51,46 +49,8 @@ public class ImportExportXml {
 	}
 
 	
-/*	public String getXMLString(JAXBElement<Topictype> report){
-		JAXBContext context;
-		StringWriter sw=new StringWriter();
-		
-		try {
-			context = JAXBContext.newInstance(Topictype.class);
-			 Marshaller m = context.createMarshaller();
-			 m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			 m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-			 m.marshal(report, sw);
-			 System.out.println("EXPORT DONE");
-			 
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return sw.toString();
-	}
-    
-	public boolean exportReport(JAXBElement<Topictype> report,String name){
-		boolean exported=false;
-		JAXBContext context;
-		try {
-			context = JAXBContext.newInstance(Topictype.class);
-			 Marshaller m = context.createMarshaller();
-			 m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			 File f = new File("Save/"+name+".xml");
-			 m.marshal(report, f);
-			 System.out.println("EXPORT DONE");
-			 exported=true;
-			 
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 	
-		return exported;
-	}*/
 	
-	public boolean exportReport(JAXBElement<Topictype> report,String name){
+	public boolean exportReport(Topictype report,String name){
 		boolean exported=false;
 		JAXBContext context;
 		try {
@@ -99,7 +59,6 @@ public class ImportExportXml {
 			 m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			 File f = new File("Save/"+name+".xml");
 			 m.marshal(report, f);
-			 System.out.println("EXPORT DONE");
 			 exported=true;
 			 
 		} catch (JAXBException e) {
