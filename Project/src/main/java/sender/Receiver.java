@@ -35,8 +35,7 @@ public class Receiver implements MessageListener
         conn.setClientID(clientID);
         topic = (Topic) iniCtx.lookup("jms/topic/news");
 
-        session = conn.createTopicSession(false,
-                                          TopicSession.AUTO_ACKNOWLEDGE);
+        session = conn.createTopicSession(false,TopicSession.AUTO_ACKNOWLEDGE);
         
 		TopicSubscriber recv = session.createDurableSubscriber(topic, "joao");
 		recv.setMessageListener(this);
