@@ -1,9 +1,6 @@
 package sender;
 
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
@@ -13,21 +10,17 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 
-public class Receiver implements MessageListener
+public class Receiver
 {
     TopicConnection conn = null;
     TopicSession session = null;
     Topic topic = null;
     String clientID;
-
-    public Receiver(String clientID) {
-		this.clientID=clientID;
-	}
+    TopicSubscriber recv =null;
     
-    public void setupPubSub()
-        throws JMSException, NamingException
-    {
-        InitialContext iniCtx = new InitialContext();
+    public Receiver(String clientID) throws JMSException, NamingException{
+		this.clientID=clientID;
+		InitialContext iniCtx = new InitialContext();
         Object tmp = iniCtx.lookup("jms/RemoteConnectionFactory");
 
         TopicConnectionFactory tcf = (TopicConnectionFactory) tmp;
@@ -37,22 +30,13 @@ public class Receiver implements MessageListener
 
         session = conn.createTopicSession(false,TopicSession.AUTO_ACKNOWLEDGE);
         
-		TopicSubscriber recv = session.createDurableSubscriber(topic, "joao");
-		recv.setMessageListener(this);
+		recv = session.createDurableSubscriber(topic, clientID);
         conn.start();
-    }
-    
-    public void onMessage(Message msg) {
-		TextMessage tmsg = (TextMessage) msg;
-		try {
-			System.out.println(tmsg.getText());
-		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
-
     
+    public TopicSubscriber getRecv(){
+    	return recv;
+    }
     
     public void stop() 
         throws JMSException
@@ -60,20 +44,6 @@ public class Receiver implements MessageListener
         conn.stop();
         session.close();
         conn.close();
-    }
-    
-    public static void main(String args[]) 
-        throws Exception
-    {
-    	
-        System.out.println("Begin DurableTopicRecvClient, now=" + 
-                           System.currentTimeMillis());
-        Receiver client = new Receiver("joao_1");
-        client.setupPubSub();
-    	System.in.read();		
-        client.stop();
-        System.out.println("End DurableTopicRecvClient");
-        System.exit(0);
     }
     
 }

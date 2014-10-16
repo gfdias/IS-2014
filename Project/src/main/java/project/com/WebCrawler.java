@@ -16,9 +16,10 @@ public class WebCrawler {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 	
-		/*ReadWeb a=new ReadWeb();
+		ReadWeb a=new ReadWeb();
 		ArrayList<Header> headers=a.getFromWeb("http://edition.cnn.com");
 	    ImportExportXml newExport = new ImportExportXml();
+	    Sender client = new Sender();
 
 		for (Header header : headers) {
 			
@@ -31,7 +32,6 @@ public class WebCrawler {
 		     
 		     
 		     //send to jms
-		     Sender client = new Sender();
 			try {
 				client.sendAsync(xmlString);
 				client.stop();
@@ -40,15 +40,17 @@ public class WebCrawler {
 				System.out.println("JMS IS DOWN");
 				//save to files
 				saveXml(topic,header.getName());
-				
 			} catch (JMSException e) {
 				e.printStackTrace();
 			} catch (NamingException e) {
 				e.printStackTrace();
 			}
+
 			
-		}*/
+		}
 		
+		
+
 		System.out.println("End Read Web");	
 		
 		somethingToSend();
