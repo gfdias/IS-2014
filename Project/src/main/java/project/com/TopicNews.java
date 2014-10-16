@@ -1,7 +1,6 @@
 package project.com;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -85,6 +84,7 @@ public class TopicNews {
 		topic.setTopicname(Topicnametype.fromValue(newTopic.topicString));
 		
 		
+	
 		Calendar rightNow = Calendar.getInstance();
 
 		// offset to add since we're not UTC
@@ -143,22 +143,24 @@ public class TopicNews {
 				Calendar rightNow2 = Calendar.getInstance();
 
 				// offset to add since we're not UTC
-				long offset2 = rightNow.get(Calendar.ZONE_OFFSET) +
-				    rightNow.get(Calendar.DST_OFFSET);
-				long sinceMidnight2 = (rightNow.getTimeInMillis() + offset) %
+				long offset2 = rightNow2.get(Calendar.ZONE_OFFSET) +
+				    rightNow2.get(Calendar.DST_OFFSET);
+				long sinceMidnight2 = (rightNow2.getTimeInMillis() + offset) %
 				    (24 * 60 * 60 * 1000);
 				
-				Newstype news = topicObject.createNewstype();
-				news.setNewsid(String.valueOf(sinceMidnight2));
-				news.setAuthor(author);
-				news.setContent(text);
-				news.setHighLights(highLights);
-				news.setDate(date);
-				news.setTitle(title);
-				news.setUrl(url);
-				news.setImages(images);
-				
-				newsList.add(news);
+				if(!highLights.isEmpty()){
+					Newstype news = topicObject.createNewstype();
+					news.setNewsid(String.valueOf(sinceMidnight2));
+					news.setAuthor(author);
+					news.setContent(text);
+					news.setHighLights(highLights);
+					news.setDate(date);
+					news.setTitle(title);
+					news.setUrl(url);
+					news.setImages(images);
+					
+					newsList.add(news);
+				}
 
 			} catch (IOException e) {
 				System.out.println("Deu bode: "  + newTopic.newsUrls.get(i));

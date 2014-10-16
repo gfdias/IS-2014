@@ -45,6 +45,7 @@ import javax.xml.bind.annotation.XmlType;
     "topicname",
     "news"
 })
+
 @XmlRootElement(name = "topic")
 
 public class Topictype {

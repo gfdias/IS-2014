@@ -16,15 +16,11 @@
 </xs:simpleType>
 
 <xs:simpleType name="newsidtype">
-  <xs:restriction base="xs:string">
-    <xs:pattern value="[0-9]"/>
-  </xs:restriction>
+  <xs:restriction base="xs:nonNegativeInteger"/>
 </xs:simpleType>
 
 <xs:simpleType name="topicidtype">
-  <xs:restriction base="xs:string">
-    <xs:pattern value="[0-9]"/>
-  </xs:restriction>
+  <xs:restriction base="xs:nonNegativeInteger"/>
 </xs:simpleType>
 
 <xs:simpleType name="topicnametype">
