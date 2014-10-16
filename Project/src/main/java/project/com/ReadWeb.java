@@ -39,7 +39,6 @@ public class ReadWeb {
 		        if	(getInfo.equals("/video/") || getInfo.equals("/SHOWBIZ/")) continue;
 		        String headerName = header.text();
 		        if (ignore.contains(headerName.toLowerCase())) continue;
-		        System.out.println("Getting news of " + headerName);
 		        String url = webSite + getInfo;
 		        System.out.println("url " + url);
 		        

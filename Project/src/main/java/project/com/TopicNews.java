@@ -47,7 +47,7 @@ public class TopicNews {
 	}
 
 	
-	public JAXBElement<Topictype> fetchLatestNews(){
+	public Topictype fetchLatestNews(){
 				
 		try {
 			Document doc = Jsoup.connect(this.topicUrl).get();
@@ -75,7 +75,7 @@ public class TopicNews {
 	}
 
 	
-	public JAXBElement<Topictype> buildNews (TopicNews newTopic) throws ParseException{
+	public Topictype buildNews (TopicNews newTopic) throws ParseException{
 		
 		ObjectFactory topicObject = new ObjectFactory();
 
@@ -170,7 +170,7 @@ public class TopicNews {
 		topic.setNewsList(newsList);
 
 		
-		return  topicObject.createTopic(topic);
+		return  topic;
 
 		
 		
