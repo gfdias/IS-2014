@@ -43,6 +43,8 @@ import javax.xml.bind.annotation.XmlType;
     "topicname",
     "news"
 })
+
+
 public class Topictype {
 
     @XmlElement(required = true)
