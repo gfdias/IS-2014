@@ -116,8 +116,10 @@ public class StatsProducer implements MessageListener {
 				startTime= new DateTime(aux.getDate());
 				endTime=new DateTime(new Date());
 				Period p = new Period(startTime, endTime);
-				int hours = p.getHours();
-				if(p.getHours()<12){
+				
+				if(p.getHours()<12&& p.getDays()==0){
+					System.out.println("add....."+header.getNewsArray().get(j).getDate());
+					
 					numOfNews++;
 				}
 				else{
@@ -125,6 +127,7 @@ public class StatsProducer implements MessageListener {
 				}
 			}
 			for (int i = a.size()-1; i > 0; i--) {
+				System.out.println("removing....."+header.getNewsArray().get(a.get(i)).getDate());
 				header.getNewsArray().remove(a.get(i));
 			}
 		}
