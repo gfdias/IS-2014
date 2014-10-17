@@ -30,6 +30,7 @@ import sender.Receiver;
 public class HtmlConvert implements MessageListener{
 
 	String clientID="HtmlConvert";
+	
 	public static void main(String[] args) {
 
 		getNews();
