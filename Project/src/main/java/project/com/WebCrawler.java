@@ -16,9 +16,12 @@ import sender.Sender;
 
 public class WebCrawler {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws JMSException, NamingException {
 		// TODO Auto-generated method stub
-
+		/*Sender client = new Sender();
+		client.sendAsync("AMO ISTO");
+		client.stop();*/
+		
 		somethingToSend();
 		if (haveFilesToSend()) {
 			somethingToSend();
@@ -117,7 +120,7 @@ public class WebCrawler {
 					}finally{
 						client.stop();
 						File file = new File("Save/" + listOfFiles[i].getName());
-						file.delete();
+						//file.delete();
 					}
 				}
 			} catch (CommunicationException w) {
@@ -145,7 +148,7 @@ public class WebCrawler {
 
 	public static void saveXml(Topictype topic, String topicName) {
 		ImportExportXml newExport = new ImportExportXml();
-		if (newExport.exportReport(topic, topicName)) {
+		if (newExport.exportReport(topic, "Save/"+topicName)) {
 			System.out.println("XML SAVED");
 		}
 	}
