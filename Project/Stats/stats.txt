@@ -1,0 +1,96 @@
+54 News with less than 12 hours
+
+AFRICA
+Fri Oct 17 14:43:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/europe/ebola-outbreak-running-faster/index.html?hpt=iaf_c2
+Fri Oct 17 14:48:00 WEST 2014	http://edition.cnn.com/2014/10/17/world/africa/senegal-ebola/index.html?hpt=iaf_c2
+Thu Oct 16 10:39:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/africa/ebola-liberia-overwhelmed/index.html?hpt=iaf_c2
+Fri Oct 17 10:42:00 WEST 2014	http://edition.cnn.com/2014/10/17/world/africa/south-africa-pistorius-sentencing/index.html?hpt=iaf_c2
+Thu Oct 16 15:00:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/africa/south-africa-pistorius-sentencing/index.html?hpt=iaf_c2
+Wed Oct 15 03:05:00 WEST 2014	http://edition.cnn.com/2014/10/14/world/europe/ebola-outbreak/index.html?hpt=iaf_c2
+Wed Oct 15 01:19:00 WEST 2014	http://edition.cnn.com/2014/10/14/justice/new-benghazi-charges-khatallah/index.html?hpt=iaf_c2
+Wed Oct 15 13:53:00 WEST 2014	http://edition.cnn.com/2014/10/14/world/africa/south-africa-pistorius-sentencing/index.html?hpt=iaf_c2
+Mon Oct 13 13:59:00 WEST 2014	http://edition.cnn.com/2014/10/13/world/africa/south-africa-pistorius-sentencing/index.html?hpt=iaf_c2
+Mon Oct 13 00:29:00 WEST 2014	http://edition.cnn.com/2014/10/12/world/africa/mogadishu-blast/index.html?hpt=iaf_c2
+
+ASIA
+Fri Oct 17 13:40:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/asia/hong-kong-protests/index.html?hpt=ias_c2
+Fri Oct 17 11:14:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/asia/nepal-snowstorm/index.html?hpt=ias_c2
+Thu Oct 16 11:07:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/asia/hong-kong-police-protest/index.html?hpt=ias_c2
+Thu Oct 16 10:01:00 WEST 2014	http://edition.cnn.com/2014/10/16/tech/mobile/tomorrow-transformed-firechat/index.html?hpt=ias_c2
+Thu Oct 16 10:34:00 WEST 2014	http://edition.cnn.com/2014/10/15/sport/football/erick-thohir-inter-milan/index.html?hpt=ias_c2
+Thu Oct 16 05:19:00 WEST 2014	http://edition.cnn.com/2014/10/15/world/asia/hong-kong-police-protest-video/index.html?hpt=ias_c2
+Wed Oct 15 11:12:00 WEST 2014	http://edition.cnn.com/2014/10/07/world/asia/hong-kong-protest-explainer/index.html?hpt=ias_c2
+
+BUSINESS
+Fri Oct 17 08:14:00 WEST 2014	http://edition.cnn.com/2014/10/17/travel/africa-safaris-ebola/index.html?hpt=ibu_c2
+Thu Oct 16 10:41:00 WEST 2014	http://edition.cnn.com/2014/10/16/business/most-expensive-smartphone/index.html?hpt=ibu_c2
+Fri Oct 17 06:54:00 WEST 2014	http://edition.cnn.com/2014/10/15/travel/china-fake-restaurant-chachawan/index.html?hpt=ibu_c2
+Thu Oct 16 11:06:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/africa/no-horn-day-lagos/index.html?hpt=ibu_c2
+Thu Oct 16 15:23:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/europe/germany-25-years-of-success/index.html?hpt=ibu_c2
+Thu Oct 16 10:34:00 WEST 2014	http://edition.cnn.com/2014/10/15/sport/football/erick-thohir-inter-milan/index.html?hpt=ibu_c2
+
+EUROPE
+Fri Oct 17 13:19:00 WEST 2014	http://edition.cnn.com/2014/10/17/world/europe/uk-terror-charges/index.html?hpt=ieu_c2
+Wed Oct 15 17:08:00 WEST 2014	http://edition.cnn.com/2014/10/15/sport/football/albania-prime-minister-brother/index.html?hpt=ieu_c2
+Thu Oct 16 15:23:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/europe/germany-25-years-of-success/index.html?hpt=ieu_c2
+Thu Oct 16 15:25:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/europe/germany-by-numbers/index.html?hpt=ieu_c2
+Thu Oct 16 06:12:00 WEST 2014	http://edition.cnn.com/2014/10/15/world/europe/spain-ebola/index.html?hpt=ieu_c2
+Wed Oct 15 03:05:00 WEST 2014	http://edition.cnn.com/2014/10/14/world/europe/ebola-outbreak/index.html?hpt=ieu_c2
+Wed Oct 15 01:34:00 WEST 2014	http://edition.cnn.com/2014/10/14/world/vatican-backtrack-gays/index.html?hpt=ieu_c2
+Tue Oct 14 15:36:00 WEST 2014	http://edition.cnn.com/2014/10/14/world/europe/spain-catalonia-referendum/index.html?hpt=ieu_c2
+Tue Oct 14 20:34:00 WEST 2014	http://edition.cnn.com/2014/10/14/world/europe/uk-terror-trial/index.html?hpt=ieu_c2
+Tue Oct 14 11:41:00 WEST 2014	http://edition.cnn.com/2014/10/14/world/europe/uk-commons-vote-palestine/index.html?hpt=ieu_c2
+
+LATIN_AMERICA
+Mon Oct 13 02:53:00 WEST 2014	http://edition.cnn.com/2014/10/12/world/americas/bolivia-elections/index.html?hpt=ila_c2
+Tue Oct 14 12:54:00 WEST 2014	http://edition.cnn.com/2014/10/14/world/americas/central-america-earthquake/index.html?hpt=ila_c2
+Fri Oct 10 02:12:00 WEST 2014	http://edition.cnn.com/2014/10/09/world/americas/mexico-juarez-cartel-leader-captured/index.html?hpt=ila_c2
+Sat Oct 11 15:43:00 WEST 2014	http://edition.cnn.com/2014/10/10/opinion/perry-columbus-day-what-to-tell-your-kid/index.html?hpt=ila_c2
+Tue Oct 07 11:52:00 WEST 2014	http://edition.cnn.com/2014/10/06/world/americas/colombia-lightning-strike/index.html?hpt=ila_c2
+Thu Oct 09 00:03:00 WEST 2014	http://edition.cnn.com/2014/10/08/justice/texas-death-row-convict-freed/index.html?hpt=ila_c2
+Mon Oct 06 02:22:00 WEST 2014	http://edition.cnn.com/2014/10/05/world/americas/brazil-presidential-election/index.html?hpt=ila_c2
+Tue Oct 07 02:07:00 WEST 2014	http://edition.cnn.com/2014/10/06/world/americas/mexico-iguala-mass-graves-missing-students/index.html?hpt=ila_c2
+
+MIDDLE_EAST
+Thu Oct 16 19:59:00 WEST 2014	http://edition.cnn.com/2014/10/15/politics/dempsey-ebola-isis-threat/index.html?hpt=imi_c2
+Wed Oct 15 12:05:00 WEST 2014	http://edition.cnn.com/2014/10/14/world/meast/isis-threat/index.html?hpt=imi_c2
+Thu Oct 16 15:33:00 WEST 2014	http://edition.cnn.com/2014/10/15/world/meast/yemen-crisis/index.html?hpt=imi_c2
+Wed Oct 15 14:14:00 WEST 2014	http://edition.cnn.com/2014/10/15/opinion/cullis-u-s-iran-deal/index.html?hpt=imi_c2
+Tue Oct 14 19:08:00 WEST 2014	http://edition.cnn.com/2014/10/14/world/meast/saudi-arabia-american-killed/index.html?hpt=imi_c2
+Tue Oct 14 11:25:00 WEST 2014	http://edition.cnn.com/2014/10/14/opinion/bergen-sterman-americans-syria/index.html?hpt=imi_c2
+Mon Oct 13 17:02:00 WEST 2014	http://edition.cnn.com/2014/10/12/world/meast/isis-justification-slavery/index.html?hpt=imi_c2
+Sun Oct 12 16:24:00 WEST 2014	http://edition.cnn.com/2014/10/12/world/meast/iraq-explosions/index.html?hpt=imi_c2
+Sun Oct 12 17:34:00 WEST 2014	http://edition.cnn.com/2014/10/12/world/meast/egypt-gaza-reconstruction/index.html?hpt=imi_c2
+
+U_S
+Fri Oct 17 11:43:00 WEST 2014	http://edition.cnn.com/2014/10/16/us/arkansas-train-collison/index.html?hpt=us_c2
+Fri Oct 17 12:47:00 WEST 2014	http://edition.cnn.com/2014/10/17/us/teen-boys-dress-female-celebs/index.html?hpt=us_c2
+Fri Oct 17 00:47:00 WEST 2014	http://edition.cnn.com/2014/10/16/politics/obama-ebola-czar/index.html?hpt=us_c2
+Thu Oct 16 23:06:00 WEST 2014	http://edition.cnn.com/2014/10/16/showbiz/joan-rivers-cause-of-death/index.html?hpt=us_c2
+Thu Oct 16 14:01:00 WEST 2014	http://edition.cnn.com/2014/10/15/showbiz/elizabeth-pena-dies-modern-family/index.html?hpt=us_c2
+Thu Oct 16 18:27:00 WEST 2014	http://edition.cnn.com/2014/10/16/us/killer-whale-aerial-study/index.html?hpt=us_c2
+Wed Oct 15 13:48:00 WEST 2014	http://edition.cnn.com/2014/10/15/us/ncaa-lauren-hill/index.html?hpt=us_c2
+
+WORLD_SPORT
+Wed Oct 15 17:08:00 WEST 2014	http://edition.cnn.com/2014/10/15/sport/football/albania-prime-minister-brother/index.html?hpt=isp_c2
+Wed Oct 15 23:27:00 WEST 2014	http://edition.cnn.com/2014/10/14/sport/football/serbia-albania-game-abandoned/index.html?hpt=isp_c2
+Fri Oct 17 14:45:00 WEST 2014	http://edition.cnn.com/2014/10/14/sport/football/football-facebook-ronaldo-100-million/index.html?hpt=isp_c2
+Mon Oct 13 22:41:00 WEST 2014	http://edition.cnn.com/2014/10/13/sport/football/football-euro-2016-netherlands-iceland-italy-odegaard/index.html?hpt=isp_c2
+Sun Oct 12 21:15:00 WEST 2014	http://edition.cnn.com/2014/10/12/sport/motorsport/formula-one-russian-grand-prix/index.html?hpt=isp_c2
+Sun Oct 12 19:07:00 WEST 2014	http://edition.cnn.com/2014/10/12/sport/tennis/roger-federer-shanghai-win/index.html?hpt=isp_c2
+Sun Oct 12 17:45:00 WEST 2014	http://edition.cnn.com/2014/10/12/sport/motorsport/motogp-2014-title-marquez/index.html?hpt=isp_c2
+Sat Oct 11 22:30:00 WEST 2014	http://edition.cnn.com/2014/10/11/sport/football/germany-poland-warsaw-euro-2016/index.html?hpt=isp_c2
+Sat Oct 11 22:57:00 WEST 2014	http://edition.cnn.com/2014/10/11/sport/motorsport/hamilton-sochi-f1-bianchi-russia/index.html?hpt=isp_c2
+Fri Oct 10 17:54:00 WEST 2014	http://edition.cnn.com/2014/10/10/sport/motorsport/f1-sochi-practise-bianchi-tributes-motorsport/index.html?hpt=isp_c2
+Sat Oct 11 22:56:00 WEST 2014	http://edition.cnn.com/2014/10/11/sport/football/brazil-argentina-china-friendly-suarez/index.html?hpt=isp_c2
+Sat Oct 11 22:45:00 WEST 2014	http://edition.cnn.com/2014/10/11/sport/tennis/federer-djokovic-shanghai-murray-ferrer/index.html?hpt=isp_c2
+
+WORLD
+Fri Oct 17 09:46:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/europe/uk-erol-incedal-terror-trial/index.html?hpt=wo_c2
+Fri Oct 17 14:31:00 WEST 2014	http://edition.cnn.com/2014/10/17/travel/tourist-trapped-in-bookstore/index.html?hpt=wo_c2
+Fri Oct 17 16:13:00 WEST 2014	http://edition.cnn.com/2014/10/17/world/asia/south-korea-concert-accident/index.html?hpt=wo_c2
+Fri Oct 17 15:05:00 WEST 2014	http://edition.cnn.com/2014/10/17/world/americas/hurricane-gonzalo/index.html?hpt=wo_c2
+Fri Oct 17 11:13:00 WEST 2014	http://edition.cnn.com/2014/10/17/world/asia/china-dandong-north-korea-mckenzie/index.html?hpt=wo_c2
+Thu Oct 16 19:10:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/giant-walking-kangaroos/index.html?hpt=wo_c2
+Thu Oct 16 15:23:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/europe/germany-25-years-of-success/index.html?hpt=wo_c2
+Wed Oct 15 22:14:00 WEST 2014	http://edition.cnn.com/2014/10/15/us/iraq-chemical-weapons/index.html?hpt=wo_c2
