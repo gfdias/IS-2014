@@ -31,16 +31,17 @@ public class Sender {
     public void sendAsync(String text) throws JMSException, NamingException
     {
     	
-        System.out.println("Begin Send");
-        // Setup the pub/sub connection, session
-        setupPubSub();
+    		System.out.println("Begin Send");
+    		// Setup the pub/sub connection, session
+    		setupPubSub();
         // Send a text msg
-        TopicPublisher send = session.createPublisher(topic);
-        TextMessage tm = session.createTextMessage(text);
+    		TopicPublisher send = session.createPublisher(topic);
+    		TextMessage tm = session.createTextMessage(text);
         
-        send.publish(tm);
-        send.close();
-        System.out.println("send DONE");
+    		send.publish(tm);
+    		send.close();
+    		System.out.println("send DONE");
+    	
     }
     
     public void stop() 

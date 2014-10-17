@@ -1,6 +1,9 @@
 package project.com;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import javax.jms.JMSException;
@@ -13,110 +16,140 @@ import sender.Sender;
 
 public class WebCrawler {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws JMSException, NamingException {
 		// TODO Auto-generated method stub
-	
-		ReadWeb a=new ReadWeb();
-		ArrayList<Header> headers=a.getFromWeb("http://edition.cnn.com");
-	    ImportExportXml newExport = new ImportExportXml();
+		/*Sender client = new Sender();
+		client.sendAsync("AMO ISTO");
+		client.stop();*/
+		
+		somethingToSend();
+		if (haveFilesToSend()) {
+			somethingToSend();
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					System.in));
+			System.out.print("All send\nDo you want to read the web? y/N");
+			String s;
+			try {
+				s = br.readLine();
+				if (s.isEmpty() || s.toLowerCase().startsWith("n")) {
+					return;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		ReadWeb a = new ReadWeb();
+		ArrayList<Header> headers = a.getFromWeb("http://edition.cnn.com");
+		ImportExportXml newExport = new ImportExportXml();
 
-		ArrayList<String> news=new ArrayList<String>();
+		ArrayList<String> news = new ArrayList<String>();
 
 		for (Header header : headers) {
-			//get topic
-		     TopicNews aux = new TopicNews(header.getUrl(),header.getName());
-		     Topictype topic=aux.fetchLatestNews();
-		     
-		     //topic to xml
-		     String xmlString= newExport.getXMLString(topic);
-		     news.add(xmlString);
+			// get topic
+			TopicNews aux = new TopicNews(header.getUrl(), header.getName());
+			Topictype topic = aux.fetchLatestNews();
+
+			// topic to xml
+			header.setNews(topic);
 		}
-		
-		
-		for (String string : news) {
+
+		System.out.println("SENDING NEWS.....");
+		for (Header header : headers) {
 			try {
-			    Sender client = new Sender();
-				client.sendAsync(string);
+				Sender client = new Sender();
+				String xmlString = newExport.getXMLString(header.getNews());
+				client.sendAsync(xmlString);
 				client.stop();
 
-				
-			}catch (CommunicationException w){
+			} catch (Exception w) {
 				System.out.println("JMS IS DOWN");
-				//save to files
-				//saveXml(topic,header.getName());
-				
+				// save to files
+				saveXml(header.getNews(), header.getName());
+			}
+		}
+		System.out.println("End Read Web");
+
+	}
+
+	public static boolean haveFilesToSend() {
+		File folder = new File("Save/");
+		boolean somethingToSend = false;
+		File[] listOfFiles = folder.listFiles();
+		for (int i = 0; i < listOfFiles.length; i++) {
+			if (!listOfFiles[i].getName().endsWith(".xml"))
+				continue;
+			somethingToSend = true;
+		}
+		if (!somethingToSend) {
+			System.out.println("Nothing to send to jms server");
+		} else {
+			System.out.println("Some files to send");
+		}
+		return somethingToSend;
+	}
+
+	public static void somethingToSend() {
+		File folder = new File("Save/");
+		ImportExportXml newExport = new ImportExportXml();
+
+		File[] listOfFiles = folder.listFiles();
+
+		int tryNumber = 0;
+		do {
+			ArrayList<String> news = new ArrayList<String>();
+
+			System.out.println("Rading files");
+			for (int i = 0; i < listOfFiles.length; i++) {
+				if (listOfFiles[i].isFile()) {
+					if (!listOfFiles[i].getName().endsWith(".xml"))
+						continue;
+					Topictype a = newExport.importTopic("Save/"
+							+ listOfFiles[i].getName());
+					String xmlString = newExport.getXMLString(a);
+					System.out.println("Imported " + listOfFiles[i].getName());
+					news.add(xmlString);
+				}
+			}
+			try {
+				for (int i = 0; i < news.size(); i++) {
+					Sender client = new Sender();
+
+					try {
+						System.out.println("Sending.....");
+						client.sendAsync(news.get(i));
+					}finally{
+						client.stop();
+						File file = new File("Save/" + listOfFiles[i].getName());
+						//file.delete();
+					}
+				}
+			} catch (CommunicationException w) {
+				System.out.println("COULD NO SEND->JMS IS DOWN");
 			} catch (JMSException e) {
 				e.printStackTrace();
 			} catch (NamingException e) {
 				e.printStackTrace();
-			} 
-
-		}
-		System.out.println("End Read Web");	
-		
-		somethingToSend();
-	}
-	
-	public static void somethingToSend(){
-		File folder = new File("Save/");
-	    ImportExportXml newExport = new ImportExportXml();
-
-		File[] listOfFiles = folder.listFiles();
-
-		int tryNumber=0;
-		do{
-			System.out.println("See if have something to send to jms server");
-			boolean somethingToSend=false;
-			for (int i = 0; i < listOfFiles.length; i++) {
-				if (!listOfFiles[i].getName().endsWith(".xml")) continue;
-				somethingToSend=true;
 			}
-			if (!somethingToSend){
-				System.out.println("Nothing to send to jms server");
-				return;
-			}else{
-				System.out.println("Some files to send");
 
-			}
-			for (int i = 0; i < listOfFiles.length; i++) {
-				if (listOfFiles[i].isFile()) {
-					if (!listOfFiles[i].getName().endsWith(".xml")) continue;
-					Topictype a = newExport.importTopic("Save/"+listOfFiles[i].getName());
-					String xmlString = newExport.getXMLString(a);
-					System.out.println("Try to send " + listOfFiles[i].getName());
-	
-					Sender client = new Sender();
-					try {
-						client.sendAsync(xmlString);
-						client.stop();
-						File file=new File("Save/"+listOfFiles[i].getName());
-						file.delete();
-	
-					} catch (CommunicationException w) {
-						System.out.println("COULD NO SEND->JMS IS DOWN");
-					} catch (JMSException e) {
-						e.printStackTrace();
-					} catch (NamingException e) {
-						e.printStackTrace();
-					}
-				}
-			}
 			tryNumber++;
 			try {
-				System.out.println("SLEEPING FOR 10 SEC");
-				Thread.sleep(10000);
+				if (haveFilesToSend()) {
+					System.out.println("SLEEPING FOR 5 SEC");
+					Thread.sleep(5000);
+				} else {
+					return;
+				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}while (tryNumber<6);
+		} while (tryNumber < 6);
 	}
-	
-	
-	public static void saveXml(Topictype topic,String topicName){
-	    ImportExportXml newExport = new ImportExportXml();
-	    if(newExport.exportReport(topic, topicName)){
+
+	public static void saveXml(Topictype topic, String topicName) {
+		ImportExportXml newExport = new ImportExportXml();
+		if (newExport.exportReport(topic, "Save/"+topicName)) {
 			System.out.println("XML SAVED");
-	    }
+		}
 	}
 }

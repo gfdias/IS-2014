@@ -1,6 +1,7 @@
 package project.com;
 
 import java.io.File;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.xml.bind.JAXBContext;
@@ -28,9 +29,22 @@ public class ImportExportXml {
 		return topic;
 	}
 	
-	
+	public Topictype stringToTopic (String xml){
+		Topictype topic=null;
+		try {
+			JAXBContext jc = JAXBContext.newInstance(Topictype.class);
+			Unmarshaller u = jc.createUnmarshaller();
+			StringReader reader = new StringReader(xml);
 
-	public String getXMLString(Topictype  report){
+			topic = (Topictype) u.unmarshal(reader);
+
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}	
+		return topic;
+	}
+
+	public String getXMLString(Topictype report){
 		JAXBContext context;
 		StringWriter sw=new StringWriter();
 		
@@ -57,7 +71,7 @@ public class ImportExportXml {
 			context = JAXBContext.newInstance(Topictype.class);
 			 Marshaller m = context.createMarshaller();
 			 m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			 File f = new File("Save/"+name+".xml");
+			 File f = new File(name+".xml");
 			 m.marshal(report, f);
 			 exported=true;
 			 
