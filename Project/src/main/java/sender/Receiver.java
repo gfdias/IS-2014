@@ -27,6 +27,7 @@ public class Receiver
         conn = tcf.createTopicConnection("joao", "passwd");
         conn.setClientID(clientID);
         topic = (Topic) iniCtx.lookup("jms/topic/news");
+        
 
         session = conn.createTopicSession(false,TopicSession.AUTO_ACKNOWLEDGE);
         
