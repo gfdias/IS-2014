@@ -19,38 +19,39 @@ public class WebCrawler {
 		ReadWeb a=new ReadWeb();
 		ArrayList<Header> headers=a.getFromWeb("http://edition.cnn.com");
 	    ImportExportXml newExport = new ImportExportXml();
-	    Sender client = new Sender();
+
+		ArrayList<String> news=new ArrayList<String>();
 
 		for (Header header : headers) {
-			
 			//get topic
 		     TopicNews aux = new TopicNews(header.getUrl(),header.getName());
 		     Topictype topic=aux.fetchLatestNews();
 		     
 		     //topic to xml
 		     String xmlString= newExport.getXMLString(topic);
-		     
-		     
-		     //send to jms
+		     news.add(xmlString);
+		}
+		
+		
+		for (String string : news) {
 			try {
-				client.sendAsync(xmlString);
+			    Sender client = new Sender();
+				client.sendAsync(string);
 				client.stop();
 
+				
 			}catch (CommunicationException w){
 				System.out.println("JMS IS DOWN");
 				//save to files
-				saveXml(topic,header.getName());
+				//saveXml(topic,header.getName());
+				
 			} catch (JMSException e) {
 				e.printStackTrace();
 			} catch (NamingException e) {
 				e.printStackTrace();
-			}
+			} 
 
-			
 		}
-		
-		
-
 		System.out.println("End Read Web");	
 		
 		somethingToSend();

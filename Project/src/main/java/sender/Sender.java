@@ -22,24 +22,25 @@ public class Sender {
         Object tmp = iniCtx.lookup("jms/RemoteConnectionFactory");
         TopicConnectionFactory tcf = (TopicConnectionFactory) tmp;
         conn = tcf.createTopicConnection("joao","passwd");
-        
         topic = (Topic) iniCtx.lookup("jms/topic/news");
         session = conn.createTopicSession(false, TopicSession.AUTO_ACKNOWLEDGE);
+   
         conn.start();
     }
     
     public void sendAsync(String text) throws JMSException, NamingException
     {
+    	
         System.out.println("Begin Send");
         // Setup the pub/sub connection, session
         setupPubSub();
         // Send a text msg
         TopicPublisher send = session.createPublisher(topic);
         TextMessage tm = session.createTextMessage(text);
+        
         send.publish(tm);
         send.close();
         System.out.println("send DONE");
-
     }
     
     public void stop() 
@@ -61,6 +62,9 @@ public class Sender {
 	    client.sendAsync("A text msg, now=i thing is working");
         client.stop();
         System.out.println("End TopicSendClient");
+        
+        System.out.println("Begin TopicSendClient, now=" +  System.currentTimeMillis());
+
         System.exit(0);
     }
     

@@ -64,7 +64,7 @@ public class TopicNews {
 			}
 
 			TopicNews newTopic = new TopicNews(this.topicString, this.newsUrls);
-
+			System.out.println("topic created");
 			
 			return buildNews(newTopic);
 			
@@ -169,7 +169,7 @@ public class TopicNews {
 
 		topic.setNewsList(newsList);
 
-		
+		System.out.println("topic created->done");
 		return  topic;
 
 		
