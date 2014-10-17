@@ -1,4 +1,4 @@
-12 News with less than 12 hours
+10 News with less than 12 hours
 
 AFRICA
 Fri Oct 17 14:43:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/europe/ebola-outbreak-running-faster/index.html?hpt=iaf_c2
@@ -6,7 +6,6 @@ Fri Oct 17 14:48:00 WEST 2014	http://edition.cnn.com/2014/10/17/world/africa/sen
 
 ASIA
 Fri Oct 17 13:40:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/asia/hong-kong-protests/index.html?hpt=ias_c2
-Fri Oct 17 11:14:00 WEST 2014	http://edition.cnn.com/2014/10/16/world/asia/nepal-snowstorm/index.html?hpt=ias_c2
 
 BUSINESS
 
@@ -28,4 +27,3 @@ WORLD
 Fri Oct 17 14:31:00 WEST 2014	http://edition.cnn.com/2014/10/17/travel/tourist-trapped-in-bookstore/index.html?hpt=wo_c2
 Fri Oct 17 16:13:00 WEST 2014	http://edition.cnn.com/2014/10/17/world/asia/south-korea-concert-accident/index.html?hpt=wo_c2
 Fri Oct 17 15:05:00 WEST 2014	http://edition.cnn.com/2014/10/17/world/americas/hurricane-gonzalo/index.html?hpt=wo_c2
-Fri Oct 17 11:13:00 WEST 2014	http://edition.cnn.com/2014/10/17/world/asia/china-dandong-north-korea-mckenzie/index.html?hpt=wo_c2

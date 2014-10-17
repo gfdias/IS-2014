@@ -22,7 +22,6 @@ public class WebCrawler {
 		client.sendAsync("AMO ISTO");
 		client.stop();*/
 		
-		somethingToSend();
 		if (haveFilesToSend()) {
 			somethingToSend();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -120,7 +119,7 @@ public class WebCrawler {
 					}finally{
 						client.stop();
 						File file = new File("Save/" + listOfFiles[i].getName());
-						//file.delete();
+						file.delete();
 					}
 				}
 			} catch (CommunicationException w) {

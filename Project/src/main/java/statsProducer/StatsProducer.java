@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,7 +18,13 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
+import javax.xml.XMLConstants;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
+import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
@@ -135,17 +142,48 @@ public class StatsProducer implements MessageListener {
 		
 		
 	}
+	public boolean validateAgainstXSD(InputStream xml, InputStream xsd)
+	{
+	    try
+	    {
+	        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+	        Schema schema = factory.newSchema(new StreamSource(xsd));
+	        Validator validator = schema.newValidator();
+	        validator.validate(new StreamSource(xml));
+	        return true;
+	    }
+	    catch(Exception ex)
+	    {
+	        return false;
+	    }
+	}
+	
 	public void onMessage(Message msg) {
 		TextMessage tmsg = (TextMessage) msg;
 		try {
 			ImportExportXml aux= new ImportExportXml();
-			Topictype a= aux.stringToTopic(tmsg.getText());
-			System.out.println(a.getTopicname().name());
-			for (Newstype news : a.getNews()) {
-				Date date=news.getDate().toGregorianCalendar().getTime();
-				addDateToHeader(a.getTopicname().name(), news.getUrl(), date);
+		
+			String msg1=tmsg.getText();
+			try {
+				InputStream inXml = IOUtils.toInputStream(msg1, "UTF-8");				
+				InputStream inXsd = new FileInputStream("newscontent.xsd");
+				boolean isValid = validateAgainstXSD(inXml, inXsd);
+				if(isValid == true){
+					Topictype a= aux.stringToTopic(msg1);
+					System.out.println(a.getTopicname().name());
+					for (Newstype news : a.getNews()) {
+						Date date=news.getDate().toGregorianCalendar().getTime();
+						addDateToHeader(a.getTopicname().name(), news.getUrl(), date);
+					}
+					validationDates();
+				}
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			validationDates();
+
+			
 			System.out.println("news with less than 12h-> "+numOfNews);
 			
 		} catch (JMSException e) {
