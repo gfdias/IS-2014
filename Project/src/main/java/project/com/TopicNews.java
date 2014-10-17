@@ -137,7 +137,7 @@ public class TopicNews {
 				for (int j = 0; j < content.size(); j++) {
 					String p = content.get(j).text();
 					
-					text+="<p>"+p+"</p>";
+					text+=p;
 				}
 				
 				Calendar rightNow2 = Calendar.getInstance();
