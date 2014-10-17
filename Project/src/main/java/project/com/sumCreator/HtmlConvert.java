@@ -98,7 +98,7 @@ public class HtmlConvert implements MessageListener{
 			saveXml(a, "Received_Html/"+a.getTopicname());
 			try {
 				InputStream inXml = new FileInputStream("Received_Html/"+a.getTopicname()+".xml");
-				InputStream inXsd = new FileInputStream("Received_Html/"+a.getTopicname()+".xml");
+				InputStream inXsd = new FileInputStream("newscontent.xsd");
 				boolean isValid = validateAgainstXSD(inXml, inXsd);
 				if(isValid == true){
 					System.out.println("Converte essa merda");
