@@ -14,15 +14,12 @@ import java.util.Date;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.TextMessage;
 import javax.jms.MessageListener;
-import javax.naming.NamingException;
-import javax.xml.datatype.XMLGregorianCalendar;
+import javax.jms.TextMessage;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
-import project.com.FileOperations;
 import project.com.Header;
 import project.com.ImportExportXml;
 import project.com.NewsCon;
