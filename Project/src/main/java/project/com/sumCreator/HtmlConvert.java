@@ -21,7 +21,7 @@ public static void main(String[] args) {
       (new javax.xml.transform.stream.StreamSource
             ("U.S..xml"),
        new javax.xml.transform.stream.StreamResult
-            ( new FileOutputStream("new.html")));
+            ( new FileOutputStream("us.html")));
     }
   catch (Exception e) {
     e.printStackTrace( );

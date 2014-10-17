@@ -4,42 +4,31 @@
 	<xsl:output method="html" doctype-system="about:legacy-compat" />
 
 	<xsl:template match="/">
-		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;</xsl:text>
 		<html>
 			<head>
-				<h1>ISNN NEWS</h1>
+				<title> ISNEWS </title>
 			</head>
 			<body>
-				<xsl:apply-templates />
+				<center>
+					<h1 style="font-size:400%">
+						<xsl:value-of select="//topicname" />
+						News
+					</h1>
+				</center>
+				<hr>
+				<div class="container" align="center" style="margin-top:50px">
+					<xsl:for-each select="//news">
+						<div  class="row" align="center" style="width:50%;">
+
+						<center><h2><xsl:value-of select="title"></xsl:value-of></h2></center>
+						<center><xsl:value-of select="content"></xsl:value-of></center>
+
+						<br></br>
+							
+						</div>
+					</xsl:for-each>
+				</div>
 			</body>
 		</html>
 	</xsl:template>
-
-	<xsl:template match="news">
-		<p>
-			<xsl:apply-templates select="title" />
-			<xsl:apply-templates select="author" />
-			<xsl:apply-templates select="date" />
-			<xsl:apply-templates select="highlights" />
-			<xsl:apply-templates select="content" />
-			<xsl:apply-templates select="photos" />
-		</p>
-	</xsl:template>
-
-	<xsl:template match="title">
-		Title:
-		<span style="color:#ff0000">
-			<xsl:value-of select="." />
-		</span>
-		<br />
-	</xsl:template>
-
-	<xsl:template match="content">
-		Content:
-		<span style="color:#00ff00">
-			<xsl:value-of select="." />
-		</span>
-		<br />
-	</xsl:template>
-
 </xsl:stylesheet>
