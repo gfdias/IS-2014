@@ -4,42 +4,69 @@
 	<xsl:output method="html" doctype-system="about:legacy-compat" />
 
 	<xsl:template match="/">
-		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;</xsl:text>
 		<html>
 			<head>
-				<h1>ISNN NEWS</h1>
+				<title> ISNEWS </title>
 			</head>
 			<body>
-				<xsl:apply-templates />
+				<center>
+					<h1 style="font-size:400%">
+						<xsl:value-of select="//topicname" />
+						News
+					</h1>
+				</center>
+				<hr></hr>
+				<div class="container" align="center" style="margin-top:50px">
+					<xsl:for-each select="//news">
+						<div class="row" align="center" style="margin-top:30px;width:50%;">
+
+							<center>
+								<h2>
+									<xsl:value-of select="title"></xsl:value-of>
+								</h2>
+							</center>
+							<br></br>
+							<strong>
+								<span style="font-size:20; color:#388E8E">Highlights</span>
+							</strong>
+							<xsl:for-each select="highlights">
+								<ul>
+									<li>
+										<xsl:value-of select="current()"></xsl:value-of>
+									</li>
+								</ul>
+							</xsl:for-each>
+							<hr></hr>
+							<p>
+								<xsl:value-of select="author"></xsl:value-of>
+							</p>
+							<p>
+								<xsl:value-of select="date"></xsl:value-of>
+							</p>
+							<hr></hr>
+							<center>
+								<p>
+									<xsl:value-of select="content"></xsl:value-of>
+								</p>
+							</center>
+							<xsl:for-each select="photos">
+								<xsl:if test="not(position() > 10)">
+
+									<img
+										style="height:auto; width:auto; max-width:500px; max-height:500px;">
+										<xsl:attribute name="src">
+        								<xsl:value-of select="current()" />
+    								</xsl:attribute>
+									</img>
+								</xsl:if>
+							</xsl:for-each>
+
+							<br></br>
+						</div>
+						<hr></hr>
+					</xsl:for-each>
+				</div>
 			</body>
 		</html>
 	</xsl:template>
-
-	<xsl:template match="news">
-		<p>
-			<xsl:apply-templates select="title" />
-			<xsl:apply-templates select="author" />
-			<xsl:apply-templates select="date" />
-			<xsl:apply-templates select="highlights" />
-			<xsl:apply-templates select="content" />
-			<xsl:apply-templates select="photos" />
-		</p>
-	</xsl:template>
-
-	<xsl:template match="title">
-		Title:
-		<span style="color:#ff0000">
-			<xsl:value-of select="." />
-		</span>
-		<br />
-	</xsl:template>
-
-	<xsl:template match="content">
-		Content:
-		<span style="color:#00ff00">
-			<xsl:value-of select="." />
-		</span>
-		<br />
-	</xsl:template>
-
 </xsl:stylesheet>
