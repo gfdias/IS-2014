@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -107,30 +108,32 @@ public class StatsProducer implements MessageListener {
 	
 	public void validationDates(){
 		numOfNews=0;
+		ArrayList<Header> current=new ArrayList<Header>();
 		for (Header header : headerDates) {
 			System.out.println(header.getName());
 			ArrayList<Integer> a=new ArrayList<Integer>();
+			Header myHeader=new Header(header.getName());
+			
 			for (int j = 0; j < header.getNewsArray().size(); j++) {
 				NewsCon aux=header.getNewsArray().get(j);
-				DateTime startTime, endTime;
-				startTime= new DateTime(aux.getDate());
-				endTime=new DateTime(new Date());
-				Period p = new Period(startTime, endTime);
+							
+				long diff = new Date().getTime()- aux.getDate().getTime() ;
+				long hours = TimeUnit.MILLISECONDS.toHours(diff); 
 				
-				if(p.getHours()<12&& p.getDays()==0){
-					System.out.println("add....."+header.getNewsArray().get(j).getDate());
-					
+				if(hours<12){
+					myHeader.getNewsArray().add(aux);
 					numOfNews++;
 				}
 				else{
 					a.add(j);
 				}
 			}
-			for (int i = a.size()-1; i > 0; i--) {
-				System.out.println("removing....."+header.getNewsArray().get(a.get(i)).getDate());
-				header.getNewsArray().remove(a.get(i));
-			}
+			current.add(myHeader);
+			
 		}
+		writeData(current);
+		
+		
 	}
 	public void onMessage(Message msg) {
 		TextMessage tmsg = (TextMessage) msg;
@@ -143,7 +146,6 @@ public class StatsProducer implements MessageListener {
 				addDateToHeader(a.getTopicname().name(), news.getUrl(), date);
 			}
 			validationDates();
-			writeData();
 			System.out.println("news with less than 12h-> "+numOfNews);
 			
 		} catch (JMSException e) {
@@ -152,13 +154,13 @@ public class StatsProducer implements MessageListener {
 		}
 	}
 	
-	public void writeData(){
+	public void writeData(ArrayList<Header> b){
 		PrintWriter out;
 		try {
 			out = new PrintWriter("Stats/stats.txt");
 			out.println(numOfNews + " News with less than 12 hours");
 			
-			for (Header header : headerDates) {
+			for (Header header : b) {
 				out.println("\n"+header.getName());
 				ArrayList<Integer> a=new ArrayList<Integer>();
 				for (int j = 0; j < header.getNewsArray().size(); j++) {
