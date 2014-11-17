@@ -1,5 +1,7 @@
 package ejb;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,8 +38,11 @@ public class RegisterClient implements RegisterClientRemote {
 		q.setParameter("username", username);
 		q.setParameter("password", password);
 		
-		Client retrieved = (Client) q.getSingleResult();
-		if(retrieved != null){
+		
+		@SuppressWarnings("unchecked")
+		List <Client> clients = q.getResultList();
+		
+		if(!clients.isEmpty()){
 			exists = true;
 		}
 		
