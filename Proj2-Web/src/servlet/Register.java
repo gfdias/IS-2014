@@ -85,7 +85,8 @@ public class Register extends HttpServlet {
 						user.getPassword());
 
 				if (!exists) {
-
+					
+					registerRemote.register(user.getClientname(),user.getEmail() , user.getPassword());
 					message = "Registry Successful!";
 				}
 
