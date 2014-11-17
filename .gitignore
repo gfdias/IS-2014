@@ -7,3 +7,4 @@ log/
 target/
 Save/
 .metadata/
+wildfly-8.1.0.Final/standalone/deployments/Proj2-EAR.ear
