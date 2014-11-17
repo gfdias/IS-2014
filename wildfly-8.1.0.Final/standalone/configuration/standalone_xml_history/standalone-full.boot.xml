@@ -149,7 +149,7 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jta="true" jndi-name="java:/ISNEWSEAR" pool-name="my_pool2" enabled="true" use-java-context="true" use-ccm="true">
+                <datasource jta="true" jndi-name="java:/proj2ear" pool-name="my_pool2" enabled="true" use-java-context="true" use-ccm="true">
                     <connection-url>jdbc:postgresql://localhost:5432/isnews</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
