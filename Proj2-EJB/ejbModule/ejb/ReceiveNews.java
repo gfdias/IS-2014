@@ -13,8 +13,12 @@ import javax.jms.MessageListener;
 		activationConfig = { 
 				@ActivationConfigProperty(propertyName = "destinationType",
 						propertyValue = "javax.jms.Topic"),
-						 @ActivationConfigProperty( propertyName = "destination", 
-                         propertyValue ="/topic/news")
+				@ActivationConfigProperty( propertyName = "destination", 
+                         propertyValue ="/topic/news"),
+                @ActivationConfigProperty(propertyName = "bean",
+                         propertyValue = "joao"),
+                @ActivationConfigProperty(propertyName = "subscriptionName",
+                         propertyValue = "passwd")
 		})
 public class ReceiveNews implements MessageListener {
 
