@@ -72,6 +72,7 @@ public class ImportExportXml {
 			 Marshaller m = context.createMarshaller();
 			 m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			 File f = new File(name+".xml");
+			 if(report==null)  return false;
 			 m.marshal(report, f);
 			 exported=true;
 			 

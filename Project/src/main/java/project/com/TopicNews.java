@@ -135,9 +135,7 @@ public class TopicNews {
 				String text ="";
 				
 				for (int j = 0; j < content.size(); j++) {
-					String p = content.get(j).text();
-					System.out.println("PAAAA: " + p);
-					
+					String p = content.get(j).text();					
 					text+=p;
 				}
 				

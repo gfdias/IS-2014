@@ -15,10 +15,7 @@ import javax.jms.MessageListener;
 						propertyValue = "javax.jms.Topic"),
 				@ActivationConfigProperty( propertyName = "destination", 
                          propertyValue ="/topic/news"),
-                @ActivationConfigProperty(propertyName = "bean",
-                         propertyValue = "joao"),
-                @ActivationConfigProperty(propertyName = "subscriptionName",
-                         propertyValue = "passwd")
+              
 		})
 public class ReceiveNews implements MessageListener {
 
@@ -33,7 +30,7 @@ public class ReceiveNews implements MessageListener {
      * @see MessageListener#onMessage(Message)
      */
     public void onMessage(Message message) {
-    	System.out.println("\n\n\n\n\nRECEBIIII");
+    	System.out.println("\n\n\n\n\nRECEBIIII\n\n\n");
     	System.out.println(message);
 
     }
