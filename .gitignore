@@ -9,3 +9,5 @@ Save/
 .metadata/
 wildfly-8.1.0.Final/standalone/deployments/Proj2-EAR.ear
 wildfly-8.1.0.Final/standalone/deployments/Proj2-EAR.ear.deployed
+wildfly-8.1.0.Final/standalone/tmp/*
+wildfly-8.1.0.Final/standalone/data/*
