@@ -142,8 +142,20 @@ public class StatsProducer implements MessageListener {
 		
 		
 	}
-	public boolean validateAgainstXSD(InputStream xml, InputStream xsd)
+	 public static boolean validateAgainstXSD(String xmlString, String loc)
 	{
+		InputStream xml=null;
+		InputStream xsd=null;
+
+		try {
+			xml = IOUtils.toInputStream(xmlString, "UTF-8");
+			xsd = new FileInputStream(loc);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}				
+		
+		
 	    try
 	    {
 	        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -163,26 +175,19 @@ public class StatsProducer implements MessageListener {
 		try {
 			ImportExportXml aux= new ImportExportXml();
 		
-			String msg1=tmsg.getText();
-			try {
-				InputStream inXml = IOUtils.toInputStream(msg1, "UTF-8");				
-				InputStream inXsd = new FileInputStream("newscontent.xsd");
-				boolean isValid = validateAgainstXSD(inXml, inXsd);
-				if(isValid == true){
-					Topictype a= aux.stringToTopic(msg1);
-					System.out.println(a.getTopicname().name());
-					for (Newstype news : a.getNews()) {
-						Date date=news.getDate().toGregorianCalendar().getTime();
-						addDateToHeader(a.getTopicname().name(), news.getUrl(), date);
-					}
-					validationDates();
+			String msg1=tmsg.getText();				
+			
+			boolean isValid = validateAgainstXSD(msg1, "newscontent.xsd");
+			if (isValid == true) {
+				Topictype a = aux.stringToTopic(msg1);
+				System.out.println(a.getTopicname().name());
+				for (Newstype news : a.getNews()) {
+					Date date = news.getDate().toGregorianCalendar().getTime();
+					addDateToHeader(a.getTopicname().name(), news.getUrl(),
+							date);
 				}
-
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				validationDates();
 			}
-
 			
 			System.out.println("news with less than 12h-> "+numOfNews);
 			

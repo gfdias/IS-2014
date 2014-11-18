@@ -348,10 +348,10 @@
                     <security-setting match="#">
                         <permission type="send" roles="guest"/>
                         <permission type="consume" roles="guest"/>
+                        <permission type="createDurableQueue" roles="guest"/>
+                        <permission type="deleteDurableQueue" roles="guest"/>
                         <permission type="createNonDurableQueue" roles="guest"/>
                         <permission type="deleteNonDurableQueue" roles="guest"/>
-                         <permission type="createDurableQueue" roles="guest"/>
-                        <permission type="deleteDurableQueue" roles="guest"/>
                     </security-setting>
                 </security-settings>
 
