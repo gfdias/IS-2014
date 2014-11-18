@@ -350,6 +350,8 @@
                         <permission type="consume" roles="guest"/>
                         <permission type="createNonDurableQueue" roles="guest"/>
                         <permission type="deleteNonDurableQueue" roles="guest"/>
+                         <permission type="createDurableQueue" roles="guest"/>
+                        <permission type="deleteDurableQueue" roles="guest"/>
                     </security-setting>
                 </security-settings>
 
@@ -399,6 +401,9 @@
                     <jms-queue name="DLQ">
                         <entry name="java:/jms/queue/DLQ"/>
                     </jms-queue>
+                    <jms-topic name="news">
+                        <entry name="java:jboss/exported/jms/topic/news"/>
+                    </jms-topic>
                 </jms-destinations>
             </hornetq-server>
         </subsystem>
