@@ -2,10 +2,12 @@ package data;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 /**
  * Entity implementation class for Entity: Client
@@ -18,9 +20,17 @@ public class Client implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	@NotNull
+	@Column( nullable = false)
 	private String username;
+	@NotNull
+	@Column( nullable = false)
 	private String email;
+	@NotNull
+	@Column( nullable = false)
 	private String password;
+	@NotNull
+	@Column( nullable = false)
 	private int logged;
 
 	public Client() {
