@@ -43,7 +43,7 @@ public class SendEmail {
 	public SendEmail() {
 	}
 
-	@Schedule(hour="*",minute="*",second="10")
+	@Schedule(hour="1",minute="0",second="0")
 	public void automaticTimer() {
 		
 		System.out.println("\033[1;32m Sending emails");
@@ -84,7 +84,7 @@ public class SendEmail {
 		 Date end = cal.getTime();
 		 
 		@SuppressWarnings("unchecked")
-	    List<News> news=em.createQuery("from News e " + "where topic_id= :topicID AND e.date between :start AND :end ORDER BY e.date" ).setParameter("topicID", topicId).setParameter("start", start, TemporalType.TIMESTAMP).setParameter("end", end, TemporalType.TIMESTAMP).getResultList();
+	    List<News> news=em.createQuery("from News e " + "where topic_id= :topicID AND e.date between :start AND :end ORDER BY e.date ASC" ).setParameter("topicID", topicId).setParameter("start", start, TemporalType.TIMESTAMP).setParameter("end", end, TemporalType.TIMESTAMP).getResultList();
        
 		return news;
 	}
