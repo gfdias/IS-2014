@@ -1,0 +1,29 @@
+<HTML>
+    <HEAD>
+      <TITLE>Pet Store Sale!</TITLE>
+    </HEAD>
+    <BODY>
+      <CENTER>
+      <B>$newsForTopic.size() News for topic!</B>
+      <BR/> 
+      I AM A BOSS. 
+      <BR/>
+      #set( $count = 1 )  
+      <table style="width:80%">
+        <caption>$newsForTopic.size() News for topic!</caption>
+
+        #foreach( $news in $newsForTopic )
+          <TR>
+            <TD>$count)</TD>
+            <TD>$news.title</TD>
+            <TD>$news.content</TD>
+          </TR>
+          #set( $count = $count + 1 )
+        #end
+      </TABLE>
+      <BR/>
+      <I>PROUDLY SEND FROM A MACBOOK AIR!</I>
+      </CENTER>
+ 
+    </BODY>
+  </HTML>
