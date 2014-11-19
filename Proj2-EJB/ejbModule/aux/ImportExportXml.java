@@ -1,4 +1,4 @@
-package project.com;
+package aux;
 
 import java.io.File;
 import java.io.StringReader;
@@ -10,7 +10,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import project.com.schema.Topictype;
 
 public class ImportExportXml {
 	

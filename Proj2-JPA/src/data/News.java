@@ -20,6 +20,8 @@ public class News implements Serializable {
  private String url;
  @Temporal(TemporalType.DATE)
  private Date date;
+
+ @Column(columnDefinition = "TEXT")
  private String content;
  @ManyToOne
  private Author author;
