@@ -14,7 +14,7 @@ public class Highlight implements Serializable {
  private static final long serialVersionUID = 1L;
  @Id @GeneratedValue(strategy=GenerationType.AUTO)
  private int id;
- private String url;
+ private String content;
  
  @ManyToOne
  private News news;
@@ -25,18 +25,18 @@ public class Highlight implements Serializable {
   super();
  }
 
- public Highlight(String url, News news) {
+ public Highlight(String content, News news) {
   super();
-  this.url = url;
+  this.content = content;
   this.news = news;
  }
 
- public String getUrl() {
-  return url;
+ public String getContent() {
+  return content;
  }
 
- public void setUrl(String url) {
-  this.url = url;
+ public void setContent(String url) {
+  this.content = url;
  }
 
  public News getNews() {
@@ -51,5 +51,7 @@ public class Highlight implements Serializable {
  public static long getSerialversionuid() {
   return serialVersionUID;
  }
-   
+ public String toString() {
+	 return content;
+ }
 }

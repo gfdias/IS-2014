@@ -18,7 +18,7 @@ public class News implements Serializable {
  private int id;
  private String title;
  private String url;
- @Temporal(TemporalType.DATE)
+ @Temporal(TemporalType.TIMESTAMP)
  private Date date;
 
  @Column(columnDefinition = "TEXT")
@@ -101,7 +101,7 @@ public class News implements Serializable {
   return serialVersionUID;
  }
 
- public List<Highlight> getHighlights() {
+ public List<Highlight> getHighlights1() {
   return highlights;
  }
 
@@ -116,5 +116,20 @@ public class News implements Serializable {
  public void setPhotos(List<Photo> photos) {
   this.photos = photos;
  }
+ 
+ public String getHighlights(){
+	 String hl="";
+	 for (Highlight highlight : highlights) {
+		 hl+= "<li>"+highlight.getContent()+"</li>";
+	}
+	 System.out.println("\033[1;32m"+hl+"\033[0m");
+     System.out.print("\033[0m");
+	 return hl;
+ }
+ 
+ public String toString() {
+	 return "News[title = " + this.title + ", date = " + this.date.toString() + ", content = " + content + ", highlights = " + getHighlights() + "]";
+}
+ 
    
 }

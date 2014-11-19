@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.Asynchronous;
 import javax.ejb.Schedule;
@@ -44,10 +43,10 @@ public class SendEmail {
 	public SendEmail() {
 	}
 
-	@Schedule(hour="1",minute="*",second="*")
+	@Schedule(hour="*",minute="*",second="10")
 	public void automaticTimer() {
 		
-	/*	System.out.println("\033[1;32m Sending emails");
+		System.out.println("\033[1;32m Sending emails");
         System.out.print("\033[0m");
         String content=getContent();
         
@@ -56,18 +55,19 @@ public class SendEmail {
 		@SuppressWarnings("unchecked")
 		List<String> emails = q.getResultList();
 		       
-		for (String email : emails) {*/
-			//System.out.println("\033[1;32m Sending to"+email);
-	       // System.out.print("\033[0m");
-	        
-		//}
+		
+		for (String email : emails) {
+			System.out.println("\033[1;32m Sending to"+email);
+	        System.out.print("\033[0m");
+	        sendEmail (email,"no_reply@isnews.com", "Daily Digest", content);
+
+		}
 		
 		//sendEmail ("goncalodiasgm@gmail.com","do_not_reply@apple.com", "Banned Account", "APRENDE A PROGRAMAR MAS É");
-     //  sendEmail ("jsaguiar@me.com","gay@apple.com", "Daily Digest", content);
 
     }
 	
-	private ArrayList<Map<String, String>>  getNewsForTopic(int topicId){	 
+	private List<News>  getNewsForTopic(int topicId){	 
 		 Calendar cal = Calendar.getInstance();
 		 cal.set(Calendar.HOUR_OF_DAY,0);
 		 cal.set(Calendar.MINUTE,0);
@@ -83,22 +83,10 @@ public class SendEmail {
 		 cal.set(Calendar.DATE,cal.get(Calendar.DATE)-1);
 		 Date end = cal.getTime();
 		 
-		System.out.println("\033[1;32m start date "+start.toString());
-	    System.out.print("\033[0m");
-	    System.out.println("\033[1;32m start date "+end.toString()+"\033[0m");
 		@SuppressWarnings("unchecked")
-	    List<News> news=em.createQuery("from News e " + "where e.date between :start AND :end").setParameter("start", start, TemporalType.DATE).setParameter("end", end, TemporalType.DATE).getResultList();
+	    List<News> news=em.createQuery("from News e " + "where topic_id= :topicID AND e.date between :start AND :end ORDER BY e.date" ).setParameter("topicID", topicId).setParameter("start", start, TemporalType.TIMESTAMP).setParameter("end", end, TemporalType.TIMESTAMP).getResultList();
        
-		ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
-        Map<String, String> map;
-		for (News one : news) {
-	       map = new HashMap<String, String>();
-	       map.put("title", one.getTitle());
-	       map.put("content", one.getContent());
-	       list.add( map );
-		}
-	    
-		return list;
+		return news;
 	}
 	
 	private String getContent(){
@@ -111,21 +99,31 @@ public class SendEmail {
 	    Template t = ve.getTemplate( "templates/helloworld.vm" );
 	    VelocityContext context = new VelocityContext();
 	    
+	
+		@SuppressWarnings("unchecked")
+	    List<Topic> topics=em.createQuery("from Topic").getResultList();
+
+        ArrayList <HashMap<String, Object>> list = new ArrayList <HashMap<String, Object>>();
+		HashMap<String, Object> map;
+
+	    for (Topic topic : topics) {
+	    	map = new HashMap <String, Object>();
+	    	map.put("topicName", topic.getName());
+	    	map.put("news",getNewsForTopic(topic.getID()));
+	    	list.add(map);
+	    }
 	    
-        
-        context.put("newsForTopic", getNewsForTopic(1));
+        context.put("newsWithTopic", list);
         
         StringWriter writer = new StringWriter();
-	    t.merge( context, writer );
-	    System.out.println( writer.toString() );  
-	   
+	    t.merge( context, writer );	   
 	    return writer.toString(); 
 	}
 	@Asynchronous
 	public void sendEmail(String to, String from, String subject, String content) {
 
-		System.out.println("Sending Email from " + from + " to " + to + " : "
-				+ subject);
+		System.out.println("\033[1;32m  Sending Email from " + from + " to " + to + " : "
+				+ subject+"\033[0m");
 		try {
 			Message message = new MimeMessage(SendEmail);
 			message.setFrom(new InternetAddress(from));
@@ -135,8 +133,8 @@ public class SendEmail {
 			//message.setText(content);
 			message.setContent(content, "text/html; charset=utf-8");
 			Transport.send(message);
+		    System.out.println("\033[1;32m start date mail was sent \033[0m");
 
-			System.out.println("Email was sent");
 
 		} catch (MessagingException e) {
 			System.out.println("Error while sending email : " + e.getMessage());
