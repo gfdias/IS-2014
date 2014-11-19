@@ -1,5 +1,6 @@
 package ejb;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import aux.ImportExportXml;
 import aux.Newstype;
 import aux.Topictype;
 import data.Author;
+import data.Highlight;
 import data.News;
 import data.Topic;
 
@@ -91,9 +93,19 @@ public class ReceiveNews implements MessageListener {
 
 				News news = new News(webNews.getTitle(), webNews.getUrl(),
 						date, webNews.getContent(), author, topic);
+				
+				ArrayList<Highlight> hs= new ArrayList<Highlight>();
+				
+				for (String eachHighlight:webNews.getHighlights()){
+					Highlight hl= new Highlight(eachHighlight, news);
+					em.persist(hl);
+					hs.add(hl);
+					
+				}
+				news.setHighlights(hs);
 				em.persist(news);
 			}
-
+		    
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}

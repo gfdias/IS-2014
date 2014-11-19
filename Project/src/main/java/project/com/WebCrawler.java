@@ -117,7 +117,10 @@ public class WebCrawler {
 						System.out.println("Sending.....");
 						client.sendAsync(news.get(i));
 					}finally{
-						client.stop();
+						try {
+							client.stop();
+						} catch (Exception e ){
+						}
 						File file = new File("Save/" + listOfFiles[i].getName());
 						file.delete();
 					}

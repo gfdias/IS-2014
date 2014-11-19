@@ -42,6 +42,10 @@ public class Topic implements Serializable {
 		this.name = name;
 	}
 
+	public int getID() {
+		return id;
+	}
+
 	public List<News> getNews() {
 		return news;
 	}
