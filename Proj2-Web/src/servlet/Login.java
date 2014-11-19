@@ -1,8 +1,10 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.ejb.EJB;
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -29,7 +31,7 @@ public class Login extends HttpServlet {
 	static String message;
 	static RequestDispatcher rd;
 	
-	@EJB
+	@EJB(name="LoginRemote", beanInterface = LoginRemote.class)
 	LoginRemote loginHandler;
 
 	public Login() {
@@ -55,6 +57,7 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
@@ -62,7 +65,10 @@ public class Login extends HttpServlet {
 		try {
 	        InitialContext ic = new InitialContext();
 	        loginHandler = (LoginRemote) 
-	         ic.lookup("java:/Proj2-EAR//Proj2-EJB/Login!ejb.LoginRemote?stateful");
+	         ic.lookup("java:jboss/exported/Proj2-EAR/Proj2-EJB/Login!ejb.LoginRemote");
+	        
+	         loginHandler = (LoginRemote) new InitialContext().lookup("java:comp/env/LoginRemote");
+
 	        
 	        request.getSession().setAttribute(
 	          USER_BEAN_SESSION_KEY, 

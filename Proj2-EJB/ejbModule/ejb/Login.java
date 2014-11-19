@@ -1,24 +1,20 @@
 package ejb;
 
+import java.io.Serializable;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import javax.ejb.Remote;
 import javax.ejb.Stateful;
-import javax.ejb.StatefulTimeout;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import data.Client;
 
-/**
- * Session Bean implementation class Login
- */
+
 @Stateful
-@Remote(LoginRemote.class)
-@StatefulTimeout(unit = TimeUnit.MINUTES, value = 0)
-public class Login implements LoginRemote {
+public class Login implements LoginRemote,Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@PersistenceContext(name = "ISNEWS")
 	EntityManager em;
