@@ -3,7 +3,6 @@ package ejb;
 import javax.ejb.Remote;
 
 @Remote
-
 public interface LoginRemote {
 
 	public String getUsername();
