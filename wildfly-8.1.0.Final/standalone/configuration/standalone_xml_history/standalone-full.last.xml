@@ -319,7 +319,9 @@
             <mail-session name="default" jndi-name="java:jboss/mail/Default">
                 <smtp-server outbound-socket-binding-ref="mail-smtp"/>
             </mail-session>
-            <mail-session name="java:jboss/mail/Student" debug="true" jndi-name="java:jboss/mail/Student" from="jaguiar@student.dei.uc.pt"/>
+            <mail-session name="java:jboss/mail/Student" jndi-name="java:jboss/mail/Student" from="jaguiar@student.dei.uc.pt">
+                <smtp-server outbound-socket-binding-ref="mail-smtp" ssl="true" username="jaguiar" password="wellcare"/>
+            </mail-session>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:messaging:2.0">
             <hornetq-server>
