@@ -87,7 +87,7 @@ public class Login extends HttpServlet {
 			if (exists) {
 	
 				loginHandler.login(request.getParameter("username"), request.getParameter("password"));
-				response.sendRedirect("/SD_PROJECT2/Main");
+				response.sendRedirect("/Proj2-Web/Main");
 			}
 
 			else  {
