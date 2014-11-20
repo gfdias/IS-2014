@@ -32,7 +32,8 @@
 		<form action="Login" method="post">
 			<input type="text" name="username" value="" placeholder="Username"
 				style="display: inline block; height: 30pt; padding: 4px 6px;">
-			<br> <input type="password" name="password" value=""
+			<p></p>
+			<input type="password" name="password" value=""
 				placeholder="Password"
 				style="display: inline block; height: 30pt; padding: 4px 6px;">
 

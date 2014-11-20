@@ -25,11 +25,11 @@
 	</p>
 	<form action="Register" method="post">
 	<input type="text" name="username" value="" placeholder="Username" style="display:inline block; height:30pt; padding:4px 20px;">
-	<br>
+	<p></p>
 	<input type="text" name="email" value="" placeholder="Email" style="display:inline block; height:30pt; padding:4px 20px;">
-	<br>
+	<p></p>
 	<input type="password" name="password" value="" placeholder="Password" style="display:inline block; height:30pt; padding:4px 20px;">
-	<br>
+	<p></p>
 	<input type="password" name="password2" value="" placeholder="Confirm Password" style="display:inline block; height:30pt; padding:4px 20px;">
 	<br>
 	<br>

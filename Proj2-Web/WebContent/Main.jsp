@@ -84,7 +84,6 @@
 							<a href="#" id="search" type="button"
 								class="btn btn-success btn-sm">Go</a>
 						</form>
-
 						<ul class="nav navbar-nav navbar-right">
 							<li><a href="#" id="userStats" style="color: #FFFFFF"><%=session.getAttribute("username")%></a>
 							</li>

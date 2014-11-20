@@ -5,8 +5,8 @@ $('document').ready(function () {
 	var requestTab;
 	
 
-	    $('#newIdea').click(function () {
-	        $('#dinamicDiv').load('NewIdea?');
+	    $('#usNews').click(function () {
+	        $('#dinamicDiv').load('Us?');
 	    });
 	    
 	    $('#deleteIdea').click(function () {
