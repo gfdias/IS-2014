@@ -72,7 +72,7 @@
 							<li><a href="#" id="sportNews" style="color: #FFFFFF">World
 									Sport</a></li>
 							<li><a href="#" id="sportNews"
-								style="margin-left: 150px; color: #FFFFFF">Search by Date</a></li>
+								style="margin-left: 70px; color: #FFFFFF">Search by Date</a></li>
 							<li><a href="#" id="sportNews" style="color: #FFFFFF">Search
 									by Author</a></li>
 							<li><a style="color: #FFFFFF">Search highlights</a></li>
@@ -86,8 +86,8 @@
 						</form>
 
 						<ul class="nav navbar-nav navbar-right">
-							<li><a href="#" id="userStats" style="color: #FFFFFF"><%=session.getAttribute("username")%></a>
-							</li>
+							<li><a href="#" id="admin" style="color: #FFFFFF">Admin Panel</a></li>
+							<li><a href="#" id="userStats" style="color: #FFFFFF"><%=session.getAttribute("username")%></a></li>
 							<li><a href="Logout" id="Logout" style="color: #FFFFFF">Logout</a></li>
 						</ul>
 					</div>

@@ -54,7 +54,6 @@ public class Login implements LoginRemote,Serializable {
 		q.executeUpdate();
 		this.username = username;
 		this.logged = true;
-
 	}
 
 	public boolean verify(String username, String password) {
