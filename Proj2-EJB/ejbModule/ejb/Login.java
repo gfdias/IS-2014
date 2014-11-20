@@ -32,7 +32,17 @@ public class Login implements LoginRemote,Serializable {
 	}
 
 	public boolean getLogged() {
-
+		
+		System.out.println("USERNAME " +  this.username);
+		Query q = em.createQuery("from Client e where username = :username");
+		q.setParameter("username", this.username);
+		Client c = (Client) q.getResultList().get(0);
+		
+		if(c.getLogged() == 0)
+			this.logged = false;
+		else{
+			this.logged = true;
+		}
 		return this.logged;
 	}
 

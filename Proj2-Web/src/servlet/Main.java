@@ -37,9 +37,10 @@ public class Main extends HttpServlet {
 			        .getAttribute(USER_BEAN_SESSION_KEY);
 		
 		request.getSession().setAttribute("username", user.getUsername());
-
 		
-		if (!user.getLogged()) {
+		System.out.println("LOGGED " + user.getLogged());
+		
+		if (user.getLogged() == false) {
 
 			response.sendRedirect("/Proj2-Web/Start");
 
