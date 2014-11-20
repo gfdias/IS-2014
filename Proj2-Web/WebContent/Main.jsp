@@ -62,14 +62,14 @@
 					<div class="collapse navbar-collapse"
 						id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
-							<li><a href="#" id="userIdeas" style="color:#FFFFFF">US</a></li>
-							<li><a href="#" id="watchlist" style="color:#FFFFFF">Middle East</a></li>
-							<li><a href="#" id="topics" style="color:#FFFFFF">Asia</a></li>
-							<li><a href="#" id="groups" style="color:#FFFFFF">Africa</a></li>
-							<li><a href="#" id="fame" style="color:#FFFFFF">Europe</a></li>
-							<li><a href="#" id="fame" style="color:#FFFFFF">Latin America</a></li>
-							<li><a href="#" id="fame" style="color:#FFFFFF">World</a></li>
-							<li><a style="color:#FFFFFF">Search news</a></li>
+							<li><a href="#" id="usNews" style="color:#FFFFFF">US</a></li>
+							<li><a href="#" id="middleNews" style="color:#FFFFFF">Middle East</a></li>
+							<li><a href="#" id="asiaNews" style="color:#FFFFFF">Asia</a></li>
+							<li><a href="#" id="africaNews" style="color:#FFFFFF">Africa</a></li>
+							<li><a href="#" id="euNews" style="color:#FFFFFF">Europe</a></li>
+							<li><a href="#" id="latinNews" style="color:#FFFFFF">Latin America</a></li>
+							<li><a href="#" id="worldNews" style="color:#FFFFFF">World</a></li>
+							<li><a style="margin-left:30px;color:#FFFFFF">Search highlights</a></li>
 						</ul>
 						<form class="navbar-form navbar-left" >
 						<div class="form-group">
@@ -100,31 +100,15 @@
 			<div class="row clearfix">
 			
 					<div class="col-md-2 column" style="margin-top:22px;" >
-
 						<div class="btn-group-vertical btn-block">
-							<a href="#" id="newIdea" type="button" class="btn btn-primary btn-lg" style="border-color: #cccccc">New
-								Idea</a>
-							<a href="#" id="newTopic" type="button" class="btn btn-primary btn-lg"  style="border-color: #cccccc">New
-								Topic</a>
-							<a href="#" id="deleteIdea" type="button" class="btn btn-primary btn-lg"  style="border-color: #cccccc">Delete
-								idea</a>
-							<a href="#" id="buyShares" type="button" class="btn btn-primary btn-lg"  style="border-color: #cccccc">Buy
-								Shares</a>
-								<a href="#" id="setShares" type="button" class="btn btn-primary btn-lg"  style="border-color: #cccccc">Set
-								Shares Price</a>
+							<a href="#" id="newIdea" type="button" class="btn btn-primary btn-lg" style="border-color: #cccccc">Search by Author</a>
+							<a href="#" id="newTopic" type="button" class="btn btn-primary btn-lg"  style="border-color: #cccccc">Search by Date</a>
 						</div>
 						<br>
 						<br>
 					</div>
-					<div class="col-md-6 column" id="dinamicDiv" style="margin-top:22px;border-right: 1px solid #cccccc;border-left: 1px solid #cccccc">
-						<h3 style="color: #006FA4; margin-top: -2px">Recent Submissions</h3>
-							
-							
-					</div>
-					<div class="col-md-4 column"style="margin-top:22px;">
-					<h3 style="color: #006FA4; margin-top: -2px">Notification Center</h3>
-							
-							
+					<div class="col-md-10 column" id="dinamicDiv" style="margin-top:22px;border-right: 1px solid #cccccc;border-left: 1px solid #cccccc">
+						<h3 style="float:center;color: #006FA4; margin-top: -2px">Recent Submissions</h3>
 					</div>
 					</div>
 			</div>

@@ -20,10 +20,11 @@ import ejb.LoginRemote;
  * Servlet implementation class Login
  */
 @WebServlet("/Login")
+@EJB(name="LoginRemote", beanInterface = LoginRemote.class)
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String USER_BEAN_SESSION_KEY 
-    = "username";
+    = "user";
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -31,7 +32,6 @@ public class Login extends HttpServlet {
 	static String message;
 	static RequestDispatcher rd;
 	
-	@EJB(name="LoginRemote", beanInterface = LoginRemote.class)
 	LoginRemote loginHandler;
 
 	public Login() {
@@ -63,9 +63,9 @@ public class Login extends HttpServlet {
 		
 		
 		try {
-	        InitialContext ic = new InitialContext();
-	        loginHandler = (LoginRemote) 
-	         ic.lookup("java:jboss/exported/Proj2-EAR/Proj2-EJB/Login!ejb.LoginRemote");
+	        //InitialContext ic = new InitialContext();
+	        //loginHandler = (LoginRemote) 
+	         //ic.lookup("java:jboss/exported/Proj2-EAR/Proj2-EJB/Login!ejb.LoginRemote");
 	        
 	         loginHandler = (LoginRemote) new InitialContext().lookup("java:comp/env/LoginRemote");
 

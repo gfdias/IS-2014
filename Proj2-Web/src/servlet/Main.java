@@ -17,7 +17,7 @@ import ejb.LoginRemote;
 public class Main extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String USER_BEAN_SESSION_KEY 
-    = "username";
+    = "user";
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -44,10 +44,12 @@ public class Main extends HttpServlet {
 			        .getAttribute(USER_BEAN_SESSION_KEY);
 		
 		request.getSession().setAttribute("username", user.getUsername());
+		request.getSession().setAttribute("returnMessage", "Online");
+
 		
 		if (!user.getLogged()) {
 
-			response.sendRedirect("/SD_PROJECT2/Start");
+			response.sendRedirect("/Proj2-Web/Start");
 
 		} else {
 			request.getRequestDispatcher("/Main.jsp")
