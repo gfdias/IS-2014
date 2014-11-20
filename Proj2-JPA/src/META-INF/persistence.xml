@@ -19,7 +19,7 @@
 			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/isnews" />
 			<property name="javax.persistence.jdbc.user" value="goncalodias" />
 			<property name="javax.persistence.jdbc.password" value="postgres" />
-			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.hbm2ddl.auto" value="create" />
 		</properties>
 	</persistence-unit>
 </persistence>
