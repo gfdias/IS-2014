@@ -43,7 +43,7 @@ public class SendEmail {
 	public SendEmail() {
 	}
 
-	@Schedule(hour="1",minute="0",second="0")
+	@Schedule(hour="0",minute="0",second="0") //send an email every day at 00:00 
 	public void automaticTimer() {
 		
 		System.out.println("\033[1;32m Sending emails");
@@ -63,8 +63,6 @@ public class SendEmail {
 
 		}
 		
-		//sendEmail ("goncalodiasgm@gmail.com","do_not_reply@apple.com", "Banned Account", "APRENDE A PROGRAMAR MAS É");
-
     }
 	
 	private List<News>  getNewsForTopic(int topicId){	 
@@ -96,7 +94,7 @@ public class SendEmail {
 	    ve.init();
 	    
 	    
-	    Template t = ve.getTemplate( "templates/helloworld.vm" );
+	    Template t = ve.getTemplate( "templates/email.vm" );
 	    VelocityContext context = new VelocityContext();
 	    
 	

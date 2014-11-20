@@ -4,7 +4,15 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Entity implementation class for Entity: News
@@ -17,6 +25,7 @@ public class News implements Serializable {
  @Id @GeneratedValue(strategy=GenerationType.AUTO)
  private int id;
  private String title;
+ 
  private String url;
  @Temporal(TemporalType.TIMESTAMP)
  private Date date;
@@ -122,8 +131,6 @@ public class News implements Serializable {
 	 for (Highlight highlight : highlights) {
 		 hl+= "<li>"+highlight.getContent()+"</li>";
 	}
-	 System.out.println("\033[1;32m"+hl+"\033[0m");
-     System.out.print("\033[0m");
 	 return hl;
  }
  

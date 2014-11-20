@@ -13,6 +13,7 @@ import javax.jms.TextMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import aux.ImportExportXml;
@@ -76,6 +77,18 @@ public class ReceiveNews implements MessageListener {
 		return author;
 	}
 
+	public Boolean newsExits(String url,int topicID) {
+	   // List<News> news=em.createQuery("from News e " + "where topic_id= :topicID AND e.date between :start AND :end ORDER BY e.date ASC" ).setParameter("topicID", topicId).setParameter("start", start, TemporalType.TIMESTAMP).setParameter("end", end, TemporalType.TIMESTAMP).getResultList();
+		@SuppressWarnings("unchecked")
+	    List<News> news=em.createQuery("from News e " + "where topic_id= :topicID AND url=:url" ).setParameter("topicID", topicID).setParameter("url", url).getResultList();
+
+		if (!news.isEmpty()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public void onMessage(Message message) {
 		System.out.println("\033[1;32m Message received");
         System.out.print("\033[0m");
@@ -86,8 +99,11 @@ public class ReceiveNews implements MessageListener {
 			String msg1 = tmsg.getText();
 			Topictype a = aux.stringToTopic(msg1);
 			Topic topic = publicFindOrCreateTopic(a.getTopicname().value());
-
+			System.out.print("\033[1;32m Adding topic"+ topic.getName()+"\033[0m");
 			for (Newstype webNews : a.getNews()) {
+				if (newsExits(webNews.getUrl(),topic.getID())) continue;
+				System.out.print("\033[1;32m.\033[0m");
+
 				Date date = toDate(webNews.getDate());
 				Author author = publicFindOrCreateAuthor(webNews.getAuthor());
 
@@ -105,6 +121,7 @@ public class ReceiveNews implements MessageListener {
 				news.setHighlights(hs);
 				em.persist(news);
 			}
+			System.out.println();
 		    
 		} catch (JMSException e) {
 			e.printStackTrace();
