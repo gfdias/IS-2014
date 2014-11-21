@@ -9,4 +9,5 @@ import data.News;
 @Remote
 public interface NewsHandlerRemote {
 	public List<News> getRecentNews ();
+	public List<News> getNewsByTopic(String topic);
 }

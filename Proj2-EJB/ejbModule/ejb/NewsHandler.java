@@ -38,6 +38,24 @@ public class NewsHandler implements NewsHandlerRemote {
 		for (News news2 : news) {
 			System.out.println(news2.getTitle());
 		}
+		return news;	
+    }
+    
+    public List<News> getNewsByTopic (String topic){
+    	
+    	///JOAO
+    	System.out.println("GET RECENT NEWS");
+		 Date start = new Date(System.currentTimeMillis() - (12 * 60 * 60 * 1000));
+		 Date end =new Date();
+		@SuppressWarnings("unchecked")
+	    List<News> news = em.createQuery("from News e where e.date BETWEEN :start AND :end  ORDER BY e.date ASC" )
+	    .setParameter("start", start, TemporalType.TIMESTAMP)
+	    .setParameter("end", end, TemporalType.TIMESTAMP)
+	    .getResultList();
+     
+		for (News news2 : news) {
+			System.out.println(news2.getTitle());
+		}
 		return news;
     	
     }
@@ -65,6 +83,7 @@ public class NewsHandler implements NewsHandlerRemote {
 		List<News> news = em.createQuery("from News e").getResultList();
 		return news;
     }
+    
     
 
 }
