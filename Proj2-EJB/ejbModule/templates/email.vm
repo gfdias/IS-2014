@@ -48,7 +48,11 @@ table#t01 th  {
     <td>$news.title</td>
   </tr>
   <tr>
-    <td style="text-align: left">$news.highlights</td>
+    <td style="text-align: left">
+       #foreach( $highlight in $news.highlights )
+          <li>${highlight.content}</li>
+      #end   
+    </td>
   </tr>
   <tr>
     <td style="text-align: right">$news.date</td>
