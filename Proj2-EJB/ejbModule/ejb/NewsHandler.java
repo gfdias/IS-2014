@@ -32,13 +32,15 @@ public class NewsHandler implements NewsHandlerRemote {
 				- (12 * 60 * 60 * 1000));
 		Date end = new Date();
 		@SuppressWarnings("unchecked")
-		List<News> news = em
-				.createQuery(
-						"from News e where e.date BETWEEN :start AND :end  ORDER BY e.date DESC")
+		List<Object[]> results = em
+		//ORDER BY e.date DESC
+				.createQuery("Select e from News e where e.date BETWEEN :start AND :end  GROUP BY e.url")
 				.setParameter("start", start, TemporalType.TIMESTAMP)
 				.setParameter("end", end, TemporalType.TIMESTAMP)
 				.getResultList();
 
+		System.out.println("news-> "+results.size());
+		ArrayList<News> news=new ArrayList<News> ();
 		return news;
 	}
 

@@ -1,0 +1,61 @@
+<html>
+
+<head>
+<style>
+body {background-color:#F1F1F1}
+
+table {
+    width:90%;
+}
+table, th, td {
+    border: #00ffffff;
+    border-collapse: collapse;
+    text-align: center;
+}
+th, td {
+    padding: 5px;
+}
+
+table#t01 tr:nth-child(3n+0) {
+    font-size: 100%;
+    color: black;
+    text-align: left;
+
+}
+table#t01 tr:nth-child(3n+1) {
+    font-size: 80%;
+    font-weight: bold;
+}
+table#t01 tr:nth-child(3n+2) {
+   background-color: #ffffff;
+    font-size: 150%;
+}
+table#t01 th  {
+    background-color: #006EA7;
+    font-size: 200%;
+    color: white;
+}
+</style>
+</head>
+<h1 ALIGN="center"> ISNews Daily Digests!</h1>
+#foreach( $newsForTopic in $newsWithTopic )
+<table id="t01" align="center">
+  <tr>
+    <th>  $newsForTopic.topicName ($newsForTopic.news.size())</th>
+  </tr>
+  #foreach( $news in $newsForTopic.news )
+  <tr>
+    <td>$news.title</td>
+  </tr>
+  <tr>
+    <td style="text-align: left">$news.highlights</td>
+  </tr>
+  <tr>
+    <td style="text-align: right">$news.date</td>
+  </tr>
+  #end   
+</table>
+#end   
+
+</body>
+</html>
