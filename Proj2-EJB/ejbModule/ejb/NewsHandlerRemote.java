@@ -18,4 +18,5 @@ public interface NewsHandlerRemote {
     public List<News> getNewsById(String id);
     public List<Author> getAllAuthors();
     public List<News> newsWithAuthor(String authorID);
+    public List <News> newsWihtHighLight(String search);
 }
