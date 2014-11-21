@@ -46,9 +46,11 @@ public class Main extends HttpServlet {
 
 		} else {
 			
-			List<data.News> list = newsHandler.getRecentNews();			
+			List<data.News> list = newsHandler.getRecentNews();
+			System.out.println("KAJSKLJSKLJ " + list.get(0).getHighlights().get(0));
 			
-			request.setAttribute("recentNews", list);
+			request.setAttribute("news", list);
+
 			request.getRequestDispatcher("/Main.jsp")
 					.forward(request, response);
 		}

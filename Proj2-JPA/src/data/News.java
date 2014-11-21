@@ -110,7 +110,7 @@ public class News implements Serializable {
   return serialVersionUID;
  }
 
- public List<Highlight> getHighlights1() {
+ public List<Highlight> getHighlights() {
   return highlights;
  }
 
@@ -126,13 +126,13 @@ public class News implements Serializable {
   this.photos = photos;
  }
  
- public String getHighlights(){
+/* public String getHighlights(){
 	 String hl="";
 	 for (Highlight highlight : highlights) {
 		 hl+= "<li>"+highlight.getContent()+"</li>";
 	}
 	 return hl;
- }
+ }*/
  
  public String toString() {
 	 return "News[title = " + this.title + ", date = " + this.date.toString() + ", content = " + content + ", highlights = " + getHighlights() + "]";
