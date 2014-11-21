@@ -30,7 +30,6 @@ $('document').ready(
 
 				$(sendBtn).click(function() {
 					console.log(toSearch);
-					
 					$('#dinamicDiv').load('AuthorNews?'+toSearch);
 				});
 
