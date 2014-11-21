@@ -19,7 +19,7 @@ $('document').ready(
 			$('#search').click(function() {
 				var toSearch = $('#toSearch').val();
 				console.log("Send");
-				$.get('SearchHighlight?toSearch=' + toSearch);
+				$('#dinamicDiv').load('HighlightSearch?'+toSearch);
 			});
 
 			$('#authorTable > tbody > tr').each(function() {

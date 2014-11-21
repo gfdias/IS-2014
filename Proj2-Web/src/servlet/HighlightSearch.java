@@ -14,41 +14,44 @@ import javax.servlet.http.HttpServletResponse;
 import data.News;
 import ejb.NewsHandlerRemote;
 
-
-@WebServlet("/AuthorNews")
-public class AuthorNews extends HttpServlet {
+@WebServlet("/HighlightSearch")
+public class HighlightSearch extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 
 	@EJB
 	NewsHandlerRemote newsHandler;
-    public AuthorNews() {
+	
+    public HighlightSearch() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		Enumeration<String> topic = request.getParameterNames();
 		String param = null;
 		
 		while (topic.hasMoreElements()) {
 			param = topic.nextElement();
 		}
-		System.out.println("value "+param);
 		
-		List<News> a = newsHandler.newsWithAuthor(param);
-		 List<String> photos=newsHandler.getOnePhotoPerNews(a);
-		 request.setAttribute("news", a);
+		System.out.println("APRAM" + param);
+		
+		List<News> list=newsHandler.newsWihtHighLight(param);
+		 List<String> photos=newsHandler.getOnePhotoPerNews(list);
+
+		 request.setAttribute("news", list);
 		 request.setAttribute("photos", photos);
 
 			request.getRequestDispatcher("/Search.jsp")
 					.forward(request, response);
-			
+		
 	}
 
-		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 	}
 
 }

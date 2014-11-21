@@ -159,6 +159,7 @@ public class NewsHandler implements NewsHandlerRemote {
     }
 
     public List <News> newsWihtHighLight(String search){
+    		search = search.replace(" ", "%");
     		@SuppressWarnings("unchecked")
     	    List<News> news=em.createQuery("select n from News n, Highlight h where h.news=n.id AND h.content LIKE '%"+search+"%' GROUP BY n.id ORDER BY n.id" ).getResultList();		
     		return news;
