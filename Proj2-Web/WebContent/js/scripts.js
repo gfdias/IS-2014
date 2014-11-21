@@ -31,8 +31,6 @@ $('document').ready(
 						var user = $(this);
 						console.log(user.attr("id"));
 						var deleteBtn = user.find(".btn-danger");
-						var editBtn1 = user.find(".btn-info");
-						var editBtn2 = user.find(".glyphicon-edit");
 						var sendBtn = user.find(".btn-success");
 
 						
@@ -74,16 +72,6 @@ $('document').ready(
 
 								});
 
-						editBtn1.click(function() {
-							
-							$('td', user).each(function() {
-								
-									$(this).attr('contenteditable','true');
-									//$(this).attr('contenteditable','false');
-							});
-							
-							
-						});
 
 					});
 
