@@ -47,3 +47,17 @@
 }
  h2{color:#34ca78;}
  .margin10{margin-bottom:10px; margin-right:10px;}
+ 
+ 
+ .custab{
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5% 0;
+    box-shadow: 3px 3px 2px #ccc;
+    transition: 0.5s;
+    }
+.custab:hover{
+    box-shadow: 3px 3px 0px transparent;
+    transition: 0.5s;
+    }
+    
