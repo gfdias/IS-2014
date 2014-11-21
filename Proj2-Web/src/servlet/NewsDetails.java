@@ -44,7 +44,7 @@ public class NewsDetails extends HttpServlet {
 		request.setAttribute("news", list);
 		request.setAttribute("photos", photos);
 		
-		request.getRequestDispatcher("/Search.jsp")
+		request.getRequestDispatcher("/Container.jsp")
 		.forward(request, response);
 	}
 

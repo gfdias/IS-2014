@@ -21,7 +21,7 @@ public class NewsHandler implements NewsHandlerRemote {
 
 	@PersistenceContext(name = "ISNEWS")
 	EntityManager em;
-	private final String NO_IMAGE_URL="http://www.floridaacs.com/images/image_not_found.png";
+	private final String NO_IMAGE_URL="http://www.userlogos.org/files/logos/articed/CNN.jpg";
 	public NewsHandler() {
 
 	}
@@ -140,5 +140,7 @@ public class NewsHandler implements NewsHandlerRemote {
 		}
     	return photosList;
     }
+   
+    
 
 }
