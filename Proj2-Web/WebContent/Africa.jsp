@@ -137,10 +137,12 @@
 						<div id="blog" class="row">
 							<c:forEach begin="0" end="${fn:length(news) - 1}" var="index">
 								<div class="col-md-10 blogShort">
+
 									<h1>
 										<c:out value="${news[index].title}" />
 									</h1>
 									<img src=<c:out value="${photos[index]}"/> alt="post img"
+
 										class="pull-left img-responsive thumb margin10 img-thumbnail">
 									<article>
 										<div style="margin-bottom: 10px">

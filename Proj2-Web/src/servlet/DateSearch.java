@@ -14,21 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 import data.News;
 import ejb.NewsHandlerRemote;
 
-@WebServlet("/NewsDetails")
-public class NewsDetails extends HttpServlet {
+
+@WebServlet("/DateSearch")
+public class DateSearch extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	   
-		@EJB
-		NewsHandlerRemote newsHandler;
+	@EJB
+	NewsHandlerRemote newsHandler;
 	
-    public NewsDetails() {
+    public DateSearch() {
         super();
     }
 
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Enumeration<String> topic = request.getParameterNames();
 		String param = null;
 		
@@ -38,7 +36,7 @@ public class NewsDetails extends HttpServlet {
 		}
 		
 		
-		List<News> list = newsHandler.getNewsById(param);		
+		List<News> list = newsHandler.getRecentNews(param);
 		List<String> photos=newsHandler.getOnePhotoPerNews(list);
 		
 		request.setAttribute("news", list);
@@ -46,10 +44,14 @@ public class NewsDetails extends HttpServlet {
 		
 		request.getRequestDispatcher("/Search.jsp")
 		.forward(request, response);
+		
 	}
 
-	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 	}
 
 }
