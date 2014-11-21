@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TemporalType;
 
+import data.Author;
 import data.News;
 import data.Photo;
 
@@ -140,7 +141,23 @@ public class NewsHandler implements NewsHandlerRemote {
 		}
     	return photosList;
     }
-   
+
+    
+    public List<Author> getAllAuthors() {
+	
+		@SuppressWarnings("unchecked")
+		List<Author> authors = em.createQuery("from Author e ORDER BY e.name ASC").getResultList();
+
+		return authors;
+
+	}
+    public List<News> newsWithAuthor(String authorID){
+    	int author=Integer.parseInt(authorID);
+		@SuppressWarnings("unchecked")
+    	 List<News> news=em.createQuery("from News e where author_id = :authorId" ).setParameter("authorId",author).getResultList();		
+    	return news;
+    }
+
     
 
 }
