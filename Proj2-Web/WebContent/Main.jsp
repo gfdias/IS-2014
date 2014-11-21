@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 
 <html lang="en">
 <head>
@@ -103,17 +104,17 @@
 
 					<div class="container">
 						<div id="blog" class="row">
-							<c:forEach var="news" items="${news}">
+						<c:forEach begin="0" end="${fn:length(news) - 1}" var="index">
 								<div class="col-md-10 blogShort">
-									<h1>${news.title}</h1>
+									<h1><c:out value="${news[index].title}"/> </h1>
 									<img
-										src = "http://deadfix.com/wp-content/uploads/2013/01/Boobs.jpg"
+										src = <c:out value="${photos[index]}"/>
 										alt="post img"
 										class="pull-left img-responsive thumb margin10 img-thumbnail">
 									<article>
-										<p>On ${news.date}</p>
-										<p>By ${news.author}</p>
-										<c:forEach var="highlight" items="${highlights}">
+									 	<p>On <c:out value="${news[index].date}"/></p>
+										<p>By <c:out value="${news[index].author.name}"/></p>    
+										<c:forEach var="highlight" items="${news[index].highlights}">
 											<li>${highlight.content}</li>
 										</c:forEach>
 									</article>

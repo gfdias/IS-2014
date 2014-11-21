@@ -1,5 +1,6 @@
 package ejb;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TemporalType;
 
 import data.News;
+import data.Photo;
 
 /**
  * Session Bean implementation class newsHandler
@@ -19,7 +21,7 @@ public class NewsHandler implements NewsHandlerRemote {
 
 	@PersistenceContext(name = "ISNEWS")
 	EntityManager em;
-
+	private final String NO_IMAGE_URL="http://www.floridaacs.com/images/image_not_found.png";
 	public NewsHandler() {
 
 	}
@@ -76,5 +78,19 @@ public class NewsHandler implements NewsHandlerRemote {
 		List<News> news = em.createQuery("from News e ORDER BY e.date DESC").getResultList();
 		return news;
 	}
+    public List<String> getOnePhotoPerNews( List<News> newsList){
+    	ArrayList<String> photosList=new ArrayList<String>();
+    	for (News news : newsList) {
+    		@SuppressWarnings("unchecked")
+    	    List<Photo> photosForNews=em.createQuery("from Photo e where news_id = :newsID" ).setParameter("newsID", news.getId()).getResultList();		
+    		if (photosForNews!=null && photosForNews.size()>0){
+    			photosList.add(photosForNews.get(0).getUrl());
+    		}else{
+    			photosList.add(NO_IMAGE_URL);
+    		}
+    		
+		}
+    	return photosList;
+    }
 
 }

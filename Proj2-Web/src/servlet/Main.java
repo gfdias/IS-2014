@@ -47,9 +47,9 @@ public class Main extends HttpServlet {
 		} else {
 			
 			List<data.News> list = newsHandler.getRecentNews();
-			System.out.println("KAJSKLJSKLJ " + list.get(0).getHighlights().get(0));
-			
+			List<String> photos=newsHandler.getOnePhotoPerNews(list);
 			request.setAttribute("news", list);
+			request.setAttribute("photos", photos);
 
 			request.getRequestDispatcher("/Main.jsp")
 					.forward(request, response);

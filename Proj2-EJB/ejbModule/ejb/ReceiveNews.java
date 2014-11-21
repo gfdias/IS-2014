@@ -22,6 +22,7 @@ import aux.Topictype;
 import data.Author;
 import data.Highlight;
 import data.News;
+import data.Photo;
 import data.Topic;
 
 @MessageDriven(name = "news", activationConfig = {
@@ -106,7 +107,7 @@ public class ReceiveNews implements MessageListener {
 
 				Date date = toDate(webNews.getDate());
 				Author author = publicFindOrCreateAuthor(webNews.getAuthor());
-
+				
 				News news = new News(webNews.getTitle(), webNews.getUrl(),
 						date, webNews.getContent(), author, topic);
 				
@@ -120,6 +121,10 @@ public class ReceiveNews implements MessageListener {
 				}
 				news.setHighlights(hs);
 				em.persist(news);
+				for (String url : webNews.getPhotos()) {
+					Photo photo=new Photo(url, news);
+					em.persist(photo);
+				}
 			}
 			System.out.println();
 		    
