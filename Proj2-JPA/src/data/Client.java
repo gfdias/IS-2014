@@ -45,11 +45,11 @@ public class Client implements Serializable {
 		this.logged = logged;
 	}
 
-	public String getClientname() {
+	public String getUsername() {
 		return username;
 	}
 
-	public void setClientname(String username) {
+	public void setUsername(String username) {
 		this.username = username;
 	}
 

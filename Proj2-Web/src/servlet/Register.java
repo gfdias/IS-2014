@@ -81,12 +81,12 @@ public class Register extends HttpServlet {
 
 			else {
 
-				boolean exists = registerRemote.verify(user.getClientname(),
+				boolean exists = registerRemote.verify(user.getUsername(),
 						user.getPassword());
 
 				if (!exists) {
 					
-					registerRemote.register(user.getClientname(),user.getEmail(), user.getPassword());
+					registerRemote.register(user.getUsername(),user.getEmail(), user.getPassword());
 					message = "Registry Successful!";
 				}
 
