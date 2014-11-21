@@ -29,7 +29,6 @@ public class NewsHandler implements NewsHandlerRemote {
     	System.out.println("GET RECENT NEWS");
 		 Date start = new Date(System.currentTimeMillis() - (12 * 60 * 60 * 1000));
 		 Date end =new Date();
-		 System.out.println(start +"\n"+end);
 		@SuppressWarnings("unchecked")
 	    List<News> news = em.createQuery("from News e where e.date BETWEEN :start AND :end  ORDER BY e.date ASC" )
 	    .setParameter("start", start, TemporalType.TIMESTAMP)

@@ -45,6 +45,9 @@ public class Client implements Serializable {
 		this.logged = logged;
 	}
 
+	public int getId(){
+		return id;
+	}
 	public String getUsername() {
 		return username;
 	}
