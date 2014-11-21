@@ -14,21 +14,21 @@ import javax.servlet.http.HttpServletResponse;
 import data.News;
 import ejb.NewsHandlerRemote;
 
-@WebServlet("/topicNews")
-public class topicNews extends HttpServlet {
+@WebServlet("/NewsDetails")
+public class NewsDetails extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	@EJB
-	NewsHandlerRemote newsHandler;
-    
-    public topicNews() {
+	   
+		@EJB
+		NewsHandlerRemote newsHandler;
+	
+    public NewsDetails() {
         super();
     }
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+
 		Enumeration<String> topic = request.getParameterNames();
 		String param = null;
 		
@@ -36,23 +36,20 @@ public class topicNews extends HttpServlet {
 	
 			param = topic.nextElement();
 		}
-
-			     
 		
-		List<News> list = newsHandler.getNewsByTopic(param);		
-		List<String> photos=newsHandler.getOnePhotoPerNews(list);
+		
+		List<News> list = newsHandler.getNewsById(param);		
+		List<String> photos=newsHandler.getTenPhotoPerNews(list);
 		
 		request.setAttribute("news", list);
 		request.setAttribute("photos", photos);
 		
-		request.getRequestDispatcher("/"+param+".jsp")
+		request.getRequestDispatcher("/Container.jsp")
 		.forward(request, response);
 	}
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-	
 	}
 
 }

@@ -15,10 +15,7 @@ $('document').ready(
 				$('#admin').hide();
 			}
 
-			$('#usNews').click(function() {
-				$('#dinamicDiv').load('topicNews?topic=U.S.');
-			});
-
+			
 			$('#admin').click(function() {
 				$('#dinamicDiv').load('Admin?');
 			});
@@ -70,20 +67,5 @@ $('document').ready(
 											+ "&action=remove");
 
 								});
-
-
 					});
-
-			
-			$('#newTopic').click(function() {
-				if (requestTab) {
-					requestTab.abort();
-				}
-				requestTab = $.ajax({
-					url : 'NewTopic.jsp',
-					success : function(data) {
-						$("#dinamicDiv").html(data);
-					}
-				});
-			});
 		});

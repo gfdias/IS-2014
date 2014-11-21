@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Africa</title>
+<title>US</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -99,7 +99,7 @@
 			<div class="col-md-12 column" style="margin-top: 100px;">
 				<div class="col-md-12 column" id="dinamicDiv"
 					style="margin-top: 22px">
-					<h3 style="color: #006FA4; margin-top: -2px">Africa News</h3>
+					<h3 style="color: #006FA4; margin-top: -2px">US News</h3>
 					<hr style="height: 2px; color: #f00; background-color: #f00">
 
 					<div class="container">

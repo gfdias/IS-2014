@@ -61,20 +61,20 @@
 					<div class="collapse navbar-collapse"
 						id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
-							<li><a href="#" id="usNews" style="color: #FFFFFF">US</a></li>
-							<li><a href="#" id="middleNews" style="color: #FFFFFF">Middle
+							<li><a href="http://localhost:8080/Proj2-Web/topicNews?U.S." id="usNews" style="color: #FFFFFF">US</a></li>
+							<li><a href="http://localhost:8080/Proj2-Web/topicNews?MiddleEast" id="middleNews" style="color: #FFFFFF">Middle
 									East</a></li>
-							<li><a href="#" id="asiaNews" style="color: #FFFFFF">Asia</a></li>
-							<li><a href="#" id="africaNews" style="color: #FFFFFF">Africa</a></li>
-							<li><a href="#" id="euNews" style="color: #FFFFFF">Europe</a></li>
-							<li><a href="#" id="latinNews" style="color: #FFFFFF">Latin
+							<li><a href="http://localhost:8080/Proj2-Web/topicNews?Asia" id="asiaNews" style="color: #FFFFFF">Asia</a></li>
+							<li><a href="http://localhost:8080/Proj2-Web/topicNews?Africa" id="africaNews" style="color: #FFFFFF">Africa</a></li>
+							<li><a href="http://localhost:8080/Proj2-Web/topicNews?Europe" id="euNews" style="color: #FFFFFF">Europe</a></li>
+							<li><a href="http://localhost:8080/Proj2-Web/topicNews?LatinAmerica" id="latinNews" style="color: #FFFFFF">Latin
 									America</a></li>
-							<li><a href="#" id="worldNews" style="color: #FFFFFF">World</a></li>
-							<li><a href="#" id="sportNews" style="color: #FFFFFF">World
+							<li><a href="http://localhost:8080/Proj2-Web/topicNews?World" id="worldNews" style="color: #FFFFFF">World</a></li>
+							<li><a href="http://localhost:8080/Proj2-Web/topicNews?WorldSport" id="sportNews" style="color: #FFFFFF">World
 									Sport</a></li>
-							<li><a href="#" id="sportNews"
-								style="margin-left: 70px; color: #FFFFFF">Search by Date</a></li>
-							<li><a href="#" id="sportNews" style="color: #FFFFFF">Search
+							<li><a href="#" id="searchDate"
+								style="color: #FFFFFF">Search by Date</a></li>
+							<li><a href="#" id="searchAuthor" style="color: #FFFFFF">Search
 									by Author</a></li>
 							<li><a style="color: #FFFFFF">Search highlights</a></li>
 						</ul>
@@ -112,14 +112,18 @@
 										alt="post img"
 										class="pull-left img-responsive thumb margin10 img-thumbnail">
 									<article>
-									 	<p>On <c:out value="${news[index].date}"/></p>
-										<p>By <c:out value="${news[index].author.name}"/></p>    
+										<div>
+										
+									 	<span class="btn btn-info btn-xs pull-center marginBottom10" style="hover:none"><c:out value="${news[index].date}"/></span>
+										</div>
+										<p style="margin-top:10px"><c:out value="${news[index].author.name}"/></p>    
 										<c:forEach var="highlight" items="${news[index].highlights}">
 											<li>${highlight.content}</li>
 										</c:forEach>
 									</article>
-									<a class="btn btn-blog pull-right marginBottom10"
-										href="http://bootsnipp.com/user/snippets/2RoQ">READ MORE</a>
+									<p></p>
+									<a class="btn btn-blog pull-left marginBottom10"
+										href="http://localhost:8080/Proj2-Web/NewsDetails?${news[index].id}">READ MORE</a>
 								</div>
 							</c:forEach>
 							
