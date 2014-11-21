@@ -3,6 +3,7 @@ package ejb;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -45,6 +46,10 @@ public class Login implements LoginRemote,Serializable {
 		}
 		return this.logged;
 	}
+	
+	public void teste(){
+		System.out.println("TESTE");
+	}
 
 	public void login(String username, String password) {
 
@@ -54,6 +59,18 @@ public class Login implements LoginRemote,Serializable {
 		q.executeUpdate();
 		this.username = username;
 		this.logged = true;
+	}
+	
+	@Remove
+	public void logout(String username) {
+		
+		System.out.println("LOGOUT");
+		Query q = em
+				.createQuery("UPDATE Client c SET c.logged=0 WHERE c.username = :username");
+		q.setParameter("username", username);
+		q.executeUpdate();
+		
+		
 	}
 
 	public boolean verify(String username, String password) {

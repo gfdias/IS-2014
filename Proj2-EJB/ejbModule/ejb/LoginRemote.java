@@ -1,10 +1,6 @@
 package ejb;
 
-import java.util.List;
-
 import javax.ejb.Remote;
-
-import data.News;
 
 @Remote
 public interface LoginRemote {
@@ -13,4 +9,6 @@ public interface LoginRemote {
 	public boolean getLogged();
 	public void login(String username, String password);
 	public boolean verify(String username, String password);
+	public void logout(String username);
+	public void teste();
 }
