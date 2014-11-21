@@ -1,25 +1,40 @@
 $('document').ready(
 		function() {
-			
+
 			var requestTab;
 
 			if ($('#userStats').text() != "Admin") {
 				$('#admin').hide();
 			}
 
-			
-			$('#admin').click(function(){
+			$('#admin').click(function() {
 				console.log("Admin");
 				$('#dinamicDiv').load('Admin?');
 			});
-			
-			$('#search').click(function () {
-		    	var toSearch=$('#toSearch').val();
-		    	console.log("Send");
-		       $.get('SearchHighlight?toSearch=' + toSearch);
-		    });
-			
-			
+
+			$('#searchAuthor').click(function() {
+				$('#dinamicDiv').load('SearchAuthor?');
+			});
+
+			$('#search').click(function() {
+				var toSearch = $('#toSearch').val();
+				console.log("Send");
+				$.get('SearchHighlight?toSearch=' + toSearch);
+			});
+
+			$('#authorTable > tbody > tr').each(function() {
+				var user = $(this);
+				var toSearch = user.attr("id");
+
+				var sendBtn = user.find(".btn-success");
+
+				$(sendBtn).click(function() {
+					console.log(toSearch);
+					
+					$('#dinamicDiv').load('AuthorNews?'+toSearch);
+				});
+
+			});
 
 			$('#adminTable > tbody > tr').each(
 					function() {
@@ -28,35 +43,32 @@ $('document').ready(
 						var deleteBtn = user.find(".btn-danger");
 						var sendBtn = user.find(".btn-success");
 
-						
-						$(sendBtn).click(function(){
-						
-								console.log("sucess");
-								
-								var row_data = [];    
+						$(sendBtn).click(
+								function() {
 
-							    $('td', user).each(function(){
+									console.log("sucess");
 
-							        row_data.push($(this).text());   
+									var row_data = [];
 
-							    });    
-								
-								var username = row_data[0];
-								var email = row_data[1];
-								var password = row_data[2];
-								
-								console.log(username);
-								console.log(email);
-								console.log(password);
-								
-								$.post('Admin?userId='+
-										user.attr("id")+
-										"&action=edit"+
-										"&username="+username+
-										"&email="+email+
-										"&password=" + password
-								);
-						});
+									$('td', user).each(function() {
+
+										row_data.push($(this).text());
+
+									});
+
+									var username = row_data[0];
+									var email = row_data[1];
+									var password = row_data[2];
+
+									console.log(username);
+									console.log(email);
+									console.log(password);
+
+									$.post('Admin?userId=' + user.attr("id")
+											+ "&action=edit" + "&username="
+											+ username + "&email=" + email
+											+ "&password=" + password);
+								});
 
 						deleteBtn
 								.click(function() {

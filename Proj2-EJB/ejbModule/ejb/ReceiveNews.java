@@ -62,17 +62,22 @@ public class ReceiveNews implements MessageListener {
 	}
 
 	public Author publicFindOrCreateAuthor(String name) {
-		Query q = em.createQuery("from Author u where u.name = :name");
-		q.setParameter("name", name);
+		if (name==null || name.isEmpty()){
+			return null;
+		}
+		
+		String addname=name.replace("By ", "").replace("From ", "").replace(", CNN", "").replace(", for CNN", "");
+		Query q = em.createQuery("from Author u where name = :name");
+		q.setParameter("name", addname);
 
 		@SuppressWarnings("unchecked")
 		List<Author> authors = q.getResultList();
 
 		Author author;
-		if (!authors.isEmpty()) {
+		if (authors.size()>0) {
 			author = authors.get(0);
 		} else {
-			author = new Author(name);
+			author = new Author(addname);
 			em.persist(author);
 		}
 		return author;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
+import data.Author;
 import data.News;
 import data.Photo;
 
@@ -15,4 +16,6 @@ public interface NewsHandlerRemote {
     public List<String> getOnePhotoPerNews(List<News> newsList);
     public List<String> getTenPhotoPerNews(List<News> newsList);
     public List<News> getNewsById(String id);
+    public List<Author> getAllAuthors();
+    public List<News> newsWithAuthor(String authorID);
 }

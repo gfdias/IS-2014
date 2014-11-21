@@ -61,7 +61,7 @@
 					<td contenteditable='true'>${user.email}</td>
 					<td contenteditable='true'>${user.password}</td>
 					
-					<td contenteditable=false' class="text-center">
+					<td contenteditable='false' class="text-center">
 						<a href="#" id="send" class="btn btn-success btn-xs" >
 					<span class="glyphicon glyphicon-check"></span>Send</a>
 					<a href="#" id="delete" class="btn btn-danger btn-xs">
