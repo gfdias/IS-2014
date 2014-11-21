@@ -48,7 +48,7 @@ public class Main extends HttpServlet {
 			
 			List<data.News> list = newsHandler.getRecentNews();			
 			
-			request.setAttribute("recentNews", newsHandler.getRecentNews());
+			request.setAttribute("recentNews", list);
 			request.getRequestDispatcher("/Main.jsp")
 					.forward(request, response);
 		}
