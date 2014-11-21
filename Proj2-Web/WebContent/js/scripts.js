@@ -16,7 +16,7 @@ $('document').ready(
 			}
 
 			$('#usNews').click(function() {
-				$('#dinamicDiv').load('Us?');
+				$('#dinamicDiv').load('topicNews?topic=U.S.');
 			});
 
 			$('#admin').click(function() {
