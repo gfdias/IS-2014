@@ -1,13 +1,6 @@
 $('document').ready(
 		function() {
 			
-			$('.selectpicker').selectpicker();
-			
-			$('.selectpicker').selectpicker({
-			      style: 'btn-info',
-			      size: 4
-			  });
-			
 			var requestTab;
 
 			if ($('#userStats').text() != "Admin") {
@@ -15,9 +8,16 @@ $('document').ready(
 			}
 
 			
-			$('#admin').click(function() {
+			$('#admin').click(function(){
+				console.log("Admin");
 				$('#dinamicDiv').load('Admin?');
 			});
+			
+			$('#search').click(function () {
+		    	var toSearch=$('#toSearch').val();
+		    	console.log("Send");
+		       $.get('SearchHighlight?toSearch=' + toSearch);
+		    });
 			
 			
 

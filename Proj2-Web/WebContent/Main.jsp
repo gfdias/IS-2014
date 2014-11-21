@@ -83,10 +83,14 @@
 							<li><a
 								href="http://localhost:8080/Proj2-Web/topicNews?WorldSport"
 								id="sportNews" style="color: #FFFFFF">World Sport</a></li>
-							<li>
+							
 
-								<div style="position:relative" class="dropdown">
-									<button class="btn btn-primary dropdown-toggle" type="button"
+							<li><a href="#" id="searchAuthor" style="color: #FFFFFF">Search
+									by Author</a></li>
+									<li>
+
+								<div style="margin-top:8px; position:relative" class="dropdown">
+									<button class="btn btn-default dropdown-toggle" type="button"
 										id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
 										Search by Date <span class="caret"></span>
 									</button>
@@ -102,18 +106,16 @@
 											href="http://localhost:8080/Proj2-Web/DateSearch?All">All time</a></li>
 									</ul>
 								</div></li>
-
-							<li><a href="#" id="searchAuthor" style="color: #FFFFFF">Search
-									by Author</a></li>
-							<li><a style="color: #FFFFFF">Search highlights</a></li>
+							<li><a style="color: #FFFFFF; margin-left:10px">Search highlights</a></li>
 						</ul>
-						<form class="navbar-form navbar-left">
-							<div class="form-group">
-								<input type="text" id="toSearch">
-							</div>
-							<a href="#" id="search" type="button"
-								class="btn btn-success btn-sm">Go</a>
-						</form>
+						<form class="navbar-form navbar-left" >
+						<div class="form-group">
+							<input type="text" id="toSearch"  >
+						</div> 
+						<a href="#" id="search" type="button" class="btn btn-success btn-sm">Go</a>
+					</form>
+						
+						
 						<ul class="nav navbar-nav navbar-right">
 							<li><a href="#" id="admin" style="color: #FFFFFF">Admin
 									Panel</a></li>
