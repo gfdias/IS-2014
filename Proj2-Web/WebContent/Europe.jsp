@@ -109,7 +109,7 @@
 									<h1><c:out value="${news[index].title}"/> </h1>
 									<img
 										src = <c:out value="${photos[index]}"/>
-										alt="post img"
+										alt="http://www.floridaacs.com/images/image_not_found.png"
 										class="pull-left img-responsive thumb margin10 img-thumbnail">
 									<article>
 									 	<p>On <c:out value="${news[index].date}"/></p>

@@ -39,12 +39,12 @@ public class NewsDetails extends HttpServlet {
 		
 		
 		List<News> list = newsHandler.getNewsById(param);		
-		List<String> photos=newsHandler.getTenPhotoPerNews(list);
+		List<String> photos=newsHandler.getOnePhotoPerNews(list);
 		
 		request.setAttribute("news", list);
 		request.setAttribute("photos", photos);
 		
-		request.getRequestDispatcher("/Container.jsp")
+		request.getRequestDispatcher("/Search.jsp")
 		.forward(request, response);
 	}
 

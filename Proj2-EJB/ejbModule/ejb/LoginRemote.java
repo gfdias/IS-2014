@@ -1,6 +1,10 @@
 package ejb;
 
+import java.util.List;
+
 import javax.ejb.Remote;
+
+import data.News;
 
 @Remote
 public interface LoginRemote {
