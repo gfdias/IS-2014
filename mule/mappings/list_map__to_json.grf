@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="joao" created="Sat Dec 13 18:04:27 WET 2014" description="List&lt;Map&gt; To JSON" guiVersion="3.4.4.P" id="1418504646503" licenseCode="Unlicensed" licenseType="Unknown" modified="Sat Dec 13 18:04:27 WET 2014" modifiedBy="joao" name="List_Map__To_JSON" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/Map" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _type="Input" id="f6004708-4ac0-4410-8d43-a67fe7f0f26c">
+<Record fieldDelimiter="," name="Map" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="3" __sourcePath="{}/Map/email" containerType="SINGLE" label="email" name="email" type="string"/>
+<Field __implementationClass="java.lang.Integer" __index="1" __sourcePath="{}/Map/id" containerType="SINGLE" label="id" name="id" type="integer"/>
+<Field __implementationClass="java.lang.Integer" __index="2" __sourcePath="{}/Map/subscription" containerType="SINGLE" label="subscription" name="subscription" type="integer"/>
+<Field __implementationClass="java.lang.Boolean" __index="0" __sourcePath="{}/Map/validated" containerType="SINGLE" label="validated" name="validated" type="boolean"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/Map" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _type="Output" id="ba610d2a-4ca4-4515-9d91-0a60b6b1eec1">
+<Record fieldDelimiter="," name="Map" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/Map/email" containerType="SINGLE" label="email" name="email" type="string"/>
+<Field __index="1" __sourcePath="{}/Map/id" containerType="SINGLE" label="id" name="id" type="integer"/>
+<Field __index="2" __sourcePath="{}/Map/subscription" containerType="SINGLE" label="subscription" name="subscription" type="integer"/>
+<Field __index="3" __sourcePath="{}/Map/validated" containerType="SINGLE" label="validated" name="validated" type="boolean"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" fileURL="dict:inputPayload" guiName="Map&lt;k,v&gt; READER" guiX="20" guiY="20" id="BEAN_READER0" type="BEAN_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context outPort="0" sequenceField="__id" xpath=".">
+  <Mapping cloverField="email" trim="true" xpath="email"/>
+  <Mapping cloverField="id" trim="true" xpath="id"/>
+  <Mapping cloverField="subscription" trim="true" xpath="subscription"/>
+  <Mapping cloverField="validated" trim="true" xpath="validated"/>
+</Context>
+]]></attr>
+<attr name="__typeName"><![CDATA[select * from client]]></attr>
+<attr name="_data_format"><![CDATA[MAP]]></attr>
+<attr name="__operationName"><![CDATA[http://www.mulesoft.org/schema/mule/db/select]]></attr>
+<attr name="__connectorName"><![CDATA[MySQL_Configuration]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'Map' -&gt; 'Map'" guiX="460" guiY="20" id="FOREACH_MAP_MAP" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+output.email = input.email;
+output.id = input.id;
+output.subscription = input.subscription;
+output.validated = input.validated;
+]]></attr>
+</Node>
+<Node cacheInMemory="true" charset="UTF-8" enabled="enabled" fileURL="dict:outputPayload" guiName="JSON WRITER" guiX="900" guiY="20" id="JSON_WRITER0" type="JSON_WRITER">
+<attr name="__isJsonSchema"><![CDATA[false]]></attr>
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<clover:collection clover:name="Map" xmlns:clover="http://www.cloveretl.com/ns/xmlmapping">
+  <item clover:inPort="0">
+    <email>$0.email</email>
+    <id>$0.id</id>
+    <subscription>$0.subscription</subscription>
+    <validated>$0.validated</validated>
+  </item>
+</clover:collection>]]></attr>
+<attr name="_data_format"><![CDATA[JSON]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="BEAN_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="f6004708-4ac0-4410-8d43-a67fe7f0f26c" outPort="Port 0 (out)" toNode="FOREACH_MAP_MAP:0"/>
+<Edge debugMode="true" fromNode="FOREACH_MAP_MAP:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="ba610d2a-4ca4-4515-9d91-0a60b6b1eec1" outPort="Port 0 (out)" toNode="JSON_WRITER0:0"/>
+</Phase>
+</Graph>

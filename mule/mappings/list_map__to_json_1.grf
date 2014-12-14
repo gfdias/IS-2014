@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="joao" created="Sat Dec 13 18:04:27 WET 2014" description="List&lt;Map&gt; To JSON" guiVersion="3.4.4.P" id="1418503264758" licenseCode="Unlicensed" licenseType="Unknown" modified="Sat Dec 13 18:04:27 WET 2014" modifiedBy="joao" name="List_Map__To_JSON_1" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/json" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _type="Output" id="3b6d80c5-fe0a-4f1d-bd7a-6cc2b6c6e6b8">
+<Record fieldDelimiter="," name="json" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/json/field_x005f0" containerType="SINGLE" label="field_0" name="field_0" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/Map" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _type="Input" id="2a12d6e7-a4ea-416b-9783-96d3b863b8eb">
+<Record fieldDelimiter="," name="Map" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="2" __sourcePath="{}/Map/email" containerType="SINGLE" label="email" name="email" type="string"/>
+<Field __implementationClass="java.lang.Integer" __index="0" __sourcePath="{}/Map/id" containerType="SINGLE" label="id" name="id" type="integer"/>
+<Field __implementationClass="java.lang.Integer" __index="1" __sourcePath="{}/Map/subscription" containerType="SINGLE" label="subscription" name="subscription" type="integer"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" fileURL="dict:inputPayload" guiName="Map&lt;k,v&gt; READER" guiX="20" guiY="20" id="BEAN_READER0" type="BEAN_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context outPort="0" sequenceField="__id" xpath=".">
+  <Mapping cloverField="email" trim="true" xpath="email"/>
+  <Mapping cloverField="id" trim="true" xpath="id"/>
+  <Mapping cloverField="subscription" trim="true" xpath="subscription"/>
+</Context>
+]]></attr>
+<attr name="_data_format"><![CDATA[MAP]]></attr>
+<attr name="__metadata"><![CDATA[true]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'Map' -&gt; 'json'" guiX="460" guiY="20" id="FOREACH_MAP_JSON" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+]]></attr>
+</Node>
+<Node cacheInMemory="true" charset="UTF-8" enabled="enabled" fileURL="dict:outputPayload" guiName="JSON WRITER" guiX="900" guiY="20" id="JSON_WRITER0" type="JSON_WRITER">
+<attr name="__isJsonSchema"><![CDATA[false]]></attr>
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<clover:collection clover:name="json" xmlns:clover="http://www.cloveretl.com/ns/xmlmapping">
+  <item clover:inPort="0">
+    <clover:element clover:name="field_0">$0.field_0</clover:element>
+  </item>
+</clover:collection>]]></attr>
+<attr name="_data_format"><![CDATA[JSON]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="BEAN_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="2a12d6e7-a4ea-416b-9783-96d3b863b8eb" outPort="Port 0 (out)" toNode="FOREACH_MAP_JSON:0"/>
+<Edge debugMode="true" fromNode="FOREACH_MAP_JSON:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="3b6d80c5-fe0a-4f1d-bd7a-6cc2b6c6e6b8" outPort="Port 0 (out)" toNode="JSON_WRITER0:0"/>
+</Phase>
+</Graph>
