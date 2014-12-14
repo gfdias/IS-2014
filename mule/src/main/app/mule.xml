@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:json="http://www.mulesoft.org/schema/mule/json"
+<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:json="http://www.mulesoft.org/schema/mule/json"
 	xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:spring="http://www.springframework.org/schema/beans"
@@ -16,7 +16,8 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/ee/jdbc http://www.mulesoft.org/schema/mule/ee/jdbc/current/mule-jdbc-ee.xsd
-http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd" version="EE-3.5.2">
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd" version="EE-3.5.2">
     <db:generic-config name="Generic_Database_Configuration" url="jdbc:postgresql://localhost/isnews?password=postgres&amp;user=goncalodias" driverClassName="org.postgresql.Driver" doc:name="Generic Database Configuration">
     </db:generic-config>
     <db:mysql-config name="MySQL_Configuration" host="localhost" port="3306" user="root" password="passwd" database="IS" doc:name="MySQL Configuration"/>
@@ -31,16 +32,24 @@ http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/em
     </flow>
     <flow name="Add_Newsletter_HTTP" doc:name="Add_Newsletter_HTTP">
    		<http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8888"  doc:name="HTTP"  path="NewsletterRegister"/>
-        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+        <flow-ref name="check_email_to_add" doc:name="Flow Reference"/>
+    </flow>
+    <sub-flow name="check_email_to_add" doc:name="check_email_to_add">
+        <db:select config-ref="MySQL_Configuration" doc:name="Email on db">
             <db:parameterized-query><![CDATA[select count(*) emailsFound from client where email=#[message.inboundProperties['email']]]]></db:parameterized-query>
         </db:select>
         <choice doc:name="Choice">
             <when expression="#[message.payload.get(0).emailsFound!=0]">
-                <set-payload value="'email already added'" doc:name="email founded"/>
+                <set-payload value="Already subscribed" doc:name="email founded"/>
             </when>
             <otherwise>
                 <set-payload value="'adiciona o email'" doc:name="add email"/>
+                <flow-ref name="Add_to_Newsletter" doc:name="Flow Reference"/>
             </otherwise>
         </choice>
-    </flow>
+    </sub-flow>
+    <sub-flow name="Add_to_Newsletter" doc:name="Add_to_Newsletter">
+        <set-variable variableName="client" value="#[message]" doc:name="Variable"/>
+        <set-payload value="'#[message.inboundProperties['email']]'" doc:name="Set Payload"/>
+    </sub-flow>
 </mule>
