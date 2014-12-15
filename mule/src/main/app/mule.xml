@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:smtps="http://www.mulesoft.org/schema/mule/smtps" xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:json="http://www.mulesoft.org/schema/mule/json"
+<mule xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:smtps="http://www.mulesoft.org/schema/mule/smtps" xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:json="http://www.mulesoft.org/schema/mule/json"
 	xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:spring="http://www.springframework.org/schema/beans"
@@ -19,7 +19,8 @@ http://www.mulesoft.org/schema/mule/ee/jdbc http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd
 http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
 http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd
-http://www.mulesoft.org/schema/mule/smtps http://www.mulesoft.org/schema/mule/smtps/current/mule-smtps.xsd" version="EE-3.5.2">
+http://www.mulesoft.org/schema/mule/smtps http://www.mulesoft.org/schema/mule/smtps/current/mule-smtps.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd" version="EE-3.5.2">
     <db:generic-config name="Generic_Database_Configuration" url="jdbc:postgresql://localhost/isnews?password=postgres&amp;user=goncalodias" driverClassName="org.postgresql.Driver" doc:name="Generic Database Configuration">
     </db:generic-config>
     <db:mysql-config name="MySQL_Configuration" host="localhost" port="3306" user="root" password="passwd" database="IS" doc:name="MySQL Configuration"/>
@@ -34,14 +35,22 @@ http://www.mulesoft.org/schema/mule/smtps http://www.mulesoft.org/schema/mule/sm
         <parse-template location="index.tmpl" doc:name="Parse Template"/>
         <http:response-builder status="200" contentType="text/html" doc:name="HTTP Response Builder"/>
     </flow>
+    <flow name="http_confirm_subscription" doc:name="http_confirm_subscription">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8888" path="confirm" doc:name="HTTP"/>
+        <flow-ref name="confirm_subscription" doc:name="Flow Reference"/>
+    </flow>
+    <flow name="confirm_subscription" doc:name="confirm_subscription">
+        <db:update config-ref="MySQL_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[update client set validated=1 where email = #[message.inboundProperties['email']]]]></db:parameterized-query>
+        </db:update>
+        <set-payload value="subscription confirmed" doc:name="Set Payload"/>
+    </flow>
     <flow name="Add_Newsletter_HTTP" doc:name="Add_Newsletter_HTTP">
-   		<http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8888"  doc:name="HTTP"  path="NewsletterRegister"/>
+   		<http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8888"  doc:name="HTTP"  path="NewsletterRegister" encoding="UTF-8"/>
+    	<copy-properties propertyName="*" doc:name="Property"/>
         <flow-ref name="check_email_to_add" doc:name="Flow Reference"/>
     </flow>
     <sub-flow name="check_email_to_add" doc:name="check_email_to_add">
-        <message-properties-transformer doc:name="Message Properties">
-            <add-message-property key="email" value="#[message.inboundProperties['email']]"/>
-        </message-properties-transformer>
         <db:select config-ref="MySQL_Configuration" doc:name="Email on db">
             <db:parameterized-query><![CDATA[select count(*) emailsFound from client where email=#[message.outboundProperties['email']]]]></db:parameterized-query>
         </db:select>
@@ -68,6 +77,7 @@ http://www.mulesoft.org/schema/mule/smtps http://www.mulesoft.org/schema/mule/sm
                 <message-properties-transformer doc:name="Message Properties">
                     <add-message-property key="toAddresses" value="jsaguiar@me.com"/>
                 </message-properties-transformer>
+                <set-payload value="Enter http://localhost:8888/confirm?email=#[message.inboundProperties['email']] to validate your subscription" doc:name="Set Payload"/>
                 <smtp:outbound-endpoint host="smtp.gmail.com" port="587" user="devjoao%40gmail.com" password="accountdev" connector-ref="Gmail" from="no_reply@isnews.com" subject="Confirm your email" replyTo="no_reply@isnews.com" responseTimeout="10000" doc:name="SMTP"/>
             </async>
         </scatter-gather>
