@@ -48,7 +48,6 @@ http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/ba
     <flow name="add_newsletter_HTTP" doc:name="add_newsletter_HTTP">
    		<http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8888"  doc:name="HTTP"  path="NewsletterRegister" encoding="iso-8859-1"/>
     	<copy-properties propertyName="*" doc:name="Property"/>
-        <logger level="INFO" doc:name="Logger"/>
         <flow-ref name="check_email_to_add" doc:name="Flow Reference"/>
     </flow>
     <sub-flow name="check_email_to_add" doc:name="check_email_to_add">
