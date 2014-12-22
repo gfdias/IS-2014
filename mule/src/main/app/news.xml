@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:twitter="http://www.mulesoft.org/schema/mule/twitter" xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/twitter http://www.mulesoft.org/schema/mule/twitter/current/mule-twitter.xsd">
+    <twitter:config name="Twitter" accessKey="2936491654-aPA93kUel2Ey5IaXZPBPOtVb9bzEjPPQObDRFEQ" accessSecret="yX8dNkpFKhB6uPaGWYnRNPjxYCbZqZ5W0ojVPSMYPvljb" consumerKey="P6PWap1JjMck33wIklqv8k4S2" consumerSecret="uyK2yIHLByO7dvLZH5WAwmtPsKlJR48A2Ndc1meVPssdTCbXDU" doc:name="Twitter"/>
+    <flow name="news_flow" doc:name="news_flow">
+        <file:inbound-endpoint path="/Users/joao/Documents/EI/MEI/IS/IS-2014/newsToMule" responseTimeout="10000" doc:name="File">
+        </file:inbound-endpoint>
+        <mulexml:dom-to-xml-transformer doc:name="DOM to XML" outputEncoding="UTF-8"/>
+        <set-property propertyName="newsXML" value="#[payload]" doc:name="Property"/>
+        <set-session-variable variableName="topicName" value="#[xpath('//topicname').text]" doc:name="Session Variable"/>
+        <db:insert config-ref="MySQL_Configuration" doc:name="Insert topic">
+            <db:parameterized-query><![CDATA[INSERT INTO topic (name)
+SELECT * FROM (SELECT #[sessionVars.topicName]) AS tmp
+WHERE NOT EXISTS (
+    SELECT name FROM topic WHERE name = #[sessionVars.topicName]
+) LIMIT 1;]]></db:parameterized-query>
+        </db:insert>
+        <set-payload value="#[message.outboundProperties.newsXML]" doc:name="Set Payload"/>
+        <splitter evaluator="xpath" expression="/topic/news" doc:name="Splitter"/>
+        <expression-filter evaluator="xpath" expression="(count(//photos/child::text())) !=0" doc:name="Only news with images"/>
+        <message-properties-transformer doc:name="Message Properties">
+            <add-message-property key="url" value="#[xpath('//url').text]"/>
+            <add-message-property key="title" value="#[xpath('//title').text]"/>
+            <add-message-property key="content" value="#[xpath('//content').text]"/>
+            <add-message-property key="author" value="#[xpath('//author').text]"/>
+            <add-message-property key="date" value="#[xpath('//date').text]"/>
+            <add-message-property key="images" value="#[xpath('//photos')]"/>
+            <add-message-property key="topic" value="#[sessionVars.topicName]"/>
+            <add-message-property key="highlights" value="#[xpath('//highlights')]"/>
+        </message-properties-transformer>
+        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[SELECT COUNT(*) a FROM news WHERE url=#[message.outboundProperties.url]]]></db:parameterized-query>
+        </db:select>
+        <expression-filter expression="#[payload.get(0).a==0]" doc:name="New news"/>
+        <logger message="add news" level="INFO" doc:name="Logger"/>
+        <scatter-gather doc:name="Scatter-Gather">
+            <flow-ref name="save_news" doc:name="Save to DB"/>
+            <flow-ref name="do_nothing" doc:name="publish on twitter"/>
+        </scatter-gather>
+    </flow>
+    <flow name="do_nothing" doc:name="do_nothing">
+        <set-payload value="&quot;a&quot;" doc:name="Set Payload"/>
+    </flow>
+    <flow name="publish_on_twitter" doc:name="publish_on_twitter">
+        <set-variable variableName="newPayload" value="#[twitter.ReplaceSpaces.ReplaceSpacesFromPayload(message.outboundProperties.title) ]" doc:name="Variable"/>
+        <twitter:update-status config-ref="Twitter" status="#[payload]" doc:name="Twitter"/>
+    </flow>
+    <flow name="save_news" doc:name="save_news">
+        <db:insert config-ref="MySQL_Configuration" doc:name="Insert author">
+            <db:parameterized-query><![CDATA[INSERT INTO author (name)
+SELECT * FROM (SELECT #[message.outboundProperties.author]) AS tmp
+WHERE NOT EXISTS (
+    SELECT name FROM author WHERE name = #[message.outboundProperties.author]
+) LIMIT 1;]]></db:parameterized-query>
+        </db:insert>
+        <db:insert config-ref="MySQL_Configuration" doc:name="insert news">
+            <db:parameterized-query><![CDATA[INSERT IGNORE INTO news ( content, title, url, date, author_id, topic_id)
+SELECT #[message.outboundProperties.content],#[message.outboundProperties.title], #[message.outboundProperties.url],#[message.outboundProperties.date],  a.id, t.id
+FROM author a, topic t
+WHERE a.name = #[message.outboundProperties.author] AND t.name=#[message.outboundProperties.topic]]]></db:parameterized-query>
+        </db:insert>
+        <set-session-variable variableName="url" value="#[message.outboundProperties.url]" doc:name="url"/>
+        <foreach collection="#[message.outboundProperties.highlights]" doc:name="For Each">
+            <db:insert config-ref="MySQL_Configuration" doc:name="Insert highlight">
+                <db:parameterized-query><![CDATA[INSERT INTO highlight (content, news_id)
+SELECT * FROM  (
+			SELECT #[payload.getText()], n.id 
+			FROM news n
+			WHERE n.url=#[sessionVars.url]
+			) AS tmp
+WHERE NOT EXISTS (
+    SELECT h.content FROM highlight h, news n WHERE h.content =#[payload.getText()] AND n.url=#[sessionVars.url] AND n.id=h.news_id 
+) LIMIT 1;]]></db:parameterized-query>
+            </db:insert>
+        </foreach>
+        <foreach collection="#[message.outboundProperties.images]" doc:name="For Each">
+            <db:insert config-ref="MySQL_Configuration" doc:name="Insert Image">
+                <db:parameterized-query><![CDATA[INSERT INTO photo (url, news_id)
+SELECT * FROM  (
+			SELECT #[payload.getText()], n.id 
+			FROM news n
+			WHERE n.url=#[sessionVars.url]
+			) AS tmp
+WHERE NOT EXISTS (
+    SELECT p.url FROM photo p, news n WHERE p.url =#[payload.getText()] AND n.url=#[sessionVars.url] AND n.id=p.news_id 
+) LIMIT 1;]]></db:parameterized-query>
+            </db:insert>
+        </foreach>
+    </flow>
+</mule>
