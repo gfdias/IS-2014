@@ -14,7 +14,7 @@ http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/ba
 http://www.mulesoft.org/schema/mule/twitter http://www.mulesoft.org/schema/mule/twitter/current/mule-twitter.xsd">
     <twitter:config name="Twitter" accessKey="2936491654-aPA93kUel2Ey5IaXZPBPOtVb9bzEjPPQObDRFEQ" accessSecret="yX8dNkpFKhB6uPaGWYnRNPjxYCbZqZ5W0ojVPSMYPvljb" consumerKey="P6PWap1JjMck33wIklqv8k4S2" consumerSecret="uyK2yIHLByO7dvLZH5WAwmtPsKlJR48A2Ndc1meVPssdTCbXDU" doc:name="Twitter"/>
     <flow name="news_flow" doc:name="news_flow">
-        <file:inbound-endpoint path="/Users/joao/Documents/EI/MEI/IS/IS-2014/newsToMule" responseTimeout="10000" doc:name="File">
+        <file:inbound-endpoint path="/Users/goncalodias/Documents/IS-2014/newsToMule" responseTimeout="10000" doc:name="File">
         </file:inbound-endpoint>
         <mulexml:dom-to-xml-transformer doc:name="DOM to XML" outputEncoding="UTF-8"/>
         <set-property propertyName="newsXML" value="#[payload]" doc:name="Property"/>

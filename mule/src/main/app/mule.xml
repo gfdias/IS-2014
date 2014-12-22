@@ -97,7 +97,7 @@ http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/ba
     <flow name="soapSubscribe" doc:name="soapSubscribe">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8082" path="soapSubscribe" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="org.subscribe.ISubscribe" doc:name="SOAP"/>
-        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <logger message="#[message.inboundProperties]" level="INFO" doc:name="Logger"/>
         <component class="org.subscribe.Subscribe" doc:name="Java"/>
     </flow>
     <flow name="soapClient" doc:name="soapClient">
