@@ -23,48 +23,31 @@ http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/em
 http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
 http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd
 http://www.mulesoft.org/schema/mule/smtps http://www.mulesoft.org/schema/mule/smtps/current/mule-smtps.xsd
-http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd"
-	version="EE-3.5.2">
-	<db:generic-config name="Generic_Database_Configuration"
-		url="jdbc:postgresql://localhost/isnews?password=postgres&amp;user=goncalodias"
-		driverClassName="org.postgresql.Driver" doc:name="Generic Database Configuration">
-	</db:generic-config>
-	<db:mysql-config name="MySQL_Configuration" host="localhost"
-		port="3306" user="root" password="passwd" database="IS"
-		doc:name="MySQL Configuration" />
-	<data-mapper:config name="List_Map__To_JSON_1"
-		transformationGraphPath="list_map__to_json_1.grf" doc:name="List_Map__To_JSON_1" />
-	<data-mapper:config name="List_Map__To_JSON"
-		transformationGraphPath="list_map__to_json.grf" doc:name="List_Map__To_JSON" />
-	<http:connector name="HTTP_HTTPS" cookieSpec="netscape"
-		validateConnections="true" sendBufferSize="0" receiveBufferSize="0"
-		receiveBacklog="0" clientSoTimeout="10000" serverSoTimeout="10000"
-		socketSoLinger="0" doc:name="HTTP-HTTPS" />
-	<email:email-to-string-transformer
-		name="email" doc:name="Email to String" />
-	<smtp:connector name="SMTP" validateConnections="true"
-		doc:name="SMTP" />
-	<smtp:gmail-connector name="Gmail"
-		validateConnections="true" doc:name="Gmail" />
-	<flow name="Newsletter_HTTP" doc:name="Newsletter_HTTP">
-		<http:inbound-endpoint exchange-pattern="request-response"
-			host="localhost" port="8888" doc:name="HTTP" />
-		<parse-template location="index.tmpl" doc:name="Parse Template" />
-		<http:response-builder status="200" contentType="text/html"
-			doc:name="HTTP Response Builder" />
-	</flow>
-	<flow name="http_confirm_subscription" doc:name="http_confirm_subscription">
-		<http:inbound-endpoint exchange-pattern="request-response"
-			host="localhost" port="8888" path="confirm" doc:name="HTTP" />
-		<flow-ref name="confirm_subscription" doc:name="Flow Reference" />
-	</flow>
-	<flow name="confirm_subscription" doc:name="confirm_subscription">
-		<db:update config-ref="MySQL_Configuration" doc:name="Database">
-			<db:parameterized-query><![CDATA[update client set validated=1 where email = #[message.inboundProperties['email']]]]></db:parameterized-query>
-		</db:update>
-		<set-payload value="subscription confirmed" doc:name="Set Payload" />
-	</flow>
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd" version="EE-3.5.2">
 
+    <db:mysql-config name="MySQL_Configuration" host="localhost" port="3306" user="root" password="passwd" database="IS" doc:name="MySQL Configuration"/>
+    <data-mapper:config name="List_Map__To_JSON_1" transformationGraphPath="list_map__to_json_1.grf" doc:name="List_Map__To_JSON_1"/>
+    <data-mapper:config name="List_Map__To_JSON" transformationGraphPath="list_map__to_json.grf" doc:name="List_Map__To_JSON"/>
+    <http:connector name="HTTP_HTTPS" cookieSpec="netscape" validateConnections="true" sendBufferSize="0" receiveBufferSize="0" receiveBacklog="0" clientSoTimeout="10000" serverSoTimeout="10000" socketSoLinger="0" doc:name="HTTP-HTTPS"/>
+    <email:email-to-string-transformer name="email" doc:name="Email to String"/>
+    <smtp:connector name="SMTP" validateConnections="true" doc:name="SMTP"/>
+    <smtp:gmail-connector name="Gmail" validateConnections="true" doc:name="Gmail"/>
+    <flow name="Newsletter_HTTP" doc:name="Newsletter_HTTP">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8888" doc:name="HTTP"/>
+        <parse-template location="index.tmpl" doc:name="Parse Template"/>
+        <http:response-builder status="200" contentType="text/html" doc:name="HTTP Response Builder"/>
+    </flow>
+    <flow name="http_confirm_subscription" doc:name="http_confirm_subscription">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8888" path="confirm" doc:name="HTTP"/>
+        <flow-ref name="confirm_subscription" doc:name="Flow Reference"/>
+    </flow>
+    <flow name="confirm_subscription" doc:name="confirm_subscription">
+        <db:update config-ref="MySQL_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[update client set validated=1 where email = #[message.inboundProperties['email']]]]></db:parameterized-query>
+        </db:update>
+        <set-payload value="subscription confirmed" doc:name="Set Payload"/>
+    </flow>
+    
 	<flow name="add_newsletter_HTTP" doc:name="add_newsletter_HTTP">
 		<http:inbound-endpoint exchange-pattern="request-response"
 			host="localhost" port="8888" doc:name="HTTP" path="NewsletterRegister"
