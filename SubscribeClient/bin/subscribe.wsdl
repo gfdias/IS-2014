@@ -1,40 +1,49 @@
 <wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://subscribe.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="ISubscribeService" targetNamespace="http://subscribe.org/">
 <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://subscribe.org/" elementFormDefault="unqualified" targetNamespace="http://subscribe.org/" version="1.0">
-<xs:element name="sayHello" type="tns:sayHello"/>
-<xs:element name="sayHelloResponse" type="tns:sayHelloResponse"/>
-<xs:complexType name="sayHello">
+<xs:element name="subscribeUser" type="tns:subscribeUser"/>
+<xs:element name="subscribeUserResponse" type="tns:subscribeUserResponse"/>
+<xs:complexType name="subscribeUser">
 <xs:sequence>
 <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+<xs:element name="arg1" type="xs:int"/>
+<xs:element minOccurs="0" name="arg2" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
-<xs:complexType name="sayHelloResponse">
+<xs:complexType name="subscribeUserResponse">
 <xs:sequence>
-<xs:element minOccurs="0" name="return" type="xs:string"/>
+<xs:element minOccurs="0" name="return" type="tns:info"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="info">
+<xs:sequence>
+<xs:element minOccurs="0" name="email" type="xs:string"/>
+<xs:element minOccurs="0" name="region" type="xs:string"/>
+<xs:element name="type" type="xs:int"/>
 </xs:sequence>
 </xs:complexType>
 </xs:schema>
 </wsdl:types>
-<wsdl:message name="sayHello">
-<wsdl:part element="tns:sayHello" name="parameters"></wsdl:part>
+<wsdl:message name="subscribeUser">
+<wsdl:part element="tns:subscribeUser" name="parameters"></wsdl:part>
 </wsdl:message>
-<wsdl:message name="sayHelloResponse">
-<wsdl:part element="tns:sayHelloResponse" name="parameters"></wsdl:part>
+<wsdl:message name="subscribeUserResponse">
+<wsdl:part element="tns:subscribeUserResponse" name="parameters"></wsdl:part>
 </wsdl:message>
 <wsdl:portType name="ISubscribe">
-<wsdl:operation name="sayHello">
-<wsdl:input message="tns:sayHello" name="sayHello"></wsdl:input>
-<wsdl:output message="tns:sayHelloResponse" name="sayHelloResponse"></wsdl:output>
+<wsdl:operation name="subscribeUser">
+<wsdl:input message="tns:subscribeUser" name="subscribeUser"></wsdl:input>
+<wsdl:output message="tns:subscribeUserResponse" name="subscribeUserResponse"></wsdl:output>
 </wsdl:operation>
 </wsdl:portType>
 <wsdl:binding name="ISubscribeServiceSoapBinding" type="tns:ISubscribe">
 <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-<wsdl:operation name="sayHello">
+<wsdl:operation name="subscribeUser">
 <soap:operation soapAction="" style="document"/>
-<wsdl:input name="sayHello">
+<wsdl:input name="subscribeUser">
 <soap:body use="literal"/>
 </wsdl:input>
-<wsdl:output name="sayHelloResponse">
+<wsdl:output name="subscribeUserResponse">
 <soap:body use="literal"/>
 </wsdl:output>
 </wsdl:operation>

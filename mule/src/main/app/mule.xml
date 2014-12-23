@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
+<mule xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:wmq="http://www.mulesoft.org/schema/mule/ee/wmq" xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
 	xmlns:smtps="http://www.mulesoft.org/schema/mule/smtps" xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp"
 	xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:json="http://www.mulesoft.org/schema/mule/json"
 	xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc"
@@ -23,7 +23,9 @@ http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/em
 http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
 http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd
 http://www.mulesoft.org/schema/mule/smtps http://www.mulesoft.org/schema/mule/smtps/current/mule-smtps.xsd
-http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd" version="EE-3.5.2">
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd
+http://www.mulesoft.org/schema/mule/ee/wmq http://www.mulesoft.org/schema/mule/ee/wmq/current/mule-wmq-ee.xsd" version="EE-3.5.2">
 
     <db:mysql-config name="MySQL_Configuration" host="localhost" port="3306" user="root" password="passwd" database="IS" doc:name="MySQL Configuration"/>
     <data-mapper:config name="List_Map__To_JSON_1" transformationGraphPath="list_map__to_json_1.grf" doc:name="List_Map__To_JSON_1"/>
@@ -124,15 +126,15 @@ http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/ba
     <flow name="soapSubscribe" doc:name="soapSubscribe">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8082" path="soapSubscribe" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="org.subscribe.ISubscribe" doc:name="SOAP"/>
-        <logger message="#[message.inboundProperties]" level="INFO" doc:name="Logger"/>
-        <component class="org.subscribe.Subscribe" doc:name="Java"/>
+        <mulexml:object-to-xml-transformer doc:name="Object to XML"/>
+        <logger message="#[xpath[0]]" level="INFO" doc:name="Logger"/>
     </flow>
-    <flow name="soapClient" doc:name="soapClient">
-        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8082" path="soapClient/subscribe" doc:name="HTTP"/>
-        <logger level="INFO" doc:name="Logger"/>
-        <cxf:jaxws-client operation="sayHello" serviceClass="org.subscribe.ISubscribe" doc:name="SOAP"/>
-        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8082" path="soapSubscribe" method="POST" doc:name="HTTP"/>
-        <object-to-string-transformer doc:name="Object to String"/>
+    <flow name="soapUnsubscribe" doc:name="soapUnsubscribe">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8082" path="soapUnsubscribe" doc:name="HTTP"/>
+        <cxf:jaxws-service serviceClass="org.subscribe.IUnsubscribe" doc:name="SOAP"/>
+        <message-properties-transformer doc:name="Message Properties">
+            <add-message-property key="emai" value="#[payload]"/>
+        </message-properties-transformer>
     </flow>
 	<flow name="muleFlow1" doc:name="muleFlow1">
 		<http:outbound-endpoint exchange-pattern="request-response"

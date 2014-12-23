@@ -3,8 +3,8 @@ package org.subscribe;
 import javax.jws.WebService;
 
 @WebService
-public interface ISubscribe {
+public interface ISubscribe{
  
-  String sayHello(String name);
+  Info subscribeUser(String email, int type, String region);
   
 }
