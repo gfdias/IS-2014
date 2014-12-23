@@ -57,8 +57,15 @@ http://www.mulesoft.org/schema/mule/ee/wmq http://www.mulesoft.org/schema/mule/e
     </flow>
     <flow name="remove_subscription" doc:name="remove_subscription">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8888" path="Remove" connector-ref="HTTP_HTTPS" doc:name="HTTP"/>
+        <message-properties-transformer doc:name="unsubscribeEmail">
+            <add-message-property key="email" value="#[message.inboundProperties['http.query.params']['email']]"/>
+        </message-properties-transformer>
+        <flow-ref name="unsubscribeCommon" doc:name="Flow Reference"/>
+    </flow>
+    <sub-flow name="unsubscribeCommon" doc:name="unsubscribeCommon">
+        <logger message="&quot;OLA #[message.outboundProperties.email]&quot;" level="INFO" doc:name="Logger"/>
         <db:delete config-ref="MySQL_Configuration" doc:name="Database">
-            <db:parameterized-query><![CDATA[DELETE FROM client WHERE email=#[message.inboundProperties['http.query.params']['email']]]]></db:parameterized-query>
+            <db:parameterized-query><![CDATA[DELETE FROM client WHERE email=#[message.outboundProperties.email]]]></db:parameterized-query>
         </db:delete>
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
         <choice doc:name="Choice">
@@ -69,7 +76,7 @@ http://www.mulesoft.org/schema/mule/ee/wmq http://www.mulesoft.org/schema/mule/e
                 <set-payload value="sucessfully removed" doc:name="Set Payload"/>
             </otherwise>
         </choice>
-    </flow>
+    </sub-flow>
     
 	<flow name="add_newsletter_HTTP" doc:name="add_newsletter_HTTP">
 		<http:inbound-endpoint exchange-pattern="request-response"
@@ -132,9 +139,11 @@ http://www.mulesoft.org/schema/mule/ee/wmq http://www.mulesoft.org/schema/mule/e
     <flow name="soapUnsubscribe" doc:name="soapUnsubscribe">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8082" path="soapUnsubscribe" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="org.subscribe.IUnsubscribe" doc:name="SOAP"/>
-        <message-properties-transformer doc:name="Message Properties">
-            <add-message-property key="emai" value="#[payload]"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <message-properties-transformer doc:name="unsubscribeEmail">
+            <add-message-property key="email" value="#[payload]"/>
         </message-properties-transformer>
+        <flow-ref name="unsubscribeCommon" doc:name="Flow Reference"/>
     </flow>
 	<flow name="muleFlow1" doc:name="muleFlow1">
 		<http:outbound-endpoint exchange-pattern="request-response"

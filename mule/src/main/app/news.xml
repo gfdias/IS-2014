@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:quartz="http://www.mulesoft.org/schema/mule/quartz" xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:twitter="http://www.mulesoft.org/schema/mule/twitter" xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+
+<mule xmlns:quartz="http://www.mulesoft.org/schema/mule/quartz"  xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:twitter="http://www.mulesoft.org/schema/mule/twitter" xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.2"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
@@ -14,7 +15,9 @@ http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/ba
 http://www.mulesoft.org/schema/mule/twitter http://www.mulesoft.org/schema/mule/twitter/current/mule-twitter.xsd
 http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
 http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd
-http://www.mulesoft.org/schema/mule/quartz http://www.mulesoft.org/schema/mule/quartz/current/mule-quartz.xsd">
+http://www.mulesoft.org/schema/mule/quartz http://www.mulesoft.org/schema/mule/quartz/current/mule-quartz.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/current/mule-cxf.xsd">
     <twitter:config name="Twitter" accessKey="2936491654-aPA93kUel2Ey5IaXZPBPOtVb9bzEjPPQObDRFEQ" accessSecret="yX8dNkpFKhB6uPaGWYnRNPjxYCbZqZ5W0ojVPSMYPvljb" consumerKey="P6PWap1JjMck33wIklqv8k4S2" consumerSecret="uyK2yIHLByO7dvLZH5WAwmtPsKlJR48A2Ndc1meVPssdTCbXDU" doc:name="Twitter"/>
     <vm:connector name="VM" validateConnections="true" doc:name="VM"/>
     <file:connector name="File" autoDelete="true" streaming="true" validateConnections="true" doc:name="File"/>
@@ -24,10 +27,14 @@ http://www.mulesoft.org/schema/mule/quartz http://www.mulesoft.org/schema/mule/q
         <spring:bean id="Bean" name="Bean" scope="session"/>
     </spring:beans>
     <flow name="news_flow" doc:name="news_flow">
-        <file:inbound-endpoint path="/Users/joao/Documents/EI/MEI/IS/IS-2014/newsToMule" responseTimeout="10000" doc:name="File" connector-ref="File">
+        <file:inbound-endpoint path="~/Desktop/newsToMule" responseTimeout="10000" doc:name="File" connector-ref="File">
            <file:filename-wildcard-filter pattern="*.xml" caseSensitive="false"/>
         </file:inbound-endpoint>
+        <flow-ref name="addNewsCommon" doc:name="Flow Reference"/>
+    </flow>
+    <sub-flow name="addNewsCommon" doc:name="addNewsCommon">
         <mulexml:dom-to-xml-transformer doc:name="DOM to XML" outputEncoding="UTF-8"/>
+        <logger message="OI #[payload]" level="INFO" doc:name="Logger"/>
         <set-property propertyName="newsXML" value="#[payload]" doc:name="Property"/>
         <set-session-variable variableName="topicName" value="#[xpath('//topicname').text]" doc:name="Session Variable"/>
         <db:insert config-ref="MySQL_Configuration" doc:name="Insert topic">
@@ -38,8 +45,11 @@ WHERE NOT EXISTS (
 ) LIMIT 1;]]></db:parameterized-query>
         </db:insert>
         <set-payload value="#[message.outboundProperties.newsXML]" doc:name="Set Payload"/>
+        <logger message="set #[payload]" level="INFO" doc:name="Logger"/>
         <splitter evaluator="xpath" expression="/topic/news" doc:name="Splitter"/>
+        <logger message="split" level="INFO" doc:name="Logger"/>
         <expression-filter evaluator="xpath" expression="(count(//photos/child::text())) !=0" doc:name="Only news with images"/>
+        <logger message="only images" level="INFO" doc:name="Logger"/>
         <message-properties-transformer doc:name="Message Properties">
             <add-message-property key="url" value="#[xpath('//url').text]"/>
             <add-message-property key="title" value="#[xpath('//title').text]"/>
@@ -50,15 +60,23 @@ WHERE NOT EXISTS (
             <add-message-property key="highlights" value="#[xpath('//highlights')]"/>
             <add-message-property key="images" value="#[xpath('//photos')]"/>
         </message-properties-transformer>
+        <logger message="prop" level="INFO" doc:name="Logger"/>
         <db:select config-ref="MySQL_Configuration" doc:name="Database">
             <db:parameterized-query><![CDATA[SELECT COUNT(*) a FROM news WHERE url=#[message.outboundProperties.url]]]></db:parameterized-query>
         </db:select>
         <scatter-gather doc:name="Scatter-Gather" timeout="10">
             <threading-profile maxThreadsActive="1" maxThreadsIdle="1" threadWaitTimeout="5000"/>
             <flow-ref name="save_news" doc:name="Save to DB"/>
-            <flow-ref name="do_nothing" doc:name="publish on twitter"/>
-            <flow-ref name="do_nothing" doc:name="Send email"/>
+
+            <!-- <flow-ref name="publish_on_twitter" doc:name="publish on twitter"/> -->
+            <flow-ref name="send_email_with_news" doc:name="Send email"/>
         </scatter-gather>
+    </sub-flow>
+    <flow name="soapNews" doc:name="soapNews">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8082" path="soapNews" doc:name="HTTP"/>
+        <cxf:jaxws-service serviceClass="org.subscribe.IAddNews" doc:name="SOAP"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <flow-ref name="addNewsCommon" doc:name="Flow Reference"/>
     </flow>
     <flow name="newsFlow1" doc:name="newsFlow1">
         <expression-filter expression="#[payload.get(0).a==0]" doc:name="New news"/>
