@@ -24,8 +24,8 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _SayHello_QNAME = new QName("http://subscribe.org/", "sayHello");
-    private final static QName _SayHelloResponse_QNAME = new QName("http://subscribe.org/", "sayHelloResponse");
+    private final static QName _UnsubscribeUser_QNAME = new QName("http://subscribe.org/", "unsubscribeUser");
+    private final static QName _UnsubscribeUserResponse_QNAME = new QName("http://subscribe.org/", "unsubscribeUserResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.subscribe
@@ -35,37 +35,37 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SayHello }
+     * Create an instance of {@link UnsubscribeUser }
      * 
      */
-    public SayHello createSayHello() {
-        return new SayHello();
+    public UnsubscribeUser createUnsubscribeUser() {
+        return new UnsubscribeUser();
     }
 
     /**
-     * Create an instance of {@link SayHelloResponse }
+     * Create an instance of {@link UnsubscribeUserResponse }
      * 
      */
-    public SayHelloResponse createSayHelloResponse() {
-        return new SayHelloResponse();
+    public UnsubscribeUserResponse createUnsubscribeUserResponse() {
+        return new UnsubscribeUserResponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SayHello }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link UnsubscribeUser }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://subscribe.org/", name = "sayHello")
-    public JAXBElement<SayHello> createSayHello(SayHello value) {
-        return new JAXBElement<SayHello>(_SayHello_QNAME, SayHello.class, null, value);
+    @XmlElementDecl(namespace = "http://subscribe.org/", name = "unsubscribeUser")
+    public JAXBElement<UnsubscribeUser> createUnsubscribeUser(UnsubscribeUser value) {
+        return new JAXBElement<UnsubscribeUser>(_UnsubscribeUser_QNAME, UnsubscribeUser.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SayHelloResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link UnsubscribeUserResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://subscribe.org/", name = "sayHelloResponse")
-    public JAXBElement<SayHelloResponse> createSayHelloResponse(SayHelloResponse value) {
-        return new JAXBElement<SayHelloResponse>(_SayHelloResponse_QNAME, SayHelloResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://subscribe.org/", name = "unsubscribeUserResponse")
+    public JAXBElement<UnsubscribeUserResponse> createUnsubscribeUserResponse(UnsubscribeUserResponse value) {
+        return new JAXBElement<UnsubscribeUserResponse>(_UnsubscribeUserResponse_QNAME, UnsubscribeUserResponse.class, null, value);
     }
 
 }

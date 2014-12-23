@@ -2,7 +2,9 @@ package org.subscribe;
 
 public class Subscribe implements ISubscribe {
 
-	public String sayHello(String name) {
-		return "Hello " + name + "!";
+	public Info subscribeUser(String email, int type, String region) {
+		
+		Info info = new Info(email, type, region);
+		return info;
 	}
 }
