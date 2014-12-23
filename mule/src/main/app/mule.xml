@@ -33,10 +33,16 @@ http://www.mulesoft.org/schema/mule/ee/wmq http://www.mulesoft.org/schema/mule/e
     <http:connector name="HTTP_HTTPS" cookieSpec="netscape" validateConnections="true" sendBufferSize="0" receiveBufferSize="0" receiveBacklog="0" clientSoTimeout="10000" serverSoTimeout="10000" socketSoLinger="0" doc:name="HTTP-HTTPS"/>
     <email:email-to-string-transformer name="email" doc:name="Email to String"/>
     <smtp:connector name="SMTP" validateConnections="true" doc:name="SMTP"/>
+    <smtp:gmail-connector name="Gmail_html" validateConnections="true" doc:name="Gmail" contentType="text/html"/>
     <smtp:gmail-connector name="Gmail" validateConnections="true" doc:name="Gmail"/>
     <flow name="Newsletter_HTTP" doc:name="Newsletter_HTTP">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8888" doc:name="HTTP"/>
         <parse-template location="index.tmpl" doc:name="Parse Template"/>
+        <http:response-builder status="200" contentType="text/html" doc:name="HTTP Response Builder"/>
+    </flow>
+    <flow name="unsubscribe" doc:name="unsubscribe">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8888" path="Unsubscribe" connector-ref="HTTP_HTTPS" doc:name="HTTP"/>
+        <parse-template location="src/main/resources/unsbscribe.tmpl" doc:name="Parse Template"/>
         <http:response-builder status="200" contentType="text/html" doc:name="HTTP Response Builder"/>
     </flow>
     <flow name="http_confirm_subscription" doc:name="http_confirm_subscription">
@@ -49,24 +55,46 @@ http://www.mulesoft.org/schema/mule/ee/wmq http://www.mulesoft.org/schema/mule/e
         </db:update>
         <set-payload value="subscription confirmed" doc:name="Set Payload"/>
     </flow>
+    <flow name="remove_subscription" doc:name="remove_subscription">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8888" path="Remove" connector-ref="HTTP_HTTPS" doc:name="HTTP"/>
+        <db:delete config-ref="MySQL_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[DELETE FROM client WHERE email=#[message.inboundProperties['http.query.params']['email']]]]></db:parameterized-query>
+        </db:delete>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <choice doc:name="Choice">
+            <when expression="#[payload==0]">
+                <set-payload value="Email not found" doc:name="Set Payload"/>
+            </when>
+            <otherwise>
+                <set-payload value="sucessfully removed" doc:name="Set Payload"/>
+            </otherwise>
+        </choice>
+    </flow>
     
 	<flow name="add_newsletter_HTTP" doc:name="add_newsletter_HTTP">
 		<http:inbound-endpoint exchange-pattern="request-response"
 			host="localhost" port="8888" doc:name="HTTP" path="NewsletterRegister"
 			encoding="iso-8859-1" />
-		<copy-properties propertyName="*" doc:name="Property" />
+        <message-properties-transformer doc:name="Newsletter Message">
+            <add-message-property key="region" value="#[message.inboundProperties['http.query.params']['region']]"/>
+            <add-message-property key="email" value="#[message.inboundProperties['http.query.params']['email']]"/>
+            <add-message-property key="fromHTTP" value="1"/>
+            <add-message-property key="subType" value="#[message.inboundProperties['http.query.params']['subType']]"/>
+        </message-properties-transformer>
 		<flow-ref name="check_email_to_add" doc:name="Flow Reference" />
 	</flow>
 	<sub-flow name="check_email_to_add" doc:name="check_email_to_add">
 		<db:select config-ref="MySQL_Configuration" doc:name="Email on db">
-			<db:parameterized-query><![CDATA[select count(*) emailsFound from client where email=#[message.outboundProperties['email']]]]></db:parameterized-query>
+            <db:parameterized-query><![CDATA[select count(*) emailsFound from client where email=#[message.outboundProperties.email]]]></db:parameterized-query>
 		</db:select>
 		<choice doc:name="Choice">
-			<when expression="#[message.payload.get(0).emailsFound&lt;0]">
+			<when expression="#[message.payload.get(0).emailsFound&gt;0]">
 				<set-payload value="Already subscribed" doc:name="email found" />
 			</when>
+            <when expression="#[message.inboundProperties['http.query.params']['email']=='']">
+                <set-payload value="email field should not be empty" doc:name="Empty email"/>
+            </when>
 			<otherwise>
-				<set-payload value="'adiciona o email'" doc:name="add email" />
 				<flow-ref name="add_email_to_newsletter" doc:name="Flow Reference" />
 			</otherwise>
 		</choice>
@@ -75,19 +103,18 @@ http://www.mulesoft.org/schema/mule/ee/wmq http://www.mulesoft.org/schema/mule/e
 		<scatter-gather doc:name="Scatter-Gather">
 			<processor-chain>
 				<db:insert config-ref="MySQL_Configuration" doc:name="Insert email">
-					<db:parameterized-query><![CDATA[INSERT INTO Client (subscription, email, validated,region) values (0, #[message.outboundProperties['http.query.params']['email']],0,0)]]></db:parameterized-query>
+                    <db:parameterized-query><![CDATA[INSERT INTO Client (subscription, email, validated,region,fromHTTP) values (#[message.outboundProperties.subType], #[message.outboundProperties.email],0,#[message.outboundProperties.region],#[message.outboundProperties.fromHTTP])]]></db:parameterized-query>
 				</db:insert>
-				<set-payload value="'successfully added'" doc:name="Set Payload" />
+				<set-payload value="successfully added" doc:name="Set Payload" />
 			</processor-chain>
 			<async doc:name="Async">
 
 				<message-properties-transformer
 					doc:name="Message Properties">
-					<add-message-property key="toAddresses"
-						value="#[message.outboundProperties['http.query.params']['email']]" />
+                    <add-message-property key="toAddresses" value="#[message.outboundProperties.email]"/>
 				</message-properties-transformer>
 				<set-payload
-					value="Enter http://localhost:8888/confirm?email=#[message.outboundProperties['http.query.params']['email']] to validate your subscription"
+					value="Enter http://localhost:8888/confirm?email=#[message.outboundProperties.email] to validate your subscription"
 					doc:name="Set Payload" />
 				<smtp:outbound-endpoint host="smtp.gmail.com"
 					port="587" user="devjoao%40gmail.com" password="accountdev"

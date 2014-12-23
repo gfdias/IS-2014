@@ -4,7 +4,11 @@ public class ReplaceSpaces {
     
 	public static String ReplaceSpacesFromPayload(String text)
     {
-        return text.replace("%20", " ");
+		text=text.replace("%20", " ");
+		if(text.length()>=140){
+			text= text.substring(0, 140);	
+		}
+        return text;
         
     }
 	public static void main(String[] args) {
