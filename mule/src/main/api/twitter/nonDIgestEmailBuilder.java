@@ -48,8 +48,6 @@ public class nonDIgestEmailBuilder implements Callable{
 	    
 	    Template t = ve.getTemplate( "twitter/email.vm" );
 	    VelocityContext context = new VelocityContext();
-	    
-        context.put("topicName",eventContext.getMessage().getOutboundProperty("topic"));
         context.put("title",eventContext.getMessage().getOutboundProperty("title"));
         context.put("highlights",eventContext.getMessage().getOutboundProperty("highlights"));
         context.put("content",eventContext.getMessage().getOutboundProperty("content"));
