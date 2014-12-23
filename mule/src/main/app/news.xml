@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:twitter="http://www.mulesoft.org/schema/mule/twitter" xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:quartz="http://www.mulesoft.org/schema/mule/quartz" xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:twitter="http://www.mulesoft.org/schema/mule/twitter" xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.2"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
@@ -13,10 +13,17 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
 http://www.mulesoft.org/schema/mule/twitter http://www.mulesoft.org/schema/mule/twitter/current/mule-twitter.xsd
 http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
-http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd">
+http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd
+http://www.mulesoft.org/schema/mule/quartz http://www.mulesoft.org/schema/mule/quartz/current/mule-quartz.xsd">
     <twitter:config name="Twitter" accessKey="2936491654-aPA93kUel2Ey5IaXZPBPOtVb9bzEjPPQObDRFEQ" accessSecret="yX8dNkpFKhB6uPaGWYnRNPjxYCbZqZ5W0ojVPSMYPvljb" consumerKey="P6PWap1JjMck33wIklqv8k4S2" consumerSecret="uyK2yIHLByO7dvLZH5WAwmtPsKlJR48A2Ndc1meVPssdTCbXDU" doc:name="Twitter"/>
     <vm:connector name="VM" validateConnections="true" doc:name="VM"/>
     <file:connector name="File" autoDelete="true" streaming="true" validateConnections="true" doc:name="File"/>
+    <queued-asynchronous-processing-strategy name="Queued_Asynchronous_Processing_Strategy" maxThreads="1" minThreads="1" poolExhaustedAction="WAIT" queueTimeout="5000" doc:name="Queued Asynchronous Processing Strategy">
+        <queue-store ref="Bean"/>
+    </queued-asynchronous-processing-strategy>
+    <spring:beans>
+        <spring:bean id="Bean" name="Bean" scope="session"/>
+    </spring:beans>
     <flow name="news_flow" doc:name="news_flow">
         <file:inbound-endpoint path="/Users/joao/Documents/EI/MEI/IS/IS-2014/newsToMule" responseTimeout="10000" doc:name="File" connector-ref="File">
            <file:filename-wildcard-filter pattern="*.xml" caseSensitive="false"/>
@@ -47,21 +54,24 @@ WHERE NOT EXISTS (
         <db:select config-ref="MySQL_Configuration" doc:name="Database">
             <db:parameterized-query><![CDATA[SELECT COUNT(*) a FROM news WHERE url=#[message.outboundProperties.url]]]></db:parameterized-query>
         </db:select>
-        <logger message="add news" level="INFO" doc:name="Logger"/>
-        <scatter-gather doc:name="Scatter-Gather">
+        <scatter-gather doc:name="Scatter-Gather" timeout="10">
+            <threading-profile maxThreadsActive="1" maxThreadsIdle="1" threadWaitTimeout="5000"/>
             <flow-ref name="save_news" doc:name="Save to DB"/>
             <flow-ref name="publish_on_twitter" doc:name="publish on twitter"/>
-            <flow-ref name="send_email_with_news" doc:name="Send email"/>
+            <flow-ref name="do_nothing" doc:name="Send email"/>
         </scatter-gather>
+    </flow>
+    <flow name="newsFlow1" doc:name="newsFlow1">
+        <expression-filter expression="#[payload.get(0).a==0]" doc:name="New news"/>
     </flow>
     <flow name="do_nothing" doc:name="do_nothing">
         <set-payload value="&quot;a&quot;" doc:name="Set Payload"/>
-        <expression-filter expression="#[payload.get(0).a==0]" doc:name="New news"/>
     </flow>
     <flow name="publish_on_twitter" doc:name="publish_on_twitter">
         <custom-filter class="twitter.dateFilter" doc:name="Custom"/>
-        <set-variable variableName="newPayload" value="#[twitter.ReplaceSpaces.ReplaceSpacesFromPayload(message.outboundProperties.title) ]" doc:name="Variable"/>
-        <twitter:update-status config-ref="Twitter" status="#[payload]" doc:name="Twitter"/>
+        <logger level="INFO" doc:name="Logger"/>
+        <set-payload value="'asdasdasasdasdasd asd asd quer'" doc:name="Set Payload"/>
+        <twitter:update-status config-ref="Twitter" status="'asdasdasasdasdasd asd asd quer'" doc:name="Twitter"/>
     </flow>
     <flow name="save_news" doc:name="save_news">
         <db:insert config-ref="MySQL_Configuration" doc:name="Insert author">
@@ -117,5 +127,11 @@ WHERE NOT EXISTS (
             <component class="twitter.nonDIgestEmailBuilder" doc:name="Java"/>
             <smtp:outbound-endpoint host="smtp.gmail.com" port="587" user="devjoao%40gmail.com" password="accountdev" connector-ref="Gmail_html" from="no_reply@isnews.com" subject="Newsletter" replyTo="no_reply@isnews.com" responseTimeout="10000" doc:name="SMTP"/>
         </async>
+    </flow>
+    <flow name="newsFlow2" doc:name="newsFlow2">
+        <quartz:inbound-endpoint jobName="email" repeatInterval="10000" responseTimeout="10000" doc:name="Quartz">
+            <quartz:event-generator-job/>
+        </quartz:inbound-endpoint>
+        <logger message="&quot;oh yeah&quot;" level="INFO" doc:name="Logger"/>
     </flow>
 </mule>

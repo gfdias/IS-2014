@@ -19,15 +19,12 @@ public class dateFilter implements org.mule.api.routing.filter.Filter{
 		System.out.println("Compare");
 		try {
 			String dateStr=message.getOutboundProperty("date").toString();
-			System.out.println(dateStr);
 			Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(dateStr);
-			System.out.println("parse done");
 
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(new Date());
 			cal.add(Calendar.DATE, -1);
 			Date yesterday = cal.getTime();
-			System.out.println("compre result " +date.before(yesterday));
 			return date.before(yesterday);
 		} catch (ParseException e) {
 			return false;
