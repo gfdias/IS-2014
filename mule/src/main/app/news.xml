@@ -19,7 +19,6 @@ http://www.mulesoft.org/schema/mule/quartz http://www.mulesoft.org/schema/mule/q
     <vm:connector name="VM" validateConnections="true" doc:name="VM"/>
     <file:connector name="File" autoDelete="true" streaming="true" validateConnections="true" doc:name="File"/>
     <queued-asynchronous-processing-strategy name="Queued_Asynchronous_Processing_Strategy" maxThreads="1" minThreads="1" poolExhaustedAction="WAIT" queueTimeout="5000" doc:name="Queued Asynchronous Processing Strategy">
-        <queue-store ref="Bean"/>
     </queued-asynchronous-processing-strategy>
     <spring:beans>
         <spring:bean id="Bean" name="Bean" scope="session"/>
