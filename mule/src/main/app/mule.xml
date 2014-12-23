@@ -31,10 +31,16 @@ http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/ba
     <http:connector name="HTTP_HTTPS" cookieSpec="netscape" validateConnections="true" sendBufferSize="0" receiveBufferSize="0" receiveBacklog="0" clientSoTimeout="10000" serverSoTimeout="10000" socketSoLinger="0" doc:name="HTTP-HTTPS"/>
     <email:email-to-string-transformer name="email" doc:name="Email to String"/>
     <smtp:connector name="SMTP" validateConnections="true" doc:name="SMTP"/>
+    <smtp:gmail-connector name="Gmail_html" validateConnections="true" doc:name="Gmail" contentType="text/html"/>
     <smtp:gmail-connector name="Gmail" validateConnections="true" doc:name="Gmail"/>
     <flow name="Newsletter_HTTP" doc:name="Newsletter_HTTP">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8888" doc:name="HTTP"/>
         <parse-template location="index.tmpl" doc:name="Parse Template"/>
+        <http:response-builder status="200" contentType="text/html" doc:name="HTTP Response Builder"/>
+    </flow>
+    <flow name="unsubscribe" doc:name="unsubscribe">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8888" path="Unsubscribe" connector-ref="HTTP_HTTPS" doc:name="HTTP"/>
+        <parse-template location="src/main/resources/unsbscribe.tmpl" doc:name="Parse Template"/>
         <http:response-builder status="200" contentType="text/html" doc:name="HTTP Response Builder"/>
     </flow>
     <flow name="http_confirm_subscription" doc:name="http_confirm_subscription">

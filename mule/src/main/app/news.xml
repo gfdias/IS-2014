@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:twitter="http://www.mulesoft.org/schema/mule/twitter" xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:twitter="http://www.mulesoft.org/schema/mule/twitter" xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.2"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
@@ -12,11 +12,14 @@ http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
 http://www.mulesoft.org/schema/mule/twitter http://www.mulesoft.org/schema/mule/twitter/current/mule-twitter.xsd
-http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd">
     <twitter:config name="Twitter" accessKey="2936491654-aPA93kUel2Ey5IaXZPBPOtVb9bzEjPPQObDRFEQ" accessSecret="yX8dNkpFKhB6uPaGWYnRNPjxYCbZqZ5W0ojVPSMYPvljb" consumerKey="P6PWap1JjMck33wIklqv8k4S2" consumerSecret="uyK2yIHLByO7dvLZH5WAwmtPsKlJR48A2Ndc1meVPssdTCbXDU" doc:name="Twitter"/>
     <vm:connector name="VM" validateConnections="true" doc:name="VM"/>
+    <file:connector name="File" autoDelete="true" streaming="true" validateConnections="true" doc:name="File"/>
     <flow name="news_flow" doc:name="news_flow">
-        <file:inbound-endpoint path="/Users/joao/Documents/EI/MEI/IS/IS-2014/newsToMule" responseTimeout="10000" doc:name="File">
+        <file:inbound-endpoint path="/Users/joao/Documents/EI/MEI/IS/IS-2014/newsToMule" responseTimeout="10000" doc:name="File" connector-ref="File">
+           <file:filename-wildcard-filter pattern="*.xml" caseSensitive="false"/>
         </file:inbound-endpoint>
         <mulexml:dom-to-xml-transformer doc:name="DOM to XML" outputEncoding="UTF-8"/>
         <set-property propertyName="newsXML" value="#[payload]" doc:name="Property"/>
@@ -44,18 +47,19 @@ WHERE NOT EXISTS (
         <db:select config-ref="MySQL_Configuration" doc:name="Database">
             <db:parameterized-query><![CDATA[SELECT COUNT(*) a FROM news WHERE url=#[message.outboundProperties.url]]]></db:parameterized-query>
         </db:select>
-        <expression-filter expression="#[payload.get(0).a==0]" doc:name="New news"/>
         <logger message="add news" level="INFO" doc:name="Logger"/>
         <scatter-gather doc:name="Scatter-Gather">
             <flow-ref name="save_news" doc:name="Save to DB"/>
-            <flow-ref name="do_nothing" doc:name="publish on twitter"/>
+            <flow-ref name="publish_on_twitter" doc:name="publish on twitter"/>
             <flow-ref name="send_email_with_news" doc:name="Send email"/>
         </scatter-gather>
     </flow>
     <flow name="do_nothing" doc:name="do_nothing">
         <set-payload value="&quot;a&quot;" doc:name="Set Payload"/>
+        <expression-filter expression="#[payload.get(0).a==0]" doc:name="New news"/>
     </flow>
     <flow name="publish_on_twitter" doc:name="publish_on_twitter">
+        <custom-filter class="twitter.dateFilter" doc:name="Custom"/>
         <set-variable variableName="newPayload" value="#[twitter.ReplaceSpaces.ReplaceSpacesFromPayload(message.outboundProperties.title) ]" doc:name="Variable"/>
         <twitter:update-status config-ref="Twitter" status="#[payload]" doc:name="Twitter"/>
     </flow>
@@ -102,11 +106,16 @@ WHERE NOT EXISTS (
         </foreach>
     </flow>
     <flow name="send_email_with_news" doc:name="send_email_with_news">
-        <db:select config-ref="MySQL_Configuration" doc:name="Database">
-            <db:parameterized-query><![CDATA[SELECT c.email FROM client c, topic t WHERE c.validated=1 AND t.name=#[message.outboundProperties.topic] AND c.region=t.id]]></db:parameterized-query>
+        <db:select config-ref="MySQL_Configuration" doc:name="Non-digest for topic">
+            <db:parameterized-query><![CDATA[SELECT email FROM client WHERE validated=1 AND region=#[message.outboundProperties.topic] AND subscription=1]]></db:parameterized-query>
         </db:select>
-        <foreach doc:name="For Each">
-            <logger message="send email to #[payload.email.get(counter)]" level="INFO" doc:name="Logger"/>
-        </foreach>
+        <expression-filter expression="#[payload.size()&gt;0]" doc:name="Expression"/>
+        <async doc:name="Async">
+            <message-properties-transformer doc:name="Message Properties">
+                <add-message-property key="toAddresses" value="#[payload]"/>
+            </message-properties-transformer>
+            <component class="twitter.nonDIgestEmailBuilder" doc:name="Java"/>
+            <smtp:outbound-endpoint host="smtp.gmail.com" port="587" user="devjoao%40gmail.com" password="accountdev" connector-ref="Gmail_html" from="no_reply@isnews.com" subject="Newsletter" replyTo="no_reply@isnews.com" responseTimeout="10000" doc:name="SMTP"/>
+        </async>
     </flow>
 </mule>
