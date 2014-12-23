@@ -57,7 +57,7 @@ WHERE NOT EXISTS (
         <scatter-gather doc:name="Scatter-Gather" timeout="10">
             <threading-profile maxThreadsActive="1" maxThreadsIdle="1" threadWaitTimeout="5000"/>
             <flow-ref name="save_news" doc:name="Save to DB"/>
-            <flow-ref name="publish_on_twitter" doc:name="publish on twitter"/>
+            <flow-ref name="do_nothing" doc:name="publish on twitter"/>
             <flow-ref name="do_nothing" doc:name="Send email"/>
         </scatter-gather>
     </flow>
@@ -129,7 +129,7 @@ WHERE NOT EXISTS (
         </async>
     </flow>
     <flow name="newsFlow2" doc:name="newsFlow2">
-        <quartz:inbound-endpoint jobName="email" repeatInterval="10000" responseTimeout="10000" doc:name="Quartz">
+        <quartz:inbound-endpoint jobName="email" repeatInterval="86400000" responseTimeout="10000" doc:name="Quartz">
             <quartz:event-generator-job/>
         </quartz:inbound-endpoint>
         <db:select config-ref="MySQL_Configuration" doc:name="Database">
@@ -150,13 +150,13 @@ WHERE NOT EXISTS (
                 <db:select config-ref="MySQL_Configuration" doc:name="Database">
                     <db:parameterized-query><![CDATA[SELECT n.title, n.content,GROUP_CONCAT(h.content) highlights, (p.url)images FROM photo p, news n, topic t, highlight h WHERE n.topic_id = t.id AND t.name=#[message.outboundProperties.topic] AND h.news_id=n.id AND n.processed=0 AND  p.url = (SELECT p.url FROM photo p WHERE p.news_id = n.id ORDER BY news_id LIMIT 1) GROUP BY n.title]]></db:parameterized-query>
                 </db:select>
+                <expression-filter expression="#[payload.size()&gt;0]" doc:name="if have news"/>
                 <component class="twitter.DigestEmails" doc:name="Java"/>
                 <smtp:outbound-endpoint host="smtp.gmail.com" port="587" user="devjoao%40gmail.com" password="accountdev" connector-ref="Gmail_html" from="no_reply@isnews.com" subject="Newsletter" replyTo="no_reply@isnews.com" responseTimeout="10000" doc:name="SMTP"/>
             </async>
             <db:select config-ref="MySQL_Configuration" doc:name="Database">
                 <db:parameterized-query><![CDATA[Select id from topic where name=#[message.outboundProperties.topic]]]></db:parameterized-query>
             </db:select>
-            <logger level="INFO" doc:name="Logger"/>
             <db:update config-ref="MySQL_Configuration" doc:name="Database">
                 <db:parameterized-query><![CDATA[update news set processed=1 where topic_id=#[payload.get(0).id]]]></db:parameterized-query>
             </db:update>
