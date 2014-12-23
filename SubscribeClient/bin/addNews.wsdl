@@ -1,0 +1,47 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://subscribe.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="IAddNewsService" targetNamespace="http://subscribe.org/">
+<wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://subscribe.org/" elementFormDefault="unqualified" targetNamespace="http://subscribe.org/" version="1.0">
+<xs:element name="addNews" type="tns:addNews"/>
+<xs:element name="addNewsResponse" type="tns:addNewsResponse"/>
+<xs:complexType name="addNews">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="addNewsResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+</wsdl:types>
+<wsdl:message name="addNews">
+<wsdl:part element="tns:addNews" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="addNewsResponse">
+<wsdl:part element="tns:addNewsResponse" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:portType name="IAddNews">
+<wsdl:operation name="addNews">
+<wsdl:input message="tns:addNews" name="addNews"></wsdl:input>
+<wsdl:output message="tns:addNewsResponse" name="addNewsResponse"></wsdl:output>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="IAddNewsServiceSoapBinding" type="tns:IAddNews">
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="addNews">
+<soap:operation soapAction="" style="document"/>
+<wsdl:input name="addNews">
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="addNewsResponse">
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="IAddNewsService">
+<wsdl:port binding="tns:IAddNewsServiceSoapBinding" name="IAddNewsPort">
+<soap:address location="http://localhost:8082/soapNews"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>
