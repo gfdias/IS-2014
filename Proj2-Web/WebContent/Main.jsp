@@ -130,37 +130,13 @@
 			<div class="col-md-12 column" style="margin-top: 100px;">
 				<div class="col-md-12 column" id="dinamicDiv"
 					style="margin-top: 22px">
-					<h3 style="color: #006FA4; margin-top: -2px">Recent News</h3>
+					<h3 style="color: #006FA4; margin-top: -2px">Welcome to IS News</h3>
 					<hr style="height: 2px; color: #f00; background-color: #f00">
 
 					<div class="container">
 						<div id="blog" class="row">
-							<c:forEach begin="0" end="${fn:length(news) - 1}" var="index">
-								<div class="col-md-10 blogShort">
-									<h1>
-										<c:out value="${news[index].title}" />
-									</h1>
-									<img src=<c:out value="${photos[index]}"/> alt="post img"
-										class="pull-left img-responsive thumb margin10 img-thumbnail">
-									<article>
-										<div style="margin-bottom: 10px">
-
-											<span class="btn btn-info btn pull-center marginBottom10"
-												style="opacity: 1.0; box-shadow: none; cursor: default"><c:out
-													value="${news[index].date}" /></span>
-										</div>
-										<strong> <span style="margin-top: 10px"><c:out
-													value="${news[index].author.name}" /></span>
-										</strong>
-										<c:forEach var="highlight" items="${news[index].highlights}">
-											<li>${highlight.content}</li>
-										</c:forEach>
-									</article>
-									<p></p>
-									<a class="btn btn-blog pull-left marginBottom10"
-										href="http://localhost:8080/Proj2-Web/NewsDetails?${news[index].id}">READ
-										MORE</a>
-								</div>
+							<c:forEach begin="0" end="${fn:length(news)}" var="index">
+								
 							</c:forEach>
 
 							<div class="col-md-12 gap10"></div>
