@@ -39,7 +39,7 @@ public class ReadWeb {
 		        if	(getInfo.equals("/video/") || getInfo.equals("/SHOWBIZ/")) continue;
 		        String headerName = header.text();
 		        if (ignore.contains(headerName.toLowerCase())) continue;
-		        String url = webSite + getInfo;
+		        String url = "http://web.archive.org" + getInfo;
 		        System.out.println("url " + url);
 		        
 		        Header aux = new Header(url, headerName);

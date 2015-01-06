@@ -38,7 +38,7 @@ public class WebCrawler {
 			}
 		}
 		ReadWeb a = new ReadWeb();
-		ArrayList<Header> headers = a.getFromWeb("http://edition.cnn.com");
+		ArrayList<Header> headers = a.getFromWeb("http://web.archive.org/web/20150102180728/http://edition.cnn.com");
 		ImportExportXml newExport = new ImportExportXml();
 
 		ArrayList<String> news = new ArrayList<String>();

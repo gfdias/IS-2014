@@ -50,12 +50,14 @@ public class TopicNews {
 	public Topictype fetchLatestNews(){
 				
 		try {
+			System.out.println("topic " + this.topicUrl);
 			Document doc = Jsoup.connect(this.topicUrl).get();
 			Elements latest = doc.select("#cnn_mtt1rgtarea a");
 
 			for (int i = 0; i < latest.size(); i++) {
 				Element article =  latest.get(i);			
 				String info = article.attr(("href").toString());
+				System.out.println("info " + info);
 				if(!info.substring(1, 6).equals("video")){
 					System.out.println("NEWS! " + info);
 
@@ -101,7 +103,7 @@ public class TopicNews {
 		for (int i = 0; i < newTopic.newsUrls.size(); i++) {
 
 			try {
-				Document doc = Jsoup.connect("http://edition.cnn.com" + newTopic.newsUrls.get(i)).timeout(0).get();
+				Document doc = Jsoup.connect("http://web.archive.org" + newTopic.newsUrls.get(i)).timeout(0).get();
 				Elements newsContainer = doc.select("#cnnContentContainer");
 				String title = newsContainer.select("h1").text();
 				String author = newsContainer.select(".cnnByline").text();
