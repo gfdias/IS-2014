@@ -18,14 +18,13 @@ http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smt
 http://www.mulesoft.org/schema/mule/quartz http://www.mulesoft.org/schema/mule/quartz/current/mule-quartz.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/current/mule-cxf.xsd">
-    <twitter:config name="Twitter" accessKey="2936491654-aPA93kUel2Ey5IaXZPBPOtVb9bzEjPPQObDRFEQ" accessSecret="yX8dNkpFKhB6uPaGWYnRNPjxYCbZqZ5W0ojVPSMYPvljb" consumerKey="P6PWap1JjMck33wIklqv8k4S2" consumerSecret="uyK2yIHLByO7dvLZH5WAwmtPsKlJR48A2Ndc1meVPssdTCbXDU" doc:name="Twitter"/>
-    <vm:connector name="VM" validateConnections="true" doc:name="VM"/>
     <file:connector name="File" autoDelete="true" streaming="true" validateConnections="true" doc:name="File"/>
     <queued-asynchronous-processing-strategy name="Queued_Asynchronous_Processing_Strategy" maxThreads="1" minThreads="1" poolExhaustedAction="WAIT" queueTimeout="5000" doc:name="Queued Asynchronous Processing Strategy">
     </queued-asynchronous-processing-strategy>
     <spring:beans>
         <spring:bean id="Bean" name="Bean" scope="session"/>
     </spring:beans>
+    <twitter:config name="Twitter" accessKey="2936491654-ouhFMjuvP0UdWDnOO4Nh7meUqpdtPdAzRe3wYq2" accessSecret="iWn2aL8Ef9HingbJHQWdkT5plLwRGtfpeF5hTd4wJO9GW" consumerKey="kMoSK6gXRuEObY7jeSXmUySWz" consumerSecret="ujVAu6ulJywSZ0D6yNnT1Wk1xpSm2jmewifgLDgb63ERfe3Oeb"  doc:name="Twitter"/>
     <flow name="news_flow" doc:name="news_flow">
         <file:inbound-endpoint path="/Users/joao/Desktop/newsToMule" responseTimeout="10000" doc:name="File" connector-ref="File">
            <file:filename-wildcard-filter pattern="*.xml" caseSensitive="false"/>
@@ -34,7 +33,6 @@ http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/
     </flow>
     <sub-flow name="addNewsCommon" doc:name="addNewsCommon">
         <mulexml:dom-to-xml-transformer doc:name="DOM to XML" outputEncoding="UTF-8"/>
-        <logger message="OI #[payload]" level="INFO" doc:name="Logger"/>
         <set-property propertyName="newsXML" value="#[payload]" doc:name="Property"/>
         <set-session-variable variableName="topicName" value="#[xpath('//topicname').text]" doc:name="Session Variable"/>
         <db:insert config-ref="MySQL_Configuration" doc:name="Insert topic">
@@ -45,11 +43,8 @@ WHERE NOT EXISTS (
 ) LIMIT 1;]]></db:parameterized-query>
         </db:insert>
         <set-payload value="#[message.outboundProperties.newsXML]" doc:name="Set Payload"/>
-        <logger message="set #[payload]" level="INFO" doc:name="Logger"/>
         <splitter evaluator="xpath" expression="/topic/news" doc:name="Splitter"/>
-        <logger message="split" level="INFO" doc:name="Logger"/>
         <expression-filter evaluator="xpath" expression="(count(//photos/child::text())) !=0" doc:name="Only news with images"/>
-        <logger message="only images" level="INFO" doc:name="Logger"/>
         <message-properties-transformer doc:name="Message Properties">
             <add-message-property key="url" value="#[xpath('//url').text]"/>
             <add-message-property key="title" value="#[xpath('//title').text]"/>
@@ -60,35 +55,33 @@ WHERE NOT EXISTS (
             <add-message-property key="highlights" value="#[xpath('//highlights')]"/>
             <add-message-property key="images" value="#[xpath('//photos')]"/>
         </message-properties-transformer>
-        <logger message="prop" level="INFO" doc:name="Logger"/>
         <db:select config-ref="MySQL_Configuration" doc:name="Database">
             <db:parameterized-query><![CDATA[SELECT COUNT(*) a FROM news WHERE url=#[message.outboundProperties.url]]]></db:parameterized-query>
         </db:select>
+        <expression-filter expression="#[payload.get(0).a==0]" doc:name="New news"/>
+        <logger message="ADDING #[message.outboundProperties.title]" level="INFO" doc:name="Logger"/>
         <scatter-gather doc:name="Scatter-Gather" timeout="10">
             <threading-profile maxThreadsActive="1" maxThreadsIdle="1" threadWaitTimeout="5000"/>
             <flow-ref name="save_news" doc:name="Save to DB"/>
 
             <!-- <flow-ref name="publish_on_twitter" doc:name="publish on twitter"/> -->
             <flow-ref name="send_email_with_news" doc:name="Send email"/>
+            <flow-ref name="publish_on_twitter" doc:name="Flow Reference"/>
         </scatter-gather>
     </sub-flow>
+    <flow name="newsFlow3" doc:name="newsFlow3">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" doc:name="HTTP"/>
+        <custom-filter class="twitter.dateFilter" doc:name="Custom"/>
+    </flow>
+    <flow name="publish_on_twitter" doc:name="publish_on_twitter">
+        <set-payload value="#[message.outboundProperties.title]" doc:name="Set Payload"/>
+        <twitter:update-status config-ref="Twitter" status="#[payload]" doc:name="Twitter"/>
+    </flow>
     <flow name="soapNews" doc:name="soapNews">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8082" path="soapNews" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="org.subscribe.IAddNews" doc:name="SOAP"/>
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
         <flow-ref name="addNewsCommon" doc:name="Flow Reference"/>
-    </flow>
-    <flow name="newsFlow1" doc:name="newsFlow1">
-        <expression-filter expression="#[payload.get(0).a==0]" doc:name="New news"/>
-    </flow>
-    <flow name="do_nothing" doc:name="do_nothing">
-        <set-payload value="&quot;a&quot;" doc:name="Set Payload"/>
-    </flow>
-    <flow name="publish_on_twitter" doc:name="publish_on_twitter">
-        <custom-filter class="twitter.dateFilter" doc:name="Custom"/>
-        <logger level="INFO" doc:name="Logger"/>
-        <set-payload value="'asdasdasasdasdasd asd asd quer'" doc:name="Set Payload"/>
-        <twitter:update-status config-ref="Twitter" status="'asdasdasasdasdasd asd asd quer'" doc:name="Twitter"/>
     </flow>
     <flow name="save_news" doc:name="save_news">
         <db:insert config-ref="MySQL_Configuration" doc:name="Insert author">

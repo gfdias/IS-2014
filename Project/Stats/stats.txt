@@ -1,26 +1,16 @@
-11 News with less than 12 hours
-
-AFRICA
-Mon Nov 17 15:54:00 WET 2014	http://edition.cnn.com/2014/11/17/world/woman-stripped-kenya/index.html?hpt=iaf_c2
-
-ASIA
-Mon Nov 17 20:23:00 WET 2014	http://edition.cnn.com/2014/11/17/world/asia/thailand-infant-body-parts/index.html?hpt=ias_c2
-
-EUROPE
-Mon Nov 17 21:24:00 WET 2014	http://edition.cnn.com/2014/11/17/world/meast/isis-threat/index.html?hpt=ieu_c2
-Mon Nov 17 22:31:00 WET 2014	http://edition.cnn.com/2014/11/17/world/europe/pope-francis-first-u-s-trip/index.html?hpt=ieu_c2
-
-LATIN_AMERICA
-
-MIDDLE_EAST
-
-U_S
-Mon Nov 17 20:51:00 WET 2014	http://edition.cnn.com/2014/11/17/us/adrian-peterson-nfl-discipline-hearing/index.html?hpt=us_c2
-Mon Nov 17 15:00:00 WET 2014	http://edition.cnn.com/2014/11/17/us/winter-weather/index.html?hpt=us_c2
-Mon Nov 17 19:24:00 WET 2014	http://edition.cnn.com/2014/11/17/health/ebola-u-s-/index.html?hpt=us_c2
-Mon Nov 17 14:04:00 WET 2014	http://edition.cnn.com/2014/11/16/showbiz/u2-bono-injured/index.html?hpt=us_c2
+3 News with less than 12 hours
 
 WORLD
-Mon Nov 17 20:23:00 WET 2014	http://edition.cnn.com/2014/11/17/world/asia/thailand-infant-body-parts/index.html?hpt=wo_c2
-Mon Nov 17 15:54:00 WET 2014	http://edition.cnn.com/2014/11/17/world/woman-stripped-kenya/index.html?hpt=wo_c2
-Mon Nov 17 12:28:00 WET 2014	http://edition.cnn.com/2014/11/17/world/europe/ukraine-crisis-mh17/index.html?hpt=wo_c2
+Fri Jan 02 15:20:00 WET 2015	http://edition.cnn.com/web/20150102171512/http://edition.cnn.com/2015/01/01/world/asia/airasia-disaster/index.html?hpt=wo_c2
+Fri Jan 02 14:51:00 WET 2015	http://edition.cnn.com/web/20150102171512/http://edition.cnn.com/2015/01/02/world/europe/italy-migrants-ship/index.html?hpt=wo_c2
+
+U_S
+Fri Jan 02 16:04:00 WET 2015	http://edition.cnn.com/web/20150102180728/http://edition.cnn.com/2014/12/31/us/ohio-transgender-teen-suicide/index.html?hpt=us_c2
+
+AFRICA
+
+ASIA
+
+EUROPE
+
+LATIN_AMERICA

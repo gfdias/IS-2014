@@ -44,7 +44,7 @@ public class WebCrawler {
 		ArrayList<String> news = new ArrayList<String>();
 
 		for (Header header : headers) {
-			// get topic
+			// get topic	
 			TopicNews aux = new TopicNews(header.getUrl(), header.getName());
 			Topictype topic = aux.fetchLatestNews();
 
