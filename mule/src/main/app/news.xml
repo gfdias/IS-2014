@@ -26,7 +26,7 @@ http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/
     </spring:beans>
     <twitter:config name="Twitter" accessKey="2936491654-ouhFMjuvP0UdWDnOO4Nh7meUqpdtPdAzRe3wYq2" accessSecret="iWn2aL8Ef9HingbJHQWdkT5plLwRGtfpeF5hTd4wJO9GW" consumerKey="kMoSK6gXRuEObY7jeSXmUySWz" consumerSecret="ujVAu6ulJywSZ0D6yNnT1Wk1xpSm2jmewifgLDgb63ERfe3Oeb"  doc:name="Twitter"/>
     <flow name="news_flow" doc:name="news_flow">
-        <file:inbound-endpoint path="/Users/joao/Desktop/newsToMule" responseTimeout="10000" doc:name="File" connector-ref="File">
+        <file:inbound-endpoint path="/Users/joao/Desktop/newsToMule" responseTimeout="10000" doc:name="File" connector-ref="File" pollingFrequency="10000">
            <file:filename-wildcard-filter pattern="*.xml" caseSensitive="false"/>
         </file:inbound-endpoint>
         <flow-ref name="addNewsCommon" doc:name="Flow Reference"/>
@@ -69,11 +69,8 @@ WHERE NOT EXISTS (
             <flow-ref name="publish_on_twitter" doc:name="Flow Reference"/>
         </scatter-gather>
     </sub-flow>
-    <flow name="newsFlow3" doc:name="newsFlow3">
-        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" doc:name="HTTP"/>
-        <custom-filter class="twitter.dateFilter" doc:name="Custom"/>
-    </flow>
     <flow name="publish_on_twitter" doc:name="publish_on_twitter">
+        <custom-filter class="twitter.dateFilter" doc:name="Custom"/>
         <set-payload value="#[message.outboundProperties.title]" doc:name="Set Payload"/>
         <twitter:update-status config-ref="Twitter" status="#[payload]" doc:name="Twitter"/>
     </flow>
