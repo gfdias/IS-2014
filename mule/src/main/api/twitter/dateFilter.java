@@ -25,7 +25,7 @@ public class dateFilter implements org.mule.api.routing.filter.Filter{
 			cal.setTime(new Date());
 			cal.add(Calendar.DATE, -1);
 			Date yesterday = cal.getTime();
-			return date.before(yesterday);
+			return date.after(yesterday);
 		} catch (ParseException e) {
 			return false;
 		}		

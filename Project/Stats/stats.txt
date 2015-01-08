@@ -1,0 +1,16 @@
+3 News with less than 12 hours
+
+AFRICA
+
+ASIA
+
+EUROPE
+
+LATIN_AMERICA
+
+U_S
+Fri Jan 02 16:04:00 WET 2015	http://edition.cnn.com/web/20150102180728/http://edition.cnn.com/2014/12/31/us/ohio-transgender-teen-suicide/index.html?hpt=us_c2
+
+WORLD
+Fri Jan 02 15:20:00 WET 2015	http://edition.cnn.com/web/20150102171512/http://edition.cnn.com/2015/01/01/world/asia/airasia-disaster/index.html?hpt=wo_c2
+Fri Jan 02 14:51:00 WET 2015	http://edition.cnn.com/web/20150102171512/http://edition.cnn.com/2015/01/02/world/europe/italy-migrants-ship/index.html?hpt=wo_c2
