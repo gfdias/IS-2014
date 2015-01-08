@@ -27,7 +27,7 @@ http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/
         <spring:bean id="Bean" name="Bean" scope="session"/>
     </spring:beans>
     <flow name="news_flow" doc:name="news_flow">
-        <file:inbound-endpoint path="/Users/joao/Desktop/newsToMule" responseTimeout="10000" doc:name="File" connector-ref="File">
+        <file:inbound-endpoint path="/Users/goncalodias/Desktop/newsToMule" responseTimeout="10000" doc:name="File" connector-ref="File">
            <file:filename-wildcard-filter pattern="*.xml" caseSensitive="false"/>
         </file:inbound-endpoint>
         <flow-ref name="addNewsCommon" doc:name="Flow Reference"/>
