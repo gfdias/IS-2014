@@ -26,11 +26,8 @@ http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/
     </spring:beans>
     <twitter:config name="Twitter" accessKey="2936491654-ouhFMjuvP0UdWDnOO4Nh7meUqpdtPdAzRe3wYq2" accessSecret="iWn2aL8Ef9HingbJHQWdkT5plLwRGtfpeF5hTd4wJO9GW" consumerKey="kMoSK6gXRuEObY7jeSXmUySWz" consumerSecret="ujVAu6ulJywSZ0D6yNnT1Wk1xpSm2jmewifgLDgb63ERfe3Oeb"  doc:name="Twitter"/>
     <flow name="news_flow" doc:name="news_flow">
-<<<<<<< HEAD
         <file:inbound-endpoint path="/Users/goncalodias/Desktop/newsToMule" responseTimeout="10000" doc:name="File" connector-ref="File">
-=======
-        <file:inbound-endpoint path="/Users/joao/Desktop/newsToMule" responseTimeout="10000" doc:name="File" connector-ref="File" pollingFrequency="10000">
->>>>>>> 072cd98fd18c9413d5242496aec1c3d782fd64bf
+
            <file:filename-wildcard-filter pattern="*.xml" caseSensitive="false"/>
         </file:inbound-endpoint>
         <flow-ref name="addNewsCommon" doc:name="Flow Reference"/>
