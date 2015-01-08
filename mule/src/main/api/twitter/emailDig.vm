@@ -37,7 +37,7 @@ table#t01 th  {
 }
 </style>
 </head>
-<h1 ALIGN="center"> ISNews Non-Digest!</h1>
+<h1 ALIGN="center"> ISNews Digest!</h1>
 <table id="t01" align="center">
   #foreach( $news in $newsAll )
   <tr>
